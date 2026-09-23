@@ -1,0 +1,166 @@
+---
+/**
+ * Кнопка: прямоугольная, hairline-обводка или заливка-шторка, магнитный hover.
+ * variant: 'fill' | 'ghost' | 'text'
+ */
+export interface Props {
+  href?: string;
+  variant?: 'fill' | 'ghost' | 'text';
+  size?: 'md' | 'lg' | 'sm';
+  type?: 'button' | 'submit';
+  class?: string;
+  magnetic?: boolean;
+  arrow?: boolean;
+  id?: string;
+  target?: string;
+  rel?: string;
+  ariaLabel?: string;
+  [key: `data-${string}`]: string | undefined;
+}
+const {
+  href,
+  variant = 'ghost',
+  size = 'md',
+  type = 'button',
+  class: cls = '',
+  magnetic = true,
+  arrow = false,
+  id,
+  target,
+  rel,
+  ariaLabel,
+  ...rest
+} = Astro.props;
+const Tag = href ? 'a' : 'button';
+const dataAttrs = Object.fromEntries(Object.entries(rest).filter(([k]) => k.startsWith('data-')));
+---
+
+<Tag
+  class:list={['btn', `btn--${variant}`, `btn--${size}`, cls]}
+  href={href}
+  type={href ? undefined : type}
+  id={id}
+  target={target}
+  rel={rel}
+  aria-label={ariaLabel}
+  data-magnetic={magnetic ? '0.28' : undefined}
+  {...dataAttrs}
+>
+  <span class="btn__fill" aria-hidden="true"></span>
+  <span class="btn__label"><slot /></span>
+  {arrow && (
+    <svg class="btn__arrow" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+      <path d="M2 7h9M7.5 2.5 12 7l-4.5 4.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="square" />
+    </svg>
+  )}
+</Tag>
+
+<style>
+  .btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7em;
+    isolation: isolate;
+    padding: 0 1.35em;
+    height: 3em;
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    font-weight: 520;
+    letter-spacing: -0.005em;
+    line-height: 1;
+    white-space: nowrap;
+    border-radius: var(--radius);
+    border: 1px solid var(--hair-strong);
+    color: var(--fg);
+    overflow: hidden;
+    transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), transform 0.2s var(--ease-out);
+    will-change: transform;
+    cursor: pointer;
+  }
+  .btn--sm {
+    height: 2.5em;
+    font-size: 0.8125rem;
+    padding-inline: 1em;
+  }
+  .btn--lg {
+    height: 3.4em;
+    font-size: 1rem;
+    padding-inline: 1.6em;
+  }
+  .btn__label,
+  .btn__arrow {
+    position: relative;
+    z-index: 2;
+  }
+  .btn__fill {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: var(--btn-fill);
+    transform: translateY(101%);
+    transition: transform var(--dur) var(--ease-out);
+  }
+
+  /* ghost: hairline, при hover заливка-шторка снизу */
+  .btn--ghost:hover .btn__fill,
+  .btn--ghost:focus-visible .btn__fill {
+    transform: translateY(0);
+  }
+  .btn--ghost:hover,
+  .btn--ghost:focus-visible {
+    color: var(--btn-fill-fg);
+    border-color: var(--btn-fill);
+  }
+
+  /* fill: залита, при hover шторка уходит и остаётся обводка */
+  .btn--fill {
+    color: var(--btn-fill-fg);
+    border-color: var(--btn-fill);
+  }
+  .btn--fill .btn__fill {
+    transform: translateY(0);
+  }
+  .btn--fill:hover .btn__fill,
+  .btn--fill:focus-visible .btn__fill {
+    transform: translateY(-101%);
+  }
+  .btn--fill:hover,
+  .btn--fill:focus-visible {
+    color: var(--fg);
+    border-color: var(--hair-strong);
+  }
+
+  /* text: без рамки, подчёркивание-линия */
+  .btn--text {
+    border-color: transparent;
+    padding-inline: 0;
+    height: auto;
+    overflow: visible;
+  }
+  .btn--text .btn__fill {
+    display: none;
+  }
+  .btn--text .btn__label::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.35em;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0.35);
+    transform-origin: left;
+    transition: transform var(--dur) var(--ease-out);
+  }
+  .btn--text:hover .btn__label::after,
+  .btn--text:focus-visible .btn__label::after {
+    transform: scaleX(1);
+  }
+  .btn__arrow {
+    transition: transform var(--dur-fast) var(--ease-out);
+  }
+  .btn:hover .btn__arrow {
+    transform: translateX(3px);
+  }
+</style>

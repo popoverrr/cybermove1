@@ -1,0 +1,27 @@
+---
+/**
+ * Лаборатории /dev/*: логотип, типографика, сцены. В боевую сборку не попадают
+ * (собираются только в dev и при CYBERMOVE_LABS=1, см. astro.config.mjs).
+ */
+import Base from '../../layouts/Base.astro';
+import TypeLab from '../../components/labs/TypeLab.astro';
+import LogoLab from '../../components/labs/LogoLab.astro';
+import ScenesLab from '../../components/labs/ScenesLab.astro';
+
+declare const __CYBERMOVE_LABS__: boolean;
+
+export function getStaticPaths() {
+  const enabled = import.meta.env.DEV || __CYBERMOVE_LABS__;
+  if (!enabled) return [];
+  return [{ params: { lab: 'type' } }, { params: { lab: 'logo' } }, { params: { lab: 'scenes' } }];
+}
+
+const { lab } = Astro.params;
+const titles: Record<string, string> = { type: 'Типографика', logo: 'Логотип', scenes: 'Сцены' };
+---
+
+<Base lang="ru" path={`/dev/${lab}/`} title={`Lab · ${titles[lab!]}`} description="Лаборатория" noindex bare theme="black">
+  {lab === 'type' && <TypeLab />}
+  {lab === 'logo' && <LogoLab />}
+  {lab === 'scenes' && <ScenesLab />}
+</Base>

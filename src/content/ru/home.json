@@ -1,0 +1,35 @@
+{
+  "s1": {
+    "id": "core",
+    "micro": ["AUDIT", "SYSTEMS", "BRAND", "TRAFFIC", "LEGAL"],
+    "label": "00 · CHAOS → CORE",
+    "h1": "Приводим бизнес в движение — от диагностики до внедрения.",
+    "h1Accent": "движение",
+    "lead": "Аудит и финансы, сайты и CRM, бренд и контент, реклама и SEO, тендеры и право. Одна команда, одна система.",
+    "ctaPrimary": "Получить первичный разбор",
+    "ctaSecondary": "Смотреть услуги",
+    "orbits": ["Аудит", "Системы", "Бренд и контент", "Трафик", "Тендеры и право"],
+    "scrollHint": "Листайте",
+    "tickerTitle": "Работали с"
+  },
+  "s7": {
+    "id": "growth",
+    "label": "06 · GROWTH",
+    "h2": "Результат — это движение.",
+    "counters": [
+      { "value": 34, "suffix": "+", "label": "проектов" },
+      { "value": 13, "suffix": "", "label": "городов" },
+      { "value": 7, "suffix": "", "label": "отраслей" },
+      { "value": 6, "suffix": "", "label": "лет с брендом USYK" }
+    ],
+    "featured": ["usyk", "ukrainian-fashion-week", "intertop", "brsm-nafta", "hydrosta-kazakhstan"],
+    "resultsPlaceholder": "[PLACEHOLDER: цифры результата]",
+    "cta": "Все кейсы"
+  },
+  "s8": {
+    "id": "contact",
+    "label": "07 · CONTACT",
+    "h2": "Начнём с первичного разбора.",
+    "lead": "Расскажите о задаче. Вернёмся с первыми выводами и предложим формат работы."
+  }
+}

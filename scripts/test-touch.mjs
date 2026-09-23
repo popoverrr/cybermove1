@@ -1,0 +1,21 @@
+// Тач-режим (эмуляция iPhone): первый тап по строке — активная строка и реакция сцены, второй — Drawer
+import { chromium, devices } from 'playwright';
+const base = process.argv[2] || 'http://127.0.0.1:4331';
+const browser = await chromium.launch({ headless: true, args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--enable-webgl'] });
+const ctx = await browser.newContext({ ...devices['iPhone 13'], locale: 'ru-RU' });
+const page = await ctx.newPage();
+await page.goto(`${base}/?tier=low&screen=1&local=0.45`, { waitUntil: 'networkidle', timeout: 120000 });
+await page.waitForTimeout(3500);
+const btn = page.locator('[data-service="financial-audit"]');
+await btn.tap();
+await page.waitForTimeout(600);
+const r1 = await page.evaluate(() => ({ hover: window.__cm.hover, active: !!document.querySelector('[data-row].is-active'), drawer: document.body.classList.contains('drawer-open'), coarse: matchMedia('(pointer: coarse)').matches }));
+await btn.tap();
+await page.waitForTimeout(900);
+const r2 = await page.evaluate(() => ({ hover: window.__cm.hover, drawer: document.body.classList.contains('drawer-open'), title: document.querySelector('[data-drawer-item]:not([hidden]) [data-drawer-title]')?.textContent }));
+await page.screenshot({ path: 'docs/screens/phase5/touch-drawer--mobile.png' });
+await page.locator('[data-drawer-close]').tap();
+await page.waitForTimeout(800);
+const r3 = await page.evaluate(() => ({ drawer: document.body.classList.contains('drawer-open'), hover: window.__cm.hover }));
+console.log('tap1', r1, '\ntap2', r2, '\nclose', r3);
+await browser.close();

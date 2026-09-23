@@ -1,0 +1,38 @@
+{
+  "title": "Contact",
+  "h1": "Let's start with an initial review.",
+  "lead": "Tell us about the task. We come back with first conclusions and propose a way to work together.",
+  "form": {
+    "name": "Name",
+    "contact": "Phone, WhatsApp or Telegram",
+    "company": "Company or website",
+    "format": "Format",
+    "formatOptions": [
+      { "value": "audit", "label": "Audit & roadmap" },
+      { "value": "launch", "label": "Project launch" },
+      { "value": "growth", "label": "Growth partnership" },
+      { "value": "other", "label": "Other" }
+    ],
+    "message": "Message",
+    "submit": "Send",
+    "sending": "Sending…",
+    "whatsapp": "Message us on WhatsApp",
+    "success": "We've got your request. We'll reply within one business day.",
+    "error": "Something went wrong. Message us on WhatsApp instead.",
+    "consent": "By sending the form you agree to the privacy policy.",
+    "consentPrefix": "By sending the form you agree to the",
+    "consentLink": "privacy policy",
+    "required": "Required field",
+    "invalidContact": "Enter a phone number, WhatsApp or Telegram",
+    "tooFast": "The form seems to have been filled too quickly. Check the fields and send again."
+  },
+  "channelsTitle": "Channels",
+  "whatsappLabel": "WhatsApp",
+  "emailLabel": "E-mail",
+  "telegramLabel": "Telegram",
+  "addressLabel": "Address",
+  "email": "[PLACEHOLDER: e-mail]",
+  "telegram": "[PLACEHOLDER: Telegram]",
+  "address": "[PLACEHOLDER: address]",
+  "geoTitle": "Where we work"
+}

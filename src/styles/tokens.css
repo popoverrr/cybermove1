@@ -1,0 +1,143 @@
+/* CYBERMOVE — дизайн-токены. Источник: docs/BRIEF.md §6, доводка по референсам. */
+:root {
+  /* Палитра */
+  --black: #050505;
+  --graphite: #0e0f12;
+  --steel-900: #1a1c20;
+  --steel-700: #33373d;
+  --steel-600: #5b616b;
+  --steel-500: #7a8190;
+  --steel-400: #8a9099;
+  --steel-300: #aab0b8;
+  --steel-200: #c9ced6;
+  --steel-100: #e6e9ee;
+  --white: #f4f6fa;
+  --blue: #0a24f5;
+  --blue-deep: #001489;
+  --blue-glow: #4d7cff;
+  --blue-ice: #bfd4ff;
+
+  /* Тема по умолчанию (black). Экраны переопределяют через data-theme / JS. */
+  --bg: var(--black);
+  --fg: var(--white);
+  --fg-2: var(--steel-300);
+  --fg-3: var(--steel-500);
+  --hair: rgba(244, 246, 250, 0.14);
+  --hair-strong: rgba(244, 246, 250, 0.32);
+  --accent: var(--blue-glow);
+  --accent-ink: var(--blue);
+  --btn-fill: var(--white);
+  --btn-fill-fg: var(--black);
+
+  /* Шрифты */
+  --font-sans: 'Inter Tight Variable', 'Inter Tight', -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --font-wide: 'Unbounded Variable', 'Unbounded', var(--font-sans);
+  --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* Типографическая шкала (fluid) */
+  --fs-display: clamp(2.5rem, 1.2rem + 5.6vw, 6.75rem);   /* H1 главной */
+  --fs-h1: clamp(2.25rem, 1.1rem + 4.4vw, 5.25rem);
+  --fs-h2: clamp(1.875rem, 1rem + 3vw, 4rem);
+  --fs-h3: clamp(1.375rem, 0.95rem + 1.4vw, 2.125rem);
+  --fs-h4: clamp(1.125rem, 0.95rem + 0.6vw, 1.375rem);
+  --fs-lead: clamp(1.0625rem, 0.95rem + 0.5vw, 1.375rem);
+  --fs-body: clamp(0.9375rem, 0.9rem + 0.2vw, 1.0625rem);
+  --fs-small: 0.8125rem;
+  --fs-micro: 0.6875rem;   /* 11px микрометки */
+  --fs-counter: clamp(3.5rem, 1rem + 9vw, 10rem);
+
+  --lh-tight: 0.98;
+  --lh-snug: 1.1;
+  --lh-body: 1.5;
+
+  --ls-display: -0.035em;
+  --ls-h: -0.025em;
+  --ls-micro: 0.08em;
+
+  /* Сетка и отступы */
+  --gutter: clamp(1.25rem, 2.5vw, 3rem);
+  --col-gap: clamp(0.75rem, 1.4vw, 1.5rem);
+  --section-pad: clamp(4rem, 10vh, 9rem);
+  --max-w: 1680px;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+
+  /* Радиусы: минимальные */
+  --radius: 2px;
+  --radius-pill: 999px;
+
+  /* Моушн */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);      /* expo.out */
+  --ease-in-out: cubic-bezier(0.83, 0, 0.17, 1);   /* power3.inOut */
+  --dur-fast: 220ms;
+  --dur: 480ms;
+  --dur-slow: 900ms;
+
+  --header-h: 72px;
+  --rail-w: 56px;
+}
+
+/* Темы экранов. JS главной интерполирует те же переменные по скроллу. */
+[data-theme='black'] {
+  --bg: var(--black);
+  --fg: var(--white);
+  --fg-2: var(--steel-300);
+  --fg-3: var(--steel-500);
+  --hair: rgba(244, 246, 250, 0.14);
+  --hair-strong: rgba(244, 246, 250, 0.32);
+  --accent: var(--blue-glow);
+  --btn-fill: var(--white);
+  --btn-fill-fg: var(--black);
+}
+[data-theme='graphite'] {
+  --bg: var(--graphite);
+  --fg: var(--white);
+  --fg-2: var(--steel-300);
+  --fg-3: var(--steel-500);
+  --hair: rgba(244, 246, 250, 0.14);
+  --hair-strong: rgba(244, 246, 250, 0.32);
+  --accent: var(--blue-glow);
+  --btn-fill: var(--white);
+  --btn-fill-fg: var(--black);
+}
+[data-theme='steel'] {
+  --bg: #cfd3d9;
+  --fg: var(--graphite);
+  --fg-2: var(--steel-700);
+  --fg-3: #4f5560;
+  --hair: rgba(5, 5, 5, 0.16);
+  --hair-strong: rgba(5, 5, 5, 0.36);
+  --accent: var(--blue);
+  --btn-fill: var(--graphite);
+  --btn-fill-fg: var(--white);
+}
+[data-theme='blue'] {
+  --bg: var(--blue);
+  --fg: var(--white);
+  --fg-2: var(--blue-ice);
+  --fg-3: rgba(191, 212, 255, 0.82);
+  --hair: rgba(244, 246, 250, 0.22);
+  --hair-strong: rgba(244, 246, 250, 0.45);
+  --accent: var(--white);
+  --btn-fill: var(--white);
+  --btn-fill-fg: var(--blue);
+}
+[data-theme='silver'] {
+  --bg: #d9dce1;
+  --fg: var(--steel-900);
+  --fg-2: var(--steel-700);
+  --fg-3: #525863;
+  --hair: rgba(5, 5, 5, 0.14);
+  --hair-strong: rgba(5, 5, 5, 0.34);
+  --accent: var(--blue);
+  --btn-fill: var(--blue);
+  --btn-fill-fg: var(--white);
+}

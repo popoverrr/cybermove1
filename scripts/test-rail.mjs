@@ -1,0 +1,33 @@
+// Rail: клик по засечке и клавиатура (стрелки) должны скроллить к экрану (Playwright, реальный rAF)
+import { chromium } from 'playwright';
+const base = process.argv[2] || 'http://127.0.0.1:4330';
+const browser = await chromium.launch({ headless: true, args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--enable-webgl'] });
+const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+await page.goto(`${base}/?tier=low`, { waitUntil: 'networkidle', timeout: 120000 });
+await page.waitForTimeout(3500);
+const state = async () => page.evaluate(() => ({ y: Math.round(scrollY), screen: window.__cm.screen, current: document.querySelector('[data-rail] [aria-current="step"]')?.dataset.railGo, focused: document.activeElement?.dataset?.railGo ?? document.activeElement?.tagName }));
+console.log('start', await state());
+await page.locator('[data-rail-go="3"]').click();
+await page.waitForTimeout(3000);
+console.log('click tick 3 →', await state());
+await page.locator('[data-rail-go="3"]').focus();
+await page.keyboard.press('ArrowDown');
+await page.waitForTimeout(3000);
+console.log('ArrowDown →', await state());
+await page.keyboard.press('Home');
+await page.waitForTimeout(3000);
+console.log('Home →', await state());
+await page.keyboard.press('End');
+await page.waitForTimeout(2500);
+console.log('End →', await state());
+// Tab-навигация: с шапки до rail и строк услуг
+await page.locator('[data-rail-go="1"]').click();
+await page.waitForTimeout(2000);
+await page.locator('[data-service="business-audit"]').focus();
+await page.keyboard.press('Enter');
+await page.waitForTimeout(900);
+console.log('Enter на строке →', await page.evaluate(() => ({ drawerOpen: document.body.classList.contains('drawer-open'), hover: window.__cm.hover, focus: document.activeElement?.className })));
+await page.keyboard.press('Escape');
+await page.waitForTimeout(800);
+console.log('Escape →', await page.evaluate(() => ({ drawerOpen: document.body.classList.contains('drawer-open'), focus: document.activeElement?.dataset?.service })));
+await browser.close();

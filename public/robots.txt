@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /dev/
+
+Sitemap: https://cybermove.example/sitemap-index.xml

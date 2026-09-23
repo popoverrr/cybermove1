@@ -1,0 +1,483 @@
+{
+  "index": {
+    "title": "Services",
+    "h1": "Five areas. One system.",
+    "lead": "We start with an audit, define the core of the business, build the system, package the brand, bring in clients and support deals. Each area works on its own; together they work as one team."
+  },
+  "directions": [
+    {
+      "id": "audit",
+      "slug": "audit",
+      "index": "01",
+      "stage": "CORE",
+      "screenLabel": "01 · CORE",
+      "theme": "graphite",
+      "name": "Audit",
+      "nameFull": "Audit & finance",
+      "orbitLabel": "Audit",
+      "h2": "Diagnosis first. Budget second.",
+      "h2Accent": "Diagnosis",
+      "phrase": "Every engagement starts with an audit: we find where the business loses money and clients, and what will drive growth fastest.",
+      "result": "Map of problems and opportunities · priorities · roadmap · budget",
+      "note": "“Financial audit” here means management-level financial diagnostics of a business, not a statutory audit of financial statements. “Investment” means investing in your own business, not securities advice.",
+      "micro": ["CAC", "LTV", "ROMI", "CASH FLOW", "MARGIN", "CR"],
+      "services": [
+        {
+          "id": "business-audit",
+          "name": "Business & marketing audit",
+          "line": "Product, positioning, funnel, customer journey and the sales team.",
+          "includes": [
+            "product and offer analysis",
+            "positioning and competitors",
+            "channels and funnel",
+            "customer journey from lead to payment",
+            "how the sales team works",
+            "analytics and data"
+          ],
+          "result": "A structured diagnosis and a map of problems and opportunities.",
+          "format": "[PLACEHOLDER: format and timeline]",
+          "metric": "",
+          "kind": "",
+          "cases": ["usyk", "brsm-nafta", "tpk", "gaia"]
+        },
+        {
+          "id": "financial-audit",
+          "name": "Financial audit",
+          "line": "Unit economics, P&L, cash flow, profitability of channels and business lines.",
+          "includes": [
+            "unit economics",
+            "management P&L",
+            "cash flow and cash gaps",
+            "profitability of products and channels",
+            "cost structure"
+          ],
+          "result": "A clear picture of where the business earns and where it loses.",
+          "format": "[PLACEHOLDER: format and timeline]",
+          "metric": "",
+          "kind": "",
+          "cases": ["barbershops-kyiv", "toscana-wine", "sii-concept"]
+        },
+        {
+          "id": "investment",
+          "name": "Investment & spending recommendations",
+          "line": "Where to invest, what to cut, and what budget growth requires.",
+          "includes": [
+            "investment priorities within the business",
+            "marketing and sales budget",
+            "cost optimisation",
+            "growth scenarios with payback calculations"
+          ],
+          "result": "A financial plan for change, with numbers.",
+          "format": "[PLACEHOLDER: format and timeline]",
+          "metric": "",
+          "kind": "",
+          "cases": ["apicapsules", "maharadj", "furniture-factory"]
+        },
+        {
+          "id": "strategy",
+          "name": "Strategy & roadmap",
+          "line": "Priorities, a 3–12 month plan and KPIs.",
+          "includes": [
+            "growth strategy",
+            "initiative prioritisation",
+            "quarter-by-quarter roadmap",
+            "KPIs and checkpoints",
+            "building sales processes"
+          ],
+          "result": "A plan you can execute with us or on your own.",
+          "format": "[PLACEHOLDER: format and timeline]",
+          "metric": "",
+          "kind": "",
+          "cases": ["hydrosta-kazakhstan", "hsta-group", "cybermove-games"]
+        }
+      ],
+      "dataPoints": ["CAC", "LTV", "ROMI", "Cash flow", "Margin", "Conversion"]
+    },
+    {
+      "id": "systems",
+      "slug": "systems",
+      "index": "02",
+      "stage": "SYSTEM",
+      "screenLabel": "02 · SYSTEM",
+      "theme": "steel",
+      "name": "Systems",
+      "nameFull": "Websites, CRM, telephony & AI",
+      "orbitLabel": "Systems",
+      "h2": "A foundation where no lead gets lost.",
+      "h2Accent": "foundation",
+      "phrase": "We connect the website, CRM, telephony and AI into one linked system: every lead is visible, counted and taken through to the sale.",
+      "result": "Website · CRM · telephony · AI · automation — in one system",
+      "note": "",
+      "micro": ["SITE", "CRM", "VOIP", "AI", "AUTO"],
+      "services": [
+        {
+          "id": "websites",
+          "name": "Turnkey websites",
+          "line": "From prototype and copy to launch, analytics and support.",
+          "includes": [
+            "landing pages, corporate websites, online stores",
+            "structure and copy",
+            "design",
+            "development",
+            "analytics and goals",
+            "CRM integration",
+            "support"
+          ],
+          "result": "A website that brings in leads and is connected to sales.",
+          "format": "[PLACEHOLDER: format and timeline]",
+          "metric": "",
+          "kind": "",
+          "cases": ["hydrosta-kazakhstan", "hsta-group", "building-time", "tpk"]
+        },
+        {
+          "id": "crm",
+          "name": "CRM: implementation & setup",
+          "line": "Pipelines, automated tasks, integrations with the website, ads and messengers.",
+          "includes": [
+            "platform selection [PLACEHOLDER: which CRMs we work with]",
+            "pipelines and deal cards",
+            "automated tasks and scenarios",
+            "integrations",
+            "team training",
+            "management reports"
+          ],
+          "result": "No lead gets lost; sales become transparent.",
+          "format": "[PLACEHOLDER: format and timeline]",
+          "metric": "",
+          "kind": "",
+          "cases": ["hydrosta-service", "building-time", "fitness-room-menden"]
+        },
+        {
+          "id": "telephony",
+          "name": "Telephony",
+          "line": "IP telephony, call recording and analytics, call tracking, CRM link-up.",
+          "includes": [
+            "connection and setup",
+            "call routing scenarios",
+            "recording and quality control",
+            "call tracking by advertising channel",
+            "CRM integration"
+          ],
+          "result": "Every call is recorded and tied to a deal and a source.",
+          "format": "[PLACEHOLDER: format and timeline]",
+          "metric": "",
+          "kind": "",
+          "cases": ["hydrosta-service", "hsta-group"]
+        },
+        {
+          "id": "ai",
+          "name": "AI tools & agents",
+          "line": "Lead qualification, AI analysis of calls and chats, assistants, automated reports.",
+          "includes": [
+            "AI lead qualification",
+            "analysis of calls and WhatsApp conversations",
+            "AI agents and assistants",
+            "automated management reports",
+            "content systems, AI avatars and video generation"
+          ],
+          "result": "AI that works inside the process rather than impressing in a pitch.",
+          "format": "[PLACEHOLDER: format and timeline]",
+          "metric": "",
+          "kind": "",
+          "cases": ["oleg-baryshevsky", "tsepukh", "cybermove-games"]
+        },
+        {
+          "id": "automation",
+          "name": "Digitalisation & automation",
+          "line": "End-to-end analytics, Make / n8n / API integrations, automation of internal processes.",
+          "includes": [
+            "process map",
+            "end-to-end analytics",
+            "service integrations",
+            "automating routine work",
+            "dashboards"
+          ],
+          "result": "Processes that don't depend on manual work or anyone's memory.",
+          "format": "[PLACEHOLDER: format and timeline]",
+          "metric": "",
+          "kind": "",
+          "cases": ["barbershops-kyiv", "maharadj", "ecommerce"]
+        }
+      ],
+      "dataPoints": []
+    },
+    {
+      "id": "brand-content",
+      "slug": "brand-content",
+      "index": "03",
+      "stage": "SYSTEM",
+      "screenLabel": "03 · SYSTEM",
+      "theme": "black",
+      "name": "Brand & content",
+      "nameFull": "Brand, content, PR",
+      "orbitLabel": "Brand & content",
+      "h2": "Packaging people trust.",
+      "h2Accent": "trust",
+      "phrase": "We define the brand core and turn it into content that sells, not content that merely goes out on schedule.",
+      "result": "Brand core · production · SMM · PR · personal brand",
+      "note": "",
+      "micro": ["CORE", "LENS", "9:16", "WAVE", "BEAM"],
+      "services": [
+        {
+          "id": "brand-core",
+          "name": "Positioning & brand core",
+          "line": "Product, audience, value, difference, offer, message.",
+          "includes": [
+            "the 8 elements of the Core: product, audience, positioning, value, difference, offer, message, brand DNA",
+            "brand strategy and architecture",
+            "naming",
+            "tone of voice"
+          ],
+          "result": "A brand core that the website, content and advertising all build on.",
+          "format": "[PLACEHOLDER: format and timeline]",
+          "metric": "",
+          "kind": "",
+          "cases": ["gaia", "sii-concept", "furniture-factory", "cybermove-games"]
+        },
+        {
+          "id": "production",
+          "name": "Production",
+          "line": "Photo, video, reels and ad creatives.",
+          "includes": [
+            "idea and script",
+            "shooting",
+            "editing and motion graphics",
+            "creatives for advertising formats",
+            "AI video and avatars"
+          ],
+          "result": "Content ready to publish and to run in ads.",
+          "format": "[PLACEHOLDER: format and timeline]",
+          "metric": "",
+          "kind": "",
+          "cases": ["van-dog-agency", "intertop", "ukrainian-fashion-week", "kehhsha"]
+        },
+        {
+          "id": "smm",
+          "name": "SMM",
+          "line": "Strategy, content plan, account management, community and reporting.",
+          "includes": [
+            "presence strategy",
+            "content pillars and content plan",
+            "account management",
+            "audience engagement",
+            "metric reports"
+          ],
+          "result": "Social media that works for trust and sales.",
+          "format": "[PLACEHOLDER: format and timeline]",
+          "metric": "",
+          "kind": "",
+          "cases": ["fitness-room-menden", "spa-maharadj", "gaia", "good-market"]
+        },
+        {
+          "id": "pr",
+          "name": "PR",
+          "line": "Media, newsworthy stories, reputation and events.",
+          "includes": [
+            "PR strategy",
+            "media relations",
+            "news hooks and publications",
+            "reputation",
+            "organising and running events"
+          ],
+          "result": "A brand present where people already trust.",
+          "format": "[PLACEHOLDER: format and timeline]",
+          "metric": "",
+          "kind": "",
+          "cases": ["udar", "morris-group", "art-mango-production", "ukrainian-fashion-week"]
+        },
+        {
+          "id": "personal-brand",
+          "name": "Personal brand",
+          "line": "Expert positioning, a content system, product and course launches.",
+          "includes": [
+            "positioning",
+            "content system",
+            "producing courses and launches",
+            "chatbots and the technical side",
+            "personal PR"
+          ],
+          "result": "A name that sells. Experience: six years with Oleksandr Usyk's personal brand.",
+          "format": "[PLACEHOLDER: format and timeline]",
+          "metric": "",
+          "kind": "",
+          "cases": ["usyk", "ukrainian-radio", "oleg-baryshevsky", "miss-sverona"]
+        }
+      ],
+      "dataPoints": []
+    },
+    {
+      "id": "traffic",
+      "slug": "traffic",
+      "index": "04",
+      "stage": "SYSTEM",
+      "screenLabel": "04 · SYSTEM",
+      "theme": "blue",
+      "name": "Traffic",
+      "nameFull": "Advertising & SEO",
+      "orbitLabel": "Traffic",
+      "h2": "Clients from every channel. With clear economics.",
+      "h2Accent": "economics",
+      "phrase": "We launch and run advertising wherever your audience is. We count CPL, CAC and ROMI, not clicks.",
+      "result": "CPL · CAC · ROMI — for every channel",
+      "note": "",
+      "micro": ["CPL", "CAC", "ROMI", "CTR"],
+      "services": [
+        {
+          "id": "targeting",
+          "name": "Paid social",
+          "line": "Instagram, Facebook and other social networks: audiences, creatives, tests, scaling.",
+          "includes": [
+            "campaign strategy and structure",
+            "audiences",
+            "creatives and tests",
+            "optimisation",
+            "CPL and CAC reports"
+          ],
+          "result": "A steady flow of leads at a controlled cost.",
+          "format": "[PLACEHOLDER: format and timeline]",
+          "metric": "CPL",
+          "kind": "",
+          "cases": ["brsm-nafta", "good-market", "intertop", "ecommerce"]
+        },
+        {
+          "id": "google-ads",
+          "name": "Google Ads",
+          "line": "Search, Display, Performance Max, YouTube and remarketing.",
+          "includes": [
+            "keywords and account structure",
+            "ads and extensions",
+            "conversion setup",
+            "remarketing",
+            "bid and budget optimisation"
+          ],
+          "result": "Hot demand from search with clear payback.",
+          "format": "[PLACEHOLDER: format and timeline]",
+          "metric": "CAC",
+          "kind": "",
+          "cases": ["hydrosta-kazakhstan", "building-time", "tpk", "toscana-wine"]
+        },
+        {
+          "id": "tiktok-ads",
+          "name": "TikTok Ads",
+          "line": "Native-format creatives, Spark Ads and lead generation.",
+          "includes": [
+            "creative strategy",
+            "video production",
+            "traffic and lead campaigns",
+            "working with creators",
+            "analytics"
+          ],
+          "result": "A new client channel with a low cost per contact.",
+          "format": "[PLACEHOLDER: format and timeline]",
+          "metric": "CPL",
+          "kind": "",
+          "cases": ["ecommerce", "education", "meshtiish"]
+        },
+        {
+          "id": "seo",
+          "name": "SEO",
+          "line": "Technical audit, keyword research, content, links and local SEO.",
+          "includes": [
+            "technical site audit",
+            "keyword research",
+            "on-page optimisation",
+            "content plan",
+            "link strategy",
+            "local search"
+          ],
+          "result": "Organic traffic that grows without paying per click.",
+          "format": "[PLACEHOLDER: format and timeline]",
+          "metric": "ROMI",
+          "kind": "",
+          "cases": ["hydrosta-kazakhstan", "hsta-group", "hydrosta-service", "tpk"]
+        }
+      ],
+      "dataPoints": []
+    },
+    {
+      "id": "tenders-legal",
+      "slug": "tenders-legal",
+      "index": "05",
+      "stage": "SYSTEM",
+      "screenLabel": "05 · SYSTEM",
+      "theme": "silver",
+      "name": "Tenders & legal",
+      "nameFull": "Tenders & legal",
+      "orbitLabel": "Tenders & legal",
+      "h2": "Large contracts and protected deals.",
+      "h2Accent": "protected",
+      "phrase": "We find tenders, prepare bids and manage the deal legally: from documentation to a signed contract.",
+      "result": "Tenders · bids · contracts · corporate support",
+      "note": "",
+      "micro": ["TENDER", "BID", "CONTRACT", "CORP"],
+      "services": [
+        {
+          "id": "tender-monitoring",
+          "name": "Tender monitoring & analysis",
+          "line": "We find suitable procurements and assess the odds before bidding.",
+          "includes": [
+            "monitoring setup across procurement platforms",
+            "shortlisting procurements",
+            "analysis of requirements and competitors",
+            "assessing whether participation pays off"
+          ],
+          "result": "A list of tenders worth bidding for.",
+          "format": "[PLACEHOLDER: format and timeline]",
+          "metric": "",
+          "kind": "tender",
+          "cases": ["medical-protective-equipment", "hsta-group", "building-time"]
+        },
+        {
+          "id": "tender-application",
+          "name": "Bid preparation & documentation",
+          "line": "We prepare the documents, submit the bid and support it through to the contract.",
+          "includes": [
+            "document package",
+            "bid preparation and submission",
+            "support during the bidding process",
+            "handling queries and protocols",
+            "contract signing"
+          ],
+          "result": "A correct bid, submitted on time.",
+          "format": "[PLACEHOLDER: format and timeline]",
+          "metric": "",
+          "kind": "tender",
+          "cases": ["medical-protective-equipment", "hydrosta-kazakhstan"]
+        },
+        {
+          "id": "contracts",
+          "name": "Contract work",
+          "line": "Drafting, reviewing and supporting contracts.",
+          "includes": [
+            "drafting and reviewing contracts",
+            "negotiating terms",
+            "deal support",
+            "pre-litigation claims"
+          ],
+          "result": "Deals where the risks were handled in advance.",
+          "format": "[PLACEHOLDER: format and timeline]",
+          "metric": "",
+          "kind": "legal",
+          "cases": ["morris-group", "sii-concept", "hsta-group"]
+        },
+        {
+          "id": "corporate",
+          "name": "Corporate support",
+          "line": "Corporate documentation and legal coordination of the business.",
+          "includes": [
+            "corporate documents",
+            "legal coordination of projects",
+            "tender legal documentation",
+            "working with external lawyers"
+          ],
+          "result": "Order in the paperwork and predictability in disputes.",
+          "format": "[PLACEHOLDER: format and timeline]",
+          "metric": "",
+          "kind": "legal",
+          "cases": ["morris-group", "barbershops-kyiv", "maharadj"]
+        }
+      ],
+      "dataPoints": []
+    }
+  ]
+}

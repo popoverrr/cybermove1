@@ -1,0 +1,82 @@
+---
+/** S8 · КОНТАКТ. Слева форма, справа спокойный атом. WhatsApp, география одной строкой, футер. */
+import LeadForm from '../LeadForm.astro';
+import Footer from '../Footer.astro';
+import { getContent, type LangCode } from '../../lib/i18n';
+import { GEOGRAPHY } from '../../../site.config';
+
+export interface Props {
+  lang: LangCode;
+}
+const { lang } = Astro.props;
+const c = getContent(lang);
+const s8 = c.home.s8;
+---
+
+<section class="screen screen--s8" data-screen="contact" data-dur="100" id="contact" data-theme="black" aria-labelledby="h-contact">
+  <div class="screen__pin">
+    <div class="ct container">
+      <div class="ct__text">
+        <p class="t-micro ct__label">{s8.label}</p>
+        <h2 class="t-h2 ct__h2" id="h-contact">{s8.h2}</h2>
+        <p class="t-lead ct__lead">{s8.lead}</p>
+      </div>
+      <div class="ct__form">
+        <LeadForm lang={lang} id="lead-home" compact />
+      </div>
+      <p class="ct__geo t-micro">
+        <span class="t-micro">{c.contact.geoTitle}:</span> <span class="t-micro--fg">{GEOGRAPHY.join(' · ')}</span>
+      </p>
+    </div>
+    <Footer lang={lang} compact />
+  </div>
+</section>
+
+<style>
+  .ct {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    grid-template-areas:
+      'text scene'
+      'form scene'
+      'geo geo';
+    column-gap: var(--space-8);
+    row-gap: var(--space-8);
+    padding-top: calc(var(--header-h) + var(--space-12));
+    padding-bottom: var(--space-12);
+    min-height: 100vh;
+    align-content: start;
+  }
+  .ct__text {
+    grid-area: text;
+    display: grid;
+    gap: var(--space-3);
+    max-width: 640px;
+  }
+  .ct__label {
+    color: var(--accent);
+  }
+  .ct__lead {
+    max-width: 46ch;
+  }
+  .ct__form {
+    grid-area: form;
+  }
+  .ct__geo {
+    grid-area: geo;
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--hair);
+    max-width: 100%;
+  }
+  @media (max-width: 899px) {
+    .ct {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        'text'
+        'form'
+        'geo';
+      padding-top: calc(var(--header-h) + 30vh);
+      row-gap: var(--space-6);
+    }
+  }
+</style>

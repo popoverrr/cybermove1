@@ -1,0 +1,49 @@
+---
+/** /privacy/ — политика конфиденциальности [PLACEHOLDER]. */
+import Base from '../../../layouts/Base.astro';
+import PageHero from '../../../components/PageHero.astro';
+import { getContent, langStaticPaths } from '../../../lib/i18n';
+import { breadcrumbLd } from '../../../lib/seo';
+
+export function getStaticPaths() {
+  return langStaticPaths();
+}
+const { lang } = Astro.props;
+const c = getContent(lang);
+const p = c.ui.privacy;
+const jsonLd = [breadcrumbLd(lang, [{ name: c.ui.brand, path: '/' }, { name: p.title, path: '/privacy/' }])];
+---
+
+<Base lang={lang} path="/privacy/" title={c.ui.meta.privacy.title} description={c.ui.meta.privacy.description} theme="black" jsonLd={jsonLd} noindex>
+  <PageHero theme="graphite" label={c.ui.legalName} title={p.title} lead={p.lead} size="md" />
+  <section class="privacy">
+    <div class="container privacy__inner">
+      {p.sections.map((s) => (
+        <div class="privacy__block">
+          <h2 class="t-h4">{s.h}</h2>
+          <p class="t-body">{s.p}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .privacy__inner {
+    padding-top: var(--section-pad);
+    padding-bottom: var(--section-pad);
+    display: grid;
+    gap: var(--space-8);
+    max-width: 760px;
+    margin-inline: 0;
+  }
+  .privacy__block {
+    display: grid;
+    gap: var(--space-3);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--hair);
+  }
+  .privacy__block p {
+    color: var(--fg-2);
+  }
+</style>

@@ -1,0 +1,50 @@
+{
+  "title": "Контакты",
+  "h1": "Начнём с первичного разбора.",
+  "lead": "Расскажите о задаче. Вернёмся с первыми выводами и предложим формат работы.",
+  "form": {
+    "name": "Имя",
+    "contact": "Телефон, WhatsApp или Telegram",
+    "company": "Компания или сайт",
+    "format": "Формат",
+    "formatOptions": [
+      {
+        "value": "audit",
+        "label": "Аудит и roadmap"
+      },
+      {
+        "value": "launch",
+        "label": "Запуск проекта"
+      },
+      {
+        "value": "growth",
+        "label": "Партнёрство по росту"
+      },
+      {
+        "value": "other",
+        "label": "Другое"
+      }
+    ],
+    "message": "Сообщение",
+    "submit": "Отправить",
+    "sending": "Отправляем…",
+    "whatsapp": "Написать в WhatsApp",
+    "success": "Заявка у нас. Ответим в течение рабочего дня.",
+    "error": "Не получилось отправить. Напишите нам в WhatsApp.",
+    "consent": "Отправляя форму, вы соглашаетесь с политикой конфиденциальности.",
+    "required": "Обязательное поле",
+    "invalidContact": "Укажите телефон, WhatsApp или Telegram",
+    "tooFast": "Похоже, форма заполнена слишком быстро. Проверьте поля и отправьте ещё раз.",
+    "consentPrefix": "Отправляя форму, вы соглашаетесь с",
+    "consentLink": "политикой конфиденциальности"
+  },
+  "channelsTitle": "Каналы",
+  "whatsappLabel": "WhatsApp",
+  "emailLabel": "E-mail",
+  "telegramLabel": "Telegram",
+  "addressLabel": "Адрес",
+  "email": "[PLACEHOLDER: e-mail]",
+  "telegram": "[PLACEHOLDER: Telegram]",
+  "address": "[PLACEHOLDER: адрес]",
+  "geoTitle": "География"
+}

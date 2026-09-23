@@ -1,0 +1,247 @@
+---
+/** S7 · РОСТ — GROWTH. Счётчики, горизонтальная лента избранных кейсов внутри pin, кнопка «Все кейсы», тикер. */
+import Button from '../Button.astro';
+import { getContent, localePath, findCase, type LangCode } from '../../lib/i18n';
+import { TICKER } from '../../../site.config';
+
+export interface Props {
+  lang: LangCode;
+}
+const { lang } = Astro.props;
+const c = getContent(lang);
+const s7 = c.home.s7;
+const h2 = s7.h2.replace('движение', '<span class="chrome-text">движение</span>').replace('motion', '<span class="chrome-text">motion</span>');
+const featured = s7.featured.map((id) => findCase(c, id)).filter(Boolean) as NonNullable<ReturnType<typeof findCase>>[];
+const tickerItems = [...TICKER, ...TICKER];
+---
+
+<section class="screen screen--s7" data-screen="growth" data-dur="170" data-dur-mobile="130" data-exit="0.88" id="growth" data-theme="black" aria-labelledby="h-growth">
+  <div class="screen__pin">
+    <div class="g container">
+      <p class="g__corner g__corner--tr t-micro">GROWTH · RINGS · {c.home.s7.counters[0].value}+</p>
+      <div class="g__head">
+        <p class="t-micro g__label">{s7.label}</p>
+        <h2 class="t-h1 g__h2" id="h-growth" set:html={h2} />
+      </div>
+
+      <ul class="counters" data-counters>
+        {s7.counters.map((k) => (
+          <li class="counter">
+            <p class="counter__value t-counter"><span data-count={k.value}>0</span>{k.suffix}</p>
+            <p class="counter__label t-micro">{k.label}</p>
+          </li>
+        ))}
+      </ul>
+
+      <div class="ribbon-wrap">
+        <div class="ribbon" data-ribbon>
+          {featured.map((k, i) => (
+            <a class="card" href={`${localePath(lang, '/cases/')}#${k.id}`}>
+              <span class="card__idx t-micro">0{i + 1} / 0{featured.length}</span>
+              <span class="card__name t-h4">{k.name}</span>
+              <span class="card__sum t-small">{k.summary}</span>
+              <span class="card__tags t-micro">{k.tags.join(' · ')}</span>
+              <span class="card__result t-micro">{s7.resultsPlaceholder}</span>
+            </a>
+          ))}
+          <a class="card card--more" href={localePath(lang, '/cases/')}>
+            <span class="card__name t-h4">{s7.cta} →</span>
+            <span class="card__sum t-small">{c.cases.h1}</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="g__foot">
+        <Button href={localePath(lang, '/cases/')} variant="ghost" arrow>{s7.cta}</Button>
+      </div>
+    </div>
+
+    <div class="g__ticker" aria-hidden="true">
+      <div class="ticker">
+        <div class="ticker__track ticker__track--rev">
+          {tickerItems.map((t) => <span class="ticker__item t-micro">{t}</span>)}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .g {
+    position: relative;
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+    align-content: start;
+    padding-top: calc(var(--header-h) + var(--space-6));
+    padding-bottom: calc(var(--space-6) + 48px);
+    max-width: none;
+    row-gap: var(--space-4);
+  }
+  .g__corner {
+    position: absolute;
+    top: calc(var(--header-h) + var(--space-6));
+    right: var(--gutter);
+    margin: 0;
+  }
+  .g__head {
+    display: grid;
+    gap: var(--space-3);
+    max-width: 56%;
+  }
+  .g__label {
+    color: var(--accent);
+  }
+  .g__h2 {
+    font-size: min(var(--fs-h1), 7.5vh);
+  }
+  .counters {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-6);
+    max-width: 64%;
+    border-top: 1px solid var(--hair);
+    padding-top: var(--space-4);
+  }
+  .counter {
+    display: grid;
+    gap: var(--space-2);
+  }
+  .counter__value {
+    font-size: min(var(--fs-counter), 9vh);
+    color: var(--fg);
+  }
+  .counter__label {
+    color: var(--fg-2);
+  }
+  .ribbon-wrap {
+    align-self: end;
+    overflow: hidden;
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+    mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
+  }
+  .ribbon {
+    display: flex;
+    gap: var(--space-4);
+    width: max-content;
+    will-change: transform;
+  }
+  .card {
+    display: grid;
+    align-content: start;
+    gap: var(--space-3);
+    width: clamp(240px, 22vw, 320px);
+    min-height: 200px;
+    padding: var(--space-4);
+    border: 1px solid var(--hair);
+    background: rgba(5, 5, 5, 0.35);
+    backdrop-filter: blur(4px);
+    transition: border-color var(--dur-fast), transform var(--dur) var(--ease-out);
+  }
+  .card:hover {
+    border-color: var(--hair-strong);
+    transform: translateY(-4px);
+  }
+  .card__idx {
+    color: var(--fg-3);
+  }
+  .card__sum {
+    color: var(--fg-2);
+  }
+  .card__tags {
+    color: var(--fg-3);
+    margin-top: auto;
+  }
+  .card__result {
+    color: var(--fg-3);
+  }
+  .card--more {
+    justify-content: center;
+    align-content: center;
+    border-color: var(--hair-strong);
+  }
+  .g__foot {
+    display: flex;
+    justify-content: flex-start;
+  }
+  .g__ticker {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 48px;
+    border-top: 1px solid var(--hair);
+    padding-inline: var(--gutter);
+    padding-left: calc(var(--gutter) + var(--rail-offset, 0px));
+    display: flex;
+    align-items: center;
+  }
+  .ticker {
+    overflow: hidden;
+    width: 100%;
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+  .ticker__track {
+    display: flex;
+    gap: var(--space-12);
+    width: max-content;
+    animation: ticker-rev 56s linear infinite;
+  }
+  .ticker__item {
+    white-space: nowrap;
+    color: var(--fg-2);
+  }
+  @keyframes ticker-rev {
+    from {
+      transform: translateX(-50%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ticker__track {
+      animation: none;
+    }
+  }
+  @media (max-width: 899px) {
+    .g {
+      padding-top: calc(var(--header-h) + 26vh);
+      row-gap: var(--space-3);
+      padding-bottom: calc(var(--space-4) + 40px);
+      overflow: hidden;
+    }
+    .g__corner {
+      display: none;
+    }
+    .g__head {
+      max-width: 100%;
+    }
+    .g__h2 {
+      font-size: clamp(1.6rem, 6.6vw, 2.2rem);
+    }
+    .counters {
+      max-width: 100%;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-3);
+      padding-top: var(--space-3);
+    }
+    .counter__value {
+      font-size: clamp(2rem, 9vw, 2.8rem);
+    }
+    .card {
+      width: 72vw;
+      min-height: 150px;
+      padding: var(--space-3);
+    }
+    .g__foot {
+      display: none;
+    }
+    .g__ticker {
+      height: 40px;
+    }
+  }
+</style>

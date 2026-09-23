@@ -1,0 +1,88 @@
+# CYBERMOVE — Apache (Plesk shared hosting)
+# Сжатие, кеш, безопасность, https + единый www, страница 404. Nginx-эквивалент — в docs/DEPLOY.md.
+
+Options -Indexes
+AddDefaultCharset UTF-8
+
+# ---------- MIME-типы
+<IfModule mod_mime.c>
+    AddType font/woff2 .woff2
+    AddType image/avif .avif
+    AddType image/webp .webp
+    AddType application/manifest+json .webmanifest
+    AddType application/javascript .mjs
+</IfModule>
+
+# ---------- https и единый вариант домена (без www)
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # https
+    RewriteCond %{HTTPS} !=on
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+    # www → без www (чтобы наоборот, поменяйте условие и цель)
+    RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+    RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
+    # /page → /page/ (Astro собирает папки с index.html)
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteCond %{REQUEST_URI} !/$
+    RewriteRule ^(.*)$ /$1/ [R=301,L]
+</IfModule>
+
+ErrorDocument 404 /404.html
+
+# ---------- сжатие
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml application/xml application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/javascript application/x-javascript text/javascript application/json
+    AddOutputFilterByType DEFLATE image/svg+xml application/manifest+json font/ttf font/otf
+    # woff2, avif, webp, jpg уже сжаты
+</IfModule>
+<IfModule mod_brotli.c>
+    AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/css text/xml application/xml
+    AddOutputFilterByType BROTLI_COMPRESS application/javascript text/javascript application/json image/svg+xml
+</IfModule>
+
+# ---------- кеш: хешированные ассеты — год, HTML — коротко
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/html "access plus 10 minutes"
+    ExpiresByType application/xml "access plus 1 hour"
+    ExpiresByType text/xml "access plus 1 hour"
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType image/avif "access plus 1 month"
+    ExpiresByType image/webp "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/svg+xml "access plus 1 month"
+    ExpiresByType image/x-icon "access plus 1 month"
+</IfModule>
+<IfModule mod_headers.c>
+    # /_astro/ — имена с хешем, можно кешировать навсегда
+    <FilesMatch "\.(js|css|woff2)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+    <FilesMatch "\.(html)$">
+        Header set Cache-Control "public, max-age=600, must-revalidate"
+    </FilesMatch>
+    <FilesMatch "\.(avif|webp|jpg|jpeg|png|svg|ico)$">
+        Header set Cache-Control "public, max-age=2592000"
+    </FilesMatch>
+
+    # ---------- безопасность
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+    # CSP: свои скрипты (+ хеш единственного инлайн-скрипта no-js из Base.astro) и стили, аналитика — по списку
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'sha256-tuKyZn/3ycw/MNMDii/kvSPrelo6SCsJSecqb1n2neg=' https://www.googletagmanager.com https://connect.facebook.net https://analytics.tiktok.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.google-analytics.com https://www.facebook.com https://analytics.tiktok.com; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com https://analytics.tiktok.com; worker-src 'self' blob:; media-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self' https://wa.me"
+    Header unset X-Powered-By
+</IfModule>
+
+# ---------- служебные файлы закрыты
+<FilesMatch "^(\.htaccess|\.gitignore|package\.json|README\.md)$">
+    Require all denied
+</FilesMatch>

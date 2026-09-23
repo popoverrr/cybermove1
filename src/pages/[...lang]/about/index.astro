@@ -1,0 +1,219 @@
+---
+/** /about/ — подход CHAOS → CORE → SYSTEM → GROWTH, почему, что измеряем, форматы, команда [PLACEHOLDER], география. */
+import Base from '../../../layouts/Base.astro';
+import PageHero from '../../../components/PageHero.astro';
+import CtaBlock from '../../../components/CtaBlock.astro';
+import { getContent, langStaticPaths } from '../../../lib/i18n';
+import { breadcrumbLd } from '../../../lib/seo';
+import { GEOGRAPHY } from '../../../../site.config';
+
+export function getStaticPaths() {
+  return langStaticPaths();
+}
+const { lang } = Astro.props;
+const c = getContent(lang);
+const a = c.about;
+const jsonLd = [breadcrumbLd(lang, [{ name: c.ui.brand, path: '/' }, { name: a.title, path: '/about/' }])];
+---
+
+<Base lang={lang} path="/about/" title={c.ui.meta.about.title} description={c.ui.meta.about.description} theme="black" jsonLd={jsonLd} ogImage="/posters/og-about.jpg">
+  <PageHero theme="graphite" label={a.title} title={a.h1} lead={a.lead} micro={c.ui.formula} render="/posters/dir-core.webp" />
+
+  <section class="approach">
+    <div class="container approach__inner">
+      <p class="t-micro approach__label">{a.approachTitle}</p>
+      <ol class="steps">
+        {a.approach.map((st) => (
+          <li class="step">
+            <p class="t-micro step__code"><span class="t-micro--accent">{st.step}</span> · {st.code}</p>
+            <h2 class="t-h3 step__name">{st.name}</h2>
+            <p class="t-body step__text">{st.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="why">
+    <div class="container why__inner">
+      <div class="why__col">
+        <p class="t-micro">{a.whyTitle}</p>
+        <ul class="why__list">
+          {a.why.map((w) => (
+            <li>
+              <h3 class="t-h4">{w.name}</h3>
+              <p class="t-small">{w.text}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="why__col">
+        <p class="t-micro">{a.measureTitle}</p>
+        <ul class="measure">
+          {a.measure.map((m) => <li class="measure__item">{m}</li>)}
+        </ul>
+        <p class="t-micro" style="margin-top: var(--space-8)">{a.formatsTitle}</p>
+        <ul class="why__list">
+          {a.formats.map((f) => (
+            <li>
+              <h3 class="t-h4">{f.name}</h3>
+              <p class="t-small">{f.text}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="team">
+    <div class="container team__inner">
+      <p class="t-micro">{a.teamTitle}</p>
+      <p class="t-small team__ph">{a.teamPlaceholder}</p>
+      <ul class="team__grid">
+        {a.team.map((m) => (
+          <li class="member">
+            <div class="member__photo" aria-hidden="true"><span class="t-micro">PHOTO</span></div>
+            <p class="member__name">{m.name}</p>
+            <p class="t-micro">{m.role}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="geo">
+    <div class="container geo__inner">
+      <p class="t-micro">{a.geoTitle}</p>
+      <p class="t-lead">{a.geoLead}</p>
+      <ul class="geo__list">
+        {GEOGRAPHY.map((city, i) => (
+          <li class="geo__city">
+            <span class="t-micro">{String(i + 1).padStart(2, '0')}</span>
+            <span class="t-h4">{city}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <CtaBlock lang={lang} />
+</Base>
+
+<style>
+  .approach__inner,
+  .why__inner,
+  .team__inner,
+  .geo__inner {
+    padding-top: var(--section-pad);
+    padding-bottom: var(--section-pad);
+    max-width: none;
+    display: grid;
+    gap: var(--space-8);
+  }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1px;
+    background: var(--hair);
+    border: 1px solid var(--hair);
+  }
+  .step {
+    background: var(--bg);
+    padding: var(--space-6);
+    display: grid;
+    gap: var(--space-4);
+    align-content: start;
+    min-height: 260px;
+  }
+  .step__text {
+    color: var(--fg-2);
+  }
+  .why {
+    border-top: 1px solid var(--hair);
+  }
+  .why__inner {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-12);
+  }
+  .why__col {
+    display: grid;
+    gap: var(--space-6);
+    align-content: start;
+  }
+  .why__list {
+    display: grid;
+    gap: var(--space-4);
+  }
+  .why__list li {
+    display: grid;
+    gap: 0.35rem;
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--hair);
+  }
+  .measure {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .measure__item {
+    padding: 0.45rem 0.8rem;
+    border: 1px solid var(--hair-strong);
+    font-size: 0.875rem;
+  }
+  .team {
+    border-top: 1px solid var(--hair);
+  }
+  .team__ph {
+    color: var(--fg-3);
+  }
+  .team__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: var(--space-6);
+  }
+  .member {
+    display: grid;
+    gap: var(--space-2);
+  }
+  .member__photo {
+    aspect-ratio: 3 / 4;
+    border: 1px solid var(--hair);
+    display: grid;
+    place-items: center;
+    background: repeating-linear-gradient(135deg, transparent 0 8px, rgba(244, 246, 250, 0.03) 8px 9px);
+  }
+  .member__name {
+    font-weight: 540;
+  }
+  .geo {
+    border-top: 1px solid var(--hair);
+  }
+  .geo__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--space-4) var(--space-6);
+  }
+  .geo__city {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--hair);
+  }
+  @media (max-width: 899px) {
+    .steps {
+      grid-template-columns: 1fr 1fr;
+    }
+    .why__inner {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 559px) {
+    .steps {
+      grid-template-columns: 1fr;
+    }
+    .step {
+      min-height: 0;
+    }
+  }
+</style>

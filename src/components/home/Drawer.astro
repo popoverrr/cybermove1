@@ -1,0 +1,221 @@
+---
+/**
+ * Drawer услуги: боковая панель с содержимым всех 22 услуг в DOM (для поисковиков).
+ * Открывается кликом по ServiceRow; закрытие — кнопка, Esc, клик по подложке. aria-modal, фокус-ловушка в home.ts.
+ */
+import Button from '../Button.astro';
+import { getContent, localePath, findCase, type LangCode } from '../../lib/i18n';
+
+export interface Props {
+  lang: LangCode;
+}
+const { lang } = Astro.props;
+const c = getContent(lang);
+---
+
+<div class="drawer-backdrop" data-drawer-backdrop hidden></div>
+<aside class="drawer" id="drawer" data-drawer role="dialog" aria-modal="true" aria-labelledby="drawer-title" hidden tabindex="-1">
+  <div class="drawer__bar">
+    <p class="t-micro" data-drawer-crumb></p>
+    <button class="drawer__close" type="button" data-drawer-close aria-label={c.ui.close}>
+      <span></span><span></span>
+    </button>
+  </div>
+  <div class="drawer__scroll">
+    {c.services.directions.map((d) =>
+      d.services.map((s, i) => (
+        <article class="drawer__item" data-drawer-item={s.id} data-drawer-direction={d.id} data-drawer-crumb-text={`${d.index} · ${d.name} · 0${i + 1}`} hidden>
+          <h3 class="t-h2 drawer__title" data-drawer-title>{s.name}</h3>
+          <p class="t-lead drawer__line">{s.line}</p>
+
+          <div class="drawer__block">
+            <p class="t-micro">{c.ui.included}</p>
+            <ul class="drawer__list">
+              {s.includes.map((x) => (
+                <li>{x}</li>
+              ))}
+            </ul>
+          </div>
+          <div class="drawer__block">
+            <p class="t-micro">{c.ui.result}</p>
+            <p class="drawer__result">{s.result}</p>
+          </div>
+          <div class="drawer__block drawer__block--row">
+            <div>
+              <p class="t-micro">{c.ui.format}</p>
+              <p class="t-small">{s.format}</p>
+            </div>
+          </div>
+          {s.cases && s.cases.length > 0 && (
+            <div class="drawer__block">
+              <p class="t-micro">{c.ui.relatedCases}</p>
+              <ul class="drawer__cases">
+                {s.cases.map((id) => {
+                  const k = findCase(c, id);
+                  return k ? (
+                    <li>
+                      <a href={`${localePath(lang, '/cases/')}#${k.id}`}>{k.name}</a>
+                      <span class="t-small">{k.summary}</span>
+                    </li>
+                  ) : null;
+                })}
+              </ul>
+            </div>
+          )}
+          <div class="drawer__actions">
+            <Button href={localePath(lang, '/contact/')} variant="fill" magnetic={false}>{c.ui.cta}</Button>
+            <Button href={`${localePath(lang, `/services/${d.slug}/`)}#${s.id}`} variant="text" magnetic={false} arrow>{c.ui.toDirection}</Button>
+          </div>
+        </article>
+      )),
+    )}
+  </div>
+</aside>
+
+<style>
+  .drawer-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 850;
+    background: rgba(5, 5, 5, 0.55);
+    opacity: 0;
+    transition: opacity var(--dur) var(--ease-out);
+  }
+  .drawer-backdrop[hidden] {
+    display: block;
+    pointer-events: none;
+  }
+  :global(body.drawer-open) .drawer-backdrop {
+    opacity: 1;
+  }
+  .drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 860;
+    width: min(520px, 100vw);
+    background: var(--graphite);
+    color: var(--white);
+    border-left: 1px solid rgba(244, 246, 250, 0.14);
+    transform: translateX(100%);
+    transition: transform 0.6s var(--ease-out);
+    display: grid;
+    grid-template-rows: auto 1fr;
+    --fg: var(--white);
+    --fg-2: var(--steel-300);
+    --fg-3: var(--steel-600);
+    --hair: rgba(244, 246, 250, 0.14);
+    --hair-strong: rgba(244, 246, 250, 0.32);
+    --accent: var(--blue-glow);
+    --btn-fill: var(--white);
+    --btn-fill-fg: var(--black);
+  }
+  .drawer[hidden] {
+    display: grid;
+    visibility: hidden;
+  }
+  :global(body.drawer-open) .drawer {
+    transform: none;
+    visibility: visible;
+  }
+  .drawer__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-4) var(--space-6);
+    border-bottom: 1px solid var(--hair);
+    min-height: var(--header-h);
+  }
+  .drawer__close {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    margin-right: -8px;
+  }
+  .drawer__close span {
+    position: absolute;
+    left: 10px;
+    top: 20px;
+    width: 20px;
+    height: 1px;
+    background: currentColor;
+    transform: rotate(45deg);
+  }
+  .drawer__close span:last-child {
+    transform: rotate(-45deg);
+  }
+  .drawer__scroll {
+    overflow-y: auto;
+    padding: var(--space-8) var(--space-6) var(--space-12);
+    overscroll-behavior: contain;
+  }
+  .drawer__item {
+    display: grid;
+    gap: var(--space-6);
+  }
+  .drawer__item[hidden] {
+    display: none;
+  }
+  .drawer__title {
+    font-size: clamp(1.6rem, 2.6vw, 2.25rem);
+  }
+  .drawer__block {
+    display: grid;
+    gap: var(--space-3);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--hair);
+  }
+  .drawer__block--row {
+    grid-template-columns: 1fr 1fr;
+  }
+  .drawer__list {
+    display: grid;
+    gap: 0.4rem;
+  }
+  .drawer__list li {
+    position: relative;
+    padding-left: 1.1rem;
+    font-size: var(--fs-body);
+    line-height: 1.4;
+  }
+  .drawer__list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 6px;
+    height: 1px;
+    background: var(--accent);
+  }
+  .drawer__result {
+    font-size: var(--fs-lead);
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+  }
+  .drawer__cases {
+    display: grid;
+    gap: var(--space-2);
+  }
+  .drawer__cases li {
+    display: grid;
+    gap: 0.15rem;
+  }
+  .drawer__cases a {
+    font-weight: 540;
+    text-decoration: underline;
+    text-decoration-color: var(--hair-strong);
+    text-underline-offset: 3px;
+  }
+  .drawer__cases a:hover {
+    text-decoration-color: var(--fg);
+  }
+  .drawer__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-6);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--hair);
+  }
+</style>

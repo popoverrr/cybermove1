@@ -1,0 +1,102 @@
+{
+  "brand": "CYBERMOVE",
+  "legalName": "Cyber Move Consulting",
+  "tagline": "We move business forward.",
+  "formula": ["CHAOS", "CORE", "SYSTEM", "GROWTH"],
+  "formulaRu": ["Chaos", "Core", "System", "Growth"],
+  "nav": [
+    { "label": "Services", "href": "/services/" },
+    { "label": "Cases", "href": "/cases/" },
+    { "label": "About", "href": "/about/" },
+    { "label": "Contact", "href": "/contact/" }
+  ],
+  "cta": "Get an initial review",
+  "ctaShort": "Initial review",
+  "ctaServices": "See services",
+  "whatsapp": "Message us on WhatsApp",
+  "allCases": "All cases",
+  "allServices": "All services",
+  "readMore": "Learn more",
+  "close": "Close",
+  "menu": "Menu",
+  "open": "Open",
+  "langSwitch": "Language",
+  "soundOn": "Turn sound on",
+  "soundOff": "Turn sound off",
+  "skip": "Skip to content",
+  "back": "Back",
+  "toDirection": "Service area page",
+  "included": "What's included",
+  "result": "Outcome",
+  "format": "Format",
+  "timing": "Timeline",
+  "relatedCases": "Related cases",
+  "services": "Services",
+  "directions": "Service areas",
+  "placeholder": "To be confirmed",
+  "filterAll": "All",
+  "casesCount": "projects",
+  "footer": {
+    "rights": "All rights reserved.",
+    "privacy": "Privacy policy",
+    "contactsTitle": "Contact",
+    "email": "[PLACEHOLDER: e-mail]",
+    "telegram": "[PLACEHOLDER: Telegram]",
+    "address": "[PLACEHOLDER: address and company details]",
+    "geographyTitle": "Where we work"
+  },
+  "meta": {
+    "home": {
+      "title": "CYBERMOVE — we set business in motion: audit, systems, brand, traffic, tenders",
+      "description": "CYBERMOVE (Cyber Move Consulting): business and financial audit, websites and CRM, brand and content, advertising and SEO, tenders and legal. One team, one system. Free initial review."
+    },
+    "services": {
+      "title": "CYBERMOVE services — 5 areas, 22 services",
+      "description": "Business and financial audit, websites, CRM, telephony and AI, brand and content, paid social, Google Ads, TikTok Ads and SEO, tenders and legal. All in one system."
+    },
+    "cases": {
+      "title": "CYBERMOVE cases — 34 projects in 13 cities",
+      "description": "USYK, Ukrainian Fashion Week, INTERTOP, BRSM-NAFTA, HYDROSTA and more: personal brands, retail, HoReCa, B2B, media, technology."
+    },
+    "about": {
+      "title": "About CYBERMOVE — CHAOS → CORE → SYSTEM → GROWTH",
+      "description": "How we work: diagnostics, the business core, the system, growth. One team: marketing, technology, finance, tenders and legal. From Bielefeld to Bali."
+    },
+    "contact": {
+      "title": "Contact CYBERMOVE — get an initial review",
+      "description": "Tell us about the task. We come back with first conclusions and propose a way to work together. WhatsApp +7 701 825 10 28."
+    },
+    "privacy": {
+      "title": "Privacy policy — CYBERMOVE",
+      "description": "How CYBERMOVE handles personal data submitted through the website forms."
+    },
+    "notFound": {
+      "title": "Page not found — CYBERMOVE",
+      "description": "There is no such page."
+    }
+  },
+  "notFound": {
+    "code": "404",
+    "title": "Nothing here.",
+    "text": "The page has moved or never existed. Go back to the homepage or browse the services.",
+    "home": "Homepage"
+  },
+  "privacy": {
+    "title": "Privacy policy",
+    "lead": "[PLACEHOLDER] The full privacy policy text will be provided by the client.",
+    "sections": [
+      {
+        "h": "What data we collect",
+        "p": "Through the website form: name, contact (phone, WhatsApp or Telegram), company name or website, the chosen engagement format and the message. Technically: interface language, the source page and the UTM parameters of the visit."
+      },
+      {
+        "h": "Why",
+        "p": "To answer the request and propose an engagement format. Data is not shared with third parties except the delivery services configured for the site (e-mail, Telegram, CRM)."
+      },
+      {
+        "h": "Retention and your rights",
+        "p": "[PLACEHOLDER] Retention period, data controller, company details and the contact for deletion requests — to be provided by the client."
+      }
+    ]
+  }
+}

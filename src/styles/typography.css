@@ -1,0 +1,138 @@
+/* Типографика. Основной: Inter Tight. Широкий акцент: см. DECISIONS.md. Моно: JetBrains Mono. */
+
+.t-display {
+  font-family: var(--font-sans);
+  font-weight: 560;
+  font-size: var(--fs-display);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-display);
+  text-wrap: balance;
+}
+
+.t-h1 {
+  font-family: var(--font-sans);
+  font-weight: 560;
+  font-size: var(--fs-h1);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-display);
+  text-wrap: balance;
+}
+
+.t-h2 {
+  font-family: var(--font-sans);
+  font-weight: 540;
+  font-size: var(--fs-h2);
+  line-height: 1.02;
+  letter-spacing: var(--ls-h);
+  text-wrap: balance;
+}
+
+.t-h3 {
+  font-family: var(--font-sans);
+  font-weight: 520;
+  font-size: var(--fs-h3);
+  line-height: var(--lh-snug);
+  letter-spacing: -0.02em;
+}
+
+.t-h4 {
+  font-family: var(--font-sans);
+  font-weight: 540;
+  font-size: var(--fs-h4);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+.t-lead {
+  font-size: var(--fs-lead);
+  line-height: 1.35;
+  letter-spacing: -0.012em;
+  font-weight: 420;
+  color: var(--fg-2);
+  text-wrap: pretty;
+}
+
+.t-body {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+.t-small {
+  font-size: var(--fs-small);
+  line-height: 1.45;
+  color: var(--fg-2);
+}
+
+/* Широкая гарнитура: крупные цифры, одно слово в заголовке */
+.t-wide {
+  font-family: var(--font-wide);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.t-counter {
+  font-family: var(--font-wide);
+  font-weight: 440;
+  font-size: var(--fs-counter);
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Микрометки: AUDIT / CORE / SYSTEM / GROWTH, индексы, координаты */
+.t-micro {
+  font-family: var(--font-mono);
+  font-weight: 460;
+  font-size: var(--fs-micro);
+  line-height: 1.2;
+  letter-spacing: var(--ls-micro);
+  text-transform: uppercase;
+  color: var(--fg-3);
+  font-variant-numeric: tabular-nums;
+}
+.t-micro--fg {
+  color: var(--fg);
+}
+.t-micro--accent {
+  color: var(--accent);
+}
+
+.t-mono {
+  font-family: var(--font-mono);
+  font-weight: 440;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Тиснёный металлический текст как в ref-01: градиент + SVG-фильтр со specular lighting (фильтр в Base.astro) */
+.chrome-text {
+  background-image: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #d6dae2 18%,
+    #8e949e 36%,
+    #f7f8fb 50%,
+    #6d737d 62%,
+    #c7ccd4 78%,
+    #ffffff 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  filter: url('#chrome-emboss');
+}
+
+@supports not (background-clip: text) {
+  .chrome-text {
+    color: var(--steel-200);
+    filter: none;
+  }
+}
+
+/* Строки текста под маской для SplitText */
+.split-mask .line {
+  overflow: hidden;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}

@@ -1,0 +1,36 @@
+---
+import Base from '../layouts/Base.astro';
+import Button from '../components/Button.astro';
+import { getContent, localePath } from '../lib/i18n';
+const c = getContent('ru');
+---
+
+<Base lang="ru" path="/404/" title={c.ui.meta.notFound.title} description={c.ui.meta.notFound.description} noindex theme="black">
+  <section class="nf container">
+    <p class="t-micro">ERROR · {c.ui.notFound.code}</p>
+    <h1 class="t-h1"><span class="t-wide chrome-text">{c.ui.notFound.code}</span></h1>
+    <p class="t-h3">{c.ui.notFound.title}</p>
+    <p class="t-lead">{c.ui.notFound.text}</p>
+    <div class="nf__btns">
+      <Button href={localePath('ru', '/')} variant="fill">{c.ui.notFound.home}</Button>
+      <Button href={localePath('ru', '/services/')} variant="ghost" arrow>{c.ui.ctaServices}</Button>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    min-height: 100vh;
+    display: grid;
+    align-content: center;
+    gap: var(--space-4);
+    padding-top: var(--header-h);
+    max-width: 900px;
+    margin-inline: 0;
+  }
+  .nf__btns {
+    display: flex;
+    gap: var(--space-4);
+    margin-top: var(--space-6);
+  }
+</style>

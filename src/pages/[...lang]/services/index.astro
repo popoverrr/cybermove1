@@ -1,0 +1,135 @@
+---
+/** /services/ — обзор 5 направлений. */
+import Base from '../../../layouts/Base.astro';
+import PageHero from '../../../components/PageHero.astro';
+import CtaBlock from '../../../components/CtaBlock.astro';
+import { getContent, langStaticPaths, localePath } from '../../../lib/i18n';
+import { breadcrumbLd } from '../../../lib/seo';
+
+export function getStaticPaths() {
+  return langStaticPaths();
+}
+const { lang } = Astro.props;
+const c = getContent(lang);
+const idx = c.services.index;
+const jsonLd = [breadcrumbLd(lang, [{ name: c.ui.brand, path: '/' }, { name: c.ui.services, path: '/services/' }])];
+---
+
+<Base lang={lang} path="/services/" title={c.ui.meta.services.title} description={c.ui.meta.services.description} theme="black" jsonLd={jsonLd} ogImage="/posters/og-services.jpg">
+  <PageHero theme="graphite" label={`${c.ui.services} · 05 · 22`} title={idx.h1} lead={idx.lead} micro={c.ui.formula} render="/posters/dir-core.webp" />
+
+  <section class="dirs">
+    {c.services.directions.map((d) => (
+      <article class="dir" id={d.id} data-theme={d.theme}>
+        <div class="container dir__inner">
+          <div class="dir__head">
+            <p class="t-micro dir__idx">{d.index} · {d.stage}</p>
+            <h2 class="t-h2 dir__title"><a href={localePath(lang, `/services/${d.slug}/`)}>{d.name}</a></h2>
+            <p class="t-lead dir__phrase">{d.phrase}</p>
+          </div>
+          <ul class="dir__list">
+            {d.services.map((s, i) => (
+              <li class="dir__item">
+                <a href={`${localePath(lang, `/services/${d.slug}/`)}#${s.id}`}>
+                  <span class="t-micro">0{i + 1}</span>
+                  <span class="dir__name">{s.name}</span>
+                  <span class="t-small dir__line">{s.line}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <div class="dir__foot">
+            <p class="t-micro"><span>{c.ui.result}:</span> <span class="t-micro--fg">{d.result}</span></p>
+            <a class="dir__more t-micro" href={localePath(lang, `/services/${d.slug}/`)}>{c.ui.toDirection} →</a>
+          </div>
+        </div>
+      </article>
+    ))}
+  </section>
+
+  <CtaBlock lang={lang} />
+</Base>
+
+<style>
+  .dir {
+    background: var(--bg);
+    color: var(--fg);
+    border-top: 1px solid var(--hair);
+  }
+  .dir__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--space-8) var(--space-12);
+    padding-top: var(--section-pad);
+    padding-bottom: var(--section-pad);
+    max-width: none;
+  }
+  .dir__head {
+    display: grid;
+    gap: var(--space-4);
+    align-content: start;
+  }
+  .dir__idx {
+    color: var(--accent);
+  }
+  .dir__title a {
+    transition: color var(--dur-fast);
+  }
+  .dir__title a:hover {
+    color: var(--accent);
+  }
+  .dir__phrase {
+    max-width: 42ch;
+  }
+  .dir__list {
+    border-top: 1px solid var(--hair);
+  }
+  .dir__item a {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    grid-template-areas:
+      'idx name'
+      'idx line';
+    column-gap: var(--space-4);
+    padding: var(--space-4) 0;
+    border-bottom: 1px solid var(--hair);
+    transition: padding-left var(--dur) var(--ease-out);
+  }
+  .dir__item a:hover {
+    padding-left: 0.5rem;
+  }
+  .dir__item .t-micro {
+    grid-area: idx;
+    padding-top: 0.35em;
+  }
+  .dir__name {
+    grid-area: name;
+    font-size: var(--fs-h4);
+    font-weight: 540;
+    letter-spacing: -0.015em;
+  }
+  .dir__line {
+    grid-area: line;
+    color: var(--fg-2);
+    margin-top: 0.2em;
+  }
+  .dir__foot {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+  }
+  .dir__more {
+    color: var(--fg-2);
+  }
+  .dir__more:hover {
+    color: var(--fg);
+  }
+  @media (max-width: 899px) {
+    .dir__inner {
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+    }
+  }
+</style>

@@ -1,0 +1,232 @@
+/* Главная: fixed-canvas под контентом, sticky-стейдж с экранами S1–S7, S8 в потоке. */
+
+body.is-home {
+  background: var(--black);
+  --rail-offset: 0px;
+}
+@media (min-width: 900px) and (min-height: 561px) {
+  body.is-home {
+    --rail-offset: 72px;
+  }
+}
+/* На главной контент сдвинут вправо от Rail */
+body.is-home .screen .container,
+body.is-home .screen--s8 .container {
+  padding-left: calc(var(--gutter) + var(--rail-offset));
+}
+body.is-home .s1__corner--tl,
+body.is-home .s1__cross--a {
+  left: calc(var(--gutter) + var(--rail-offset));
+}
+
+.gl-wrap {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: var(--black);
+  overflow: hidden;
+}
+.gl-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.9s var(--ease-out);
+}
+body.gl-ready .gl-canvas {
+  opacity: 1;
+}
+body.gl-fallback .gl-canvas {
+  display: none;
+}
+
+/* Постер: пока грузится чанк или как фолбэк без WebGL/при reduced-motion */
+.gl-poster {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 50% at 68% 45%, rgba(77, 124, 255, 0.16), transparent 70%),
+    radial-gradient(35% 35% at 68% 45%, rgba(230, 233, 238, 0.12), transparent 70%),
+    var(--black);
+  opacity: 1;
+  transition: opacity 1.2s var(--ease-out);
+}
+body.gl-ready .gl-poster {
+  opacity: 0;
+}
+body.gl-fallback .gl-poster {
+  opacity: 1;
+  background-size: cover;
+  background-position: center;
+}
+
+/*
+ * Стейдж: обёртка задаёт длину скролла (сумма длительностей экранов + 100vh),
+ * внутри sticky-контейнер 100vh, экраны абсолютные. Активность и вход/выход — JS через CSS-переменные.
+ */
+.stage-wrap {
+  position: relative;
+  z-index: 1;
+  /* высота выставляется JS по data-dur экранов; запасное значение */
+  height: 1270vh;
+}
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+}
+.screen {
+  position: absolute;
+  inset: 0;
+  color: var(--fg);
+  --enter: 0;
+  --exit: 0;
+  --vis: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+.screen.is-active {
+  pointer-events: auto;
+  visibility: visible;
+}
+/* Общая анимация текста экрана: вход снизу, выход вверх; управляется --enter/--exit */
+.screen__pin {
+  position: relative;
+  height: 100%;
+  opacity: calc(var(--enter) * (1 - var(--exit)));
+  transform: translate3d(0, calc((1 - var(--enter)) * 36px - var(--exit) * 48px), 0);
+  will-change: transform, opacity;
+}
+.screen--s1 .screen__pin {
+  /* первый экран появляется по времени (SplitText), а не по скроллу */
+  opacity: calc(1 - var(--exit));
+  transform: translate3d(0, calc(var(--exit) * -64px), 0);
+}
+
+/* S8 — в потоке после стейджа */
+.screen--s8 {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  visibility: visible;
+  pointer-events: auto;
+}
+.screen--s8 .screen__pin {
+  height: auto;
+  min-height: 100vh;
+  opacity: 1;
+  transform: none;
+}
+
+/* Подписи орбит: HTML-лейблы, привязанные к 3D-точкам (позиция из state) */
+.orbit-labels {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.orbit-label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px 6px 6px;
+  margin: -14px 0 0 12px;
+  color: var(--white);
+  background: rgba(5, 5, 5, 0.55);
+  border: 1px solid var(--hair-strong);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  transform: translate3d(-100px, -100px, 0);
+  transition: opacity 0.25s var(--ease-out);
+  white-space: nowrap;
+  pointer-events: none;
+  will-change: transform;
+}
+.orbit-label.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.orbit-label__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--blue-glow);
+  box-shadow: 0 0 10px var(--blue-glow);
+}
+body.orbit-hover {
+  cursor: pointer;
+}
+body.orbit-hover .cursor__ring {
+  width: 48px;
+  height: 48px;
+  margin: -24px 0 0 -24px;
+}
+
+/* Лейблы к 3D-точкам (точки данных S2, метрики S5) */
+.anchor-labels {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.anchor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: -0.6em 0 0 10px;
+  color: var(--fg);
+  opacity: 0;
+  white-space: nowrap;
+  will-change: transform, opacity;
+}
+.anchor__tick {
+  width: 14px;
+  height: 1px;
+  background: var(--hair-strong);
+}
+.anchor.is-hot {
+  color: var(--accent);
+}
+.anchor--metric {
+  margin: -0.6em 0 0 14px;
+  padding: 4px 8px;
+  border: 1px solid var(--hair-strong);
+  background: rgba(10, 36, 245, 0.35);
+  backdrop-filter: blur(4px);
+}
+
+/* Режим постера (?poster): виден только канвас */
+body.is-poster .stage,
+body.is-poster .screen--s8,
+body.is-poster .header,
+body.is-poster .rail,
+body.is-poster .orbit-labels,
+body.is-poster .anchor-labels,
+body.is-poster .audio,
+body.is-poster .cursor,
+body.is-poster .preloader {
+  opacity: 0 !important;
+}
+
+/* Фолбэк без WebGL / reduced-motion: постеры экранов с кроссфейдом */
+.gl-poster__layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 0.9s var(--ease-out);
+}
+.gl-poster__layer.is-on {
+  opacity: 1;
+}

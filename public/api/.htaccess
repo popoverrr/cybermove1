@@ -1,0 +1,9 @@
+# /api/: только lead.php доступен снаружи; конфиг и журналы закрыты
+<FilesMatch "^(config\.php|config\.sample\.php)$">
+    Require all denied
+</FilesMatch>
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^\.leads(/|$) - [F,L]
+</IfModule>
+Options -Indexes

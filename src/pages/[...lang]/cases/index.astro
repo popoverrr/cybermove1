@@ -1,0 +1,187 @@
+---
+/** /cases/ — все 34 проекта, фильтр по категориям (все карточки в DOM, JS показывает/скрывает). */
+import Base from '../../../layouts/Base.astro';
+import PageHero from '../../../components/PageHero.astro';
+import CtaBlock from '../../../components/CtaBlock.astro';
+import { getContent, langStaticPaths } from '../../../lib/i18n';
+import { breadcrumbLd } from '../../../lib/seo';
+
+export function getStaticPaths() {
+  return langStaticPaths();
+}
+const { lang } = Astro.props;
+const c = getContent(lang);
+const k = c.cases;
+const counts = Object.fromEntries(k.categories.map((cat) => [cat.id, k.items.filter((i) => i.category === cat.id).length]));
+const jsonLd = [breadcrumbLd(lang, [{ name: c.ui.brand, path: '/' }, { name: k.title, path: '/cases/' }])];
+---
+
+<Base lang={lang} path="/cases/" title={c.ui.meta.cases.title} description={c.ui.meta.cases.description} theme="black" jsonLd={jsonLd} ogImage="/posters/og-cases.jpg">
+  <PageHero theme="black" label={`${k.title} · ${k.items.length}`} title={k.h1} lead={k.lead} render="/posters/dir-growth.webp" beam={0.5} size="md" />
+
+  <section class="cases">
+    <div class="container cases__inner">
+      <div class="filter" role="group" aria-label={k.title} data-filter>
+        <button class="filter__btn is-active" type="button" data-filter-cat="all" aria-pressed="true">
+          <span>{c.ui.filterAll}</span><span class="t-micro">{k.items.length}</span>
+        </button>
+        {k.categories.filter((cat) => counts[cat.id] > 0).map((cat) => (
+          <button class="filter__btn" type="button" data-filter-cat={cat.id} aria-pressed="false">
+            <span>{cat.label}</span><span class="t-micro">{counts[cat.id]}</span>
+          </button>
+        ))}
+      </div>
+      <p class="t-micro cases__note">{k.placeholderNote}</p>
+
+      <ul class="grid-cases" data-cases-grid>
+        {k.items.map((it) => {
+          const cat = k.categories.find((x) => x.id === it.category);
+          return (
+            <li class="case" id={it.id} data-category={it.category}>
+              <article class="case__inner">
+                <p class="t-micro case__meta">
+                  <span>{String(it.n).padStart(2, '0')}</span>
+                  <span>{cat?.label}</span>
+                </p>
+                <h2 class="t-h4 case__name">
+                  {it.url ? (
+                    <a href={it.url} target="_blank" rel="noopener nofollow">{it.name} <span class="case__ext" aria-hidden="true">↗</span></a>
+                  ) : (
+                    it.name
+                  )}
+                </h2>
+                <p class="t-small case__sum">{it.summary}</p>
+                <p class="t-micro case__tags">{it.tags.join(' · ')}</p>
+                {it.urlLabel && <p class="t-micro case__url">{it.urlLabel}</p>}
+              </article>
+            </li>
+          );
+        })}
+      </ul>
+      <p class="t-micro cases__empty" data-cases-empty hidden>—</p>
+    </div>
+  </section>
+
+  <CtaBlock lang={lang} />
+
+  <script>
+    const btns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-filter-cat]'));
+    const items = Array.from(document.querySelectorAll<HTMLElement>('[data-cases-grid] > li'));
+    const apply = (cat: string) => {
+      btns.forEach((b) => {
+        const on = b.dataset.filterCat === cat;
+        b.classList.toggle('is-active', on);
+        b.setAttribute('aria-pressed', String(on));
+      });
+      items.forEach((li) => {
+        const show = cat === 'all' || li.dataset.category === cat;
+        li.hidden = !show;
+      });
+      if (cat === 'all') history.replaceState(null, '', location.pathname);
+      else history.replaceState(null, '', `${location.pathname}?category=${cat}`);
+    };
+    btns.forEach((b) => b.addEventListener('click', () => apply(b.dataset.filterCat!)));
+    const initial = new URLSearchParams(location.search).get('category');
+    if (initial && btns.some((b) => b.dataset.filterCat === initial)) apply(initial);
+    // якорь #id кейса — подсветка карточки
+    if (location.hash) {
+      const el = document.getElementById(location.hash.slice(1));
+      el?.classList.add('is-target');
+    }
+  </script>
+</Base>
+
+<style>
+  .cases__inner {
+    padding-top: var(--space-8);
+    padding-bottom: var(--section-pad);
+    display: grid;
+    gap: var(--space-6);
+    max-width: none;
+  }
+  .filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .filter__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.55rem 0.9rem;
+    border: 1px solid var(--hair-strong);
+    font-size: 0.875rem;
+    color: var(--fg-2);
+    transition: color var(--dur-fast), border-color var(--dur-fast), background-color var(--dur-fast);
+  }
+  .filter__btn .t-micro {
+    color: var(--fg-3);
+  }
+  .filter__btn:hover {
+    color: var(--fg);
+    border-color: var(--fg);
+  }
+  .filter__btn.is-active {
+    background: var(--btn-fill);
+    color: var(--btn-fill-fg);
+    border-color: var(--btn-fill);
+  }
+  .filter__btn.is-active .t-micro {
+    color: inherit;
+    opacity: 0.7;
+  }
+  .cases__note {
+    color: var(--fg-3);
+  }
+  .grid-cases {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    border-top: 1px solid var(--hair);
+    border-left: 1px solid var(--hair);
+  }
+  .case {
+    border-right: 1px solid var(--hair);
+    border-bottom: 1px solid var(--hair);
+    scroll-margin-top: calc(var(--header-h) + 1rem);
+  }
+  .case[hidden] {
+    display: none;
+  }
+  .case__inner {
+    display: grid;
+    gap: var(--space-3);
+    padding: var(--space-6);
+    min-height: 220px;
+    height: 100%;
+    align-content: start;
+    transition: background-color var(--dur-fast);
+  }
+  .case:hover .case__inner,
+  .case.is-target .case__inner {
+    background: rgba(77, 124, 255, 0.06);
+  }
+  .case__meta {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    color: var(--fg-3);
+  }
+  .case__name a:hover {
+    color: var(--accent);
+  }
+  .case__ext {
+    font-size: 0.8em;
+    color: var(--fg-3);
+  }
+  .case__sum {
+    color: var(--fg-2);
+  }
+  .case__tags {
+    margin-top: auto;
+    padding-top: var(--space-3);
+    color: var(--fg-3);
+  }
+  .case__url {
+    color: var(--fg-3);
+  }
+</style>

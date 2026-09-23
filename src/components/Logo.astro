@@ -1,0 +1,33 @@
+---
+/**
+ * Логотип сайта. Активный вариант — src/assets/logo/logo.svg (и logo-mark.svg).
+ * Смена варианта: python scripts/build-logo.py --active a|b|c (см. REPORT.md).
+ */
+import logoSvg from '../assets/logo/logo.svg?raw';
+import markSvg from '../assets/logo/logo-mark.svg?raw';
+
+export interface Props {
+  compact?: boolean;
+  class?: string;
+  height?: number;
+}
+const { compact = false, class: cls = '', height = 28 } = Astro.props;
+const svg = compact ? markSvg : logoSvg;
+---
+
+<span class:list={['logo', cls, { 'logo--mark': compact }]} style={`--logo-h:${height}px`} set:html={svg} />
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    height: var(--logo-h);
+    color: var(--fg);
+    --logo-accent: var(--accent);
+  }
+  .logo :global(svg) {
+    height: 100%;
+    width: auto;
+    display: block;
+  }
+</style>

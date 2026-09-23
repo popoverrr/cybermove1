@@ -1,0 +1,100 @@
+---
+/** /dev/logo/ — три варианта логотипа на чёрном, стальном и синем фонах; версии horizontal / mark / mono. */
+const variants = ['a', 'b', 'c'] as const;
+const names: Record<string, string> = {
+  a: 'A · Бережная перерисовка',
+  b: 'B · Кольцо как орбита (активный)',
+  c: 'C · Новый знак',
+};
+const files = import.meta.glob<string>('../../assets/logo/*.svg', { query: '?raw', import: 'default', eager: true });
+import { withBase } from '../../lib/base';
+const get = (name: string) => files[`../../assets/logo/${name}.svg`] ?? '';
+const bgs = [
+  { id: 'black', bg: '#050505', scheme: 'color-dark', mono: 'mono-white' },
+  { id: 'steel', bg: '#cfd3d9', scheme: 'color-light', mono: 'mono-black' },
+  { id: 'blue', bg: '#0a24f5', scheme: 'mono-white', mono: 'mono-white' },
+];
+---
+
+<div class="lab">
+  <header class="lab__head">
+    <p class="t-micro">LAB · LOGO</p>
+    <h1 class="t-h3">Логотип: три варианта</h1>
+    <p class="t-small">Исходник: reference/logo-source.png. Словесный знак CYBER MOVE — Unbounded 600 в кривых, дескриптор CONSULTING — JetBrains Mono с разрядкой.</p>
+  </header>
+
+  {variants.map((v) => (
+    <section class="lab__section">
+      <p class="t-micro">{names[v]}</p>
+      <div class="rows">
+        {bgs.map((b) => (
+          <div class="row" style={`background:${b.bg}`}>
+            <div class="cell cell--h" set:html={get(`${v}-horizontal-${b.scheme}`)} />
+            <div class="cell cell--m" set:html={get(`${v}-mark-${b.scheme}`)} />
+            <div class="cell cell--m cell--small" set:html={get(`${v}-mark-${b.mono}`)} />
+            <div class="cell cell--h cell--small" set:html={get(`${v}-horizontal-${b.mono}`)} />
+          </div>
+        ))}
+      </div>
+    </section>
+  ))}
+
+  <section class="lab__section">
+    <p class="t-micro">Favicon</p>
+    <div class="fav">
+      <img src={withBase('/favicon.svg')} width="64" height="64" alt="" />
+      <img src={withBase('/favicon-32.png')} width="32" height="32" alt="" />
+      <img src={withBase('/favicon-16.png')} width="16" height="16" alt="" />
+      <img src={withBase('/apple-touch-icon.png')} width="60" height="60" alt="" />
+    </div>
+  </section>
+</div>
+
+<style>
+  .lab {
+    padding: var(--space-12) var(--gutter) var(--space-24);
+    display: grid;
+    gap: var(--space-12);
+    max-width: 1500px;
+  }
+  .lab__head {
+    display: grid;
+    gap: var(--space-2);
+  }
+  .lab__section {
+    display: grid;
+    gap: var(--space-4);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--hair);
+  }
+  .rows {
+    display: grid;
+    gap: 2px;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 2.2fr 0.6fr 0.4fr 1.6fr;
+    align-items: center;
+    gap: var(--space-8);
+    padding: var(--space-8);
+  }
+  .cell :global(svg) {
+    width: 100%;
+    height: auto;
+    max-height: 120px;
+  }
+  .cell--h :global(svg) {
+    max-width: 440px;
+  }
+  .cell--m :global(svg) {
+    max-width: 120px;
+  }
+  .cell--small :global(svg) {
+    max-height: 48px;
+  }
+  .fav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+  }
+</style>

@@ -1,0 +1,247 @@
+---
+/**
+ * Форма заявки: имя, контакт, компания/сайт, формат (4 варианта), сообщение; honeypot, время заполнения,
+ * язык, страница-источник, UTM. Отправка в /api/lead.php (lib/form.ts), в dev — мок.
+ * Используется на главной (S8) и на /contact/.
+ */
+import Button from './Button.astro';
+import { getContent, localePath, type LangCode } from '../lib/i18n';
+import { WHATSAPP_URL, LEAD_ENDPOINT } from '../../site.config';
+import { withBase } from '../lib/base';
+
+export interface Props {
+  lang: LangCode;
+  id?: string;
+  compact?: boolean;
+}
+const { lang, id = 'lead', compact = false } = Astro.props;
+const c = getContent(lang);
+const f = c.contact.form;
+---
+
+<form class:list={['lead', { 'lead--compact': compact }]} id={id} data-lead-form action={withBase(LEAD_ENDPOINT)} method="post" novalidate data-lang={lang}>
+  <div class="lead__grid">
+    <label class="field">
+      <span class="field__label t-micro">{f.name}</span>
+      <input class="field__input" type="text" name="name" autocomplete="name" required maxlength="120" />
+      <span class="field__error t-micro" data-error-for="name">{f.required}</span>
+    </label>
+    <label class="field">
+      <span class="field__label t-micro">{f.contact}</span>
+      <input class="field__input" type="text" name="contact" autocomplete="tel" inputmode="text" required maxlength="160" />
+      <span class="field__error t-micro" data-error-for="contact">{f.invalidContact}</span>
+    </label>
+    <label class="field field--wide">
+      <span class="field__label t-micro">{f.company}</span>
+      <input class="field__input" type="text" name="company" autocomplete="organization" maxlength="200" />
+    </label>
+
+    <fieldset class="field field--wide formats">
+      <legend class="field__label t-micro">{f.format}</legend>
+      <div class="formats__list">
+        {f.formatOptions.map((o, i) => (
+          <label class="pill">
+            <input type="radio" name="format" value={o.value} checked={i === 0} />
+            <span class="pill__label">{o.label}</span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+
+    <label class="field field--wide">
+      <span class="field__label t-micro">{f.message}</span>
+      <textarea class="field__input field__input--area" name="message" rows={compact ? 3 : 4} maxlength="4000"></textarea>
+    </label>
+
+    <!-- honeypot: люди не видят, боты заполняют -->
+    <label class="lead__hp" aria-hidden="true">
+      <span>Website</span>
+      <input type="text" name="website" tabindex="-1" autocomplete="off" />
+    </label>
+    <input type="hidden" name="lang" value={lang} />
+    <input type="hidden" name="page" value="" data-page />
+    <input type="hidden" name="utm" value="" data-utm />
+    <input type="hidden" name="ts" value="" data-ts />
+  </div>
+
+  <div class="lead__actions">
+    <Button type="submit" variant="fill" size="lg" magnetic={false} data-submit="1">{f.submit}</Button>
+    <Button href={WHATSAPP_URL} variant="ghost" size="lg" magnetic={false} target="_blank" rel="noopener" data-whatsapp="1">{f.whatsapp}</Button>
+  </div>
+  <p class="lead__consent t-small">
+    {f.consentPrefix} <a href={localePath(lang, '/privacy/')}>{f.consentLink}</a>.
+  </p>
+
+  <div class="lead__status" role="status" aria-live="polite">
+    <p class="lead__msg lead__msg--sending t-small" hidden>{f.sending}</p>
+    <p class="lead__msg lead__msg--success" hidden>
+      <span class="lead__ok" aria-hidden="true"></span>
+      <span class="t-h4">{f.success}</span>
+    </p>
+    <div class="lead__msg lead__msg--error" hidden>
+      <p class="t-h4">{f.error}</p>
+      <Button href={WHATSAPP_URL} variant="fill" magnetic={false} target="_blank" rel="noopener">{f.whatsapp}</Button>
+    </div>
+  </div>
+</form>
+
+<style>
+  .lead {
+    display: grid;
+    gap: var(--space-6);
+    max-width: 640px;
+  }
+  .lead__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: var(--space-6);
+    row-gap: var(--space-5, 1.25rem);
+  }
+  .field {
+    display: grid;
+    gap: 0.45rem;
+    min-width: 0;
+    border: 0;
+    padding: 0;
+    margin: 0;
+  }
+  .field--wide {
+    grid-column: 1 / -1;
+  }
+  .field__label {
+    color: var(--fg-3);
+  }
+  .field__input {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--hair-strong);
+    padding: 0.55rem 0;
+    font-size: 1.0625rem;
+    color: var(--fg);
+    border-radius: 0;
+    transition: border-color var(--dur-fast);
+  }
+  .field__input:focus {
+    border-bottom-color: var(--fg);
+    outline: none;
+  }
+  .field__input--area {
+    resize: vertical;
+    min-height: 3.5rem;
+    line-height: 1.4;
+  }
+  .field__error {
+    display: none;
+    color: #ff6b6b;
+  }
+  .field.is-invalid .field__error {
+    display: block;
+  }
+  .field.is-invalid .field__input {
+    border-bottom-color: #ff6b6b;
+  }
+  .formats__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .pill {
+    position: relative;
+    cursor: pointer;
+  }
+  .pill input {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+  .pill__label {
+    display: inline-block;
+    padding: 0.5rem 0.85rem;
+    border: 1px solid var(--hair-strong);
+    font-size: 0.875rem;
+    color: var(--fg-2);
+    transition: color var(--dur-fast), border-color var(--dur-fast), background-color var(--dur-fast);
+  }
+  .pill input:checked + .pill__label {
+    color: var(--btn-fill-fg);
+    background: var(--btn-fill);
+    border-color: var(--btn-fill);
+  }
+  .pill input:focus-visible + .pill__label {
+    outline: 1.5px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .lead__hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  .lead__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+  }
+  .lead__consent {
+    color: var(--fg-3);
+    max-width: 52ch;
+  }
+  .lead__consent a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .lead__status:empty {
+    display: none;
+  }
+  .lead__msg {
+    display: grid;
+    gap: var(--space-4);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--hair);
+  }
+  .lead__msg[hidden] {
+    display: none;
+  }
+  .lead__ok {
+    display: block;
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    position: relative;
+  }
+  .lead__ok::after {
+    content: '';
+    position: absolute;
+    left: 9px;
+    top: 5px;
+    width: 7px;
+    height: 12px;
+    border-right: 1.5px solid var(--accent);
+    border-bottom: 1.5px solid var(--accent);
+    transform: rotate(45deg);
+  }
+  .lead.is-sending [data-submit] {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  .lead.is-done .lead__grid,
+  .lead.is-done .lead__actions,
+  .lead.is-done .lead__consent {
+    display: none;
+  }
+  @media (max-width: 599px) {
+    .lead__grid {
+      grid-template-columns: 1fr;
+    }
+    .lead__actions > :global(*) {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>

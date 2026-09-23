@@ -1,0 +1,142 @@
+---
+/** /dev/type/ — сравнение широких гарнитур (Unbounded vs Roboto Flex wdth 140–151), шкала, микрометки, chrome-text, кнопки. */
+import '@fontsource-variable/roboto-flex/wdth.css';
+import Button from '../Button.astro';
+const themes = ['black', 'graphite', 'steel', 'blue', 'silver'] as const;
+---
+
+<div class="lab">
+  <header class="lab__head">
+    <p class="t-micro">LAB · TYPE</p>
+    <h1 class="t-h3">Типографика</h1>
+  </header>
+
+  <section class="lab__section">
+    <p class="t-micro">01 · Широкая гарнитура для заголовков и цифр (ref-06)</p>
+    <div class="cmp">
+      <div class="cmp__col">
+        <p class="t-micro">Unbounded Variable · wght 440 / 600</p>
+        <p class="big" style="font-family:'Unbounded Variable';font-weight:440">34+ · 13 · 7</p>
+        <p class="big-h" style="font-family:'Unbounded Variable';font-weight:500">Результат — это движение.</p>
+        <p class="big-h" style="font-family:'Unbounded Variable';font-weight:600">CHAOS → CORE → SYSTEM → GROWTH</p>
+      </div>
+      <div class="cmp__col">
+        <p class="t-micro">Roboto Flex · wdth 148 · wght 560 / 700</p>
+        <p class="big" style="font-family:'Roboto Flex Variable';font-stretch:148%;font-weight:560">34+ · 13 · 7</p>
+        <p class="big-h" style="font-family:'Roboto Flex Variable';font-stretch:148%;font-weight:600">Результат — это движение.</p>
+        <p class="big-h" style="font-family:'Roboto Flex Variable';font-stretch:151%;font-weight:700">CHAOS → CORE → SYSTEM → GROWTH</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="lab__section">
+    <p class="t-micro">02 · Шкала · Inter Tight</p>
+    <h1 class="t-display">Приводим бизнес в движение — от диагностики до внедрения.</h1>
+    <h2 class="t-h1">Сначала диагноз. Потом бюджет.</h2>
+    <h2 class="t-h2">Фундамент, на котором не теряются заявки.</h2>
+    <h3 class="t-h3">Клиенты из каждого канала. С понятной экономикой.</h3>
+    <h4 class="t-h4">Крупные контракты и защищённые сделки.</h4>
+    <p class="t-lead">Аудит и финансы, сайты и CRM, бренд и контент, реклама и SEO, тендеры и право. Одна команда, одна система.</p>
+    <p class="t-body">Любую работу начинаем с аудита: находим, где бизнес теряет деньги и клиентов и что даст рост быстрее всего. Карта проблем и возможностей · приоритеты · roadmap · бюджет.</p>
+    <p class="t-small">Категория в таблице проставлена по смыслу, заказчику нужно сверить.</p>
+  </section>
+
+  <section class="lab__section">
+    <p class="t-micro">03 · Микрометки · JetBrains Mono</p>
+    <div class="micro-row">
+      <span class="t-micro">AUDIT / CORE / SYSTEM / GROWTH</span>
+      <span class="t-micro">01 · CORE</span>
+      <span class="t-micro">CAC · LTV · ROMI</span>
+      <span class="t-micro t-micro--fg">43.238° N · 76.889° E</span>
+      <span class="t-micro t-micro--accent">MEASURE</span>
+    </div>
+  </section>
+
+  <section class="lab__section">
+    <p class="t-micro">04 · Chrome text (ref-01)</p>
+    <p class="t-counter chrome-text">34+</p>
+    <h2 class="t-h1">Результат — это <span class="chrome-text">движение</span>.</h2>
+  </section>
+
+  <section class="lab__section">
+    <p class="t-micro">05 · Кнопки и темы</p>
+    <div class="themes">
+      {themes.map((t) => (
+        <div class="theme" data-theme={t}>
+          <p class="t-micro">{t}</p>
+          <h3 class="t-h3">Заголовок экрана</h3>
+          <p class="t-lead">Вторичный текст на этой теме.</p>
+          <p class="t-small">Мелкий текст, fg-2.</p>
+          <div class="theme__btns">
+            <Button variant="fill">Получить первичный разбор</Button>
+            <Button variant="ghost" arrow>Смотреть услуги</Button>
+            <Button variant="text">Все кейсы</Button>
+          </div>
+          <div class="hair" style="margin-top:1rem"></div>
+        </div>
+      ))}
+    </div>
+  </section>
+</div>
+
+<style>
+  .lab {
+    padding: var(--space-12) var(--gutter) var(--space-24);
+    display: grid;
+    gap: var(--space-16);
+    max-width: 1400px;
+  }
+  .lab__head {
+    display: grid;
+    gap: var(--space-2);
+  }
+  .lab__section {
+    display: grid;
+    gap: var(--space-6);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--hair);
+  }
+  .cmp {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-8);
+  }
+  .cmp__col {
+    display: grid;
+    gap: var(--space-4);
+    align-content: start;
+  }
+  .big {
+    font-size: clamp(3rem, 8vw, 7.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+  }
+  .big-h {
+    font-size: clamp(1.5rem, 3vw, 2.75rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+  .micro-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8);
+  }
+  .themes {
+    display: grid;
+    gap: var(--space-4);
+  }
+  .theme {
+    background: var(--bg);
+    color: var(--fg);
+    padding: var(--space-8);
+    display: grid;
+    gap: var(--space-3);
+  }
+  .theme__btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    align-items: center;
+    margin-top: var(--space-2);
+  }
+</style>

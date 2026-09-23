@@ -1,0 +1,151 @@
+---
+/**
+ * Rail — фиксированная шкала сбоку: метки CHAOS · CORE · SYSTEM · GROWTH и засечки 8 экранов.
+ * Показывает прогресс, кликабельна, доступна с клавиатуры (стрелки, Home/End). На мобильном — полоса сверху.
+ */
+import { getContent, type LangCode } from '../../lib/i18n';
+
+export interface Props {
+  lang: LangCode;
+}
+const { lang } = Astro.props;
+const c = getContent(lang);
+const d = c.services.directions;
+const screens = [
+  { id: 'core', label: c.ui.formulaRu[1], stage: c.ui.formula[0] },
+  { id: 'audit', label: d[0].name, stage: c.ui.formula[1] },
+  { id: 'systems', label: d[1].name, stage: c.ui.formula[2] },
+  { id: 'brand', label: d[2].name, stage: '' },
+  { id: 'traffic', label: d[3].name, stage: '' },
+  { id: 'legal', label: d[4].name, stage: '' },
+  { id: 'growth', label: c.ui.formulaRu[3], stage: c.ui.formula[3] },
+  { id: 'contact', label: c.ui.nav[3].label, stage: '' },
+];
+---
+
+<nav class="rail" data-rail aria-label="CHAOS · CORE · SYSTEM · GROWTH">
+  <div class="rail__line"><span class="rail__progress" data-rail-progress></span></div>
+  <ol class="rail__ticks" role="list">
+    {screens.map((s, i) => (
+      <li class="rail__tick" data-rail-tick={i} style={`--i:${i}`}>
+        {s.stage && <span class="rail__stage t-micro" data-rail-stage={s.stage}>{s.stage}</span>}
+        <button class="rail__btn" type="button" data-rail-go={i} aria-label={`${i + 1} · ${s.label}`} aria-current={i === 0 ? 'step' : undefined}>
+          <span class="rail__dot"></span>
+          <span class="rail__name t-micro">{s.label}</span>
+        </button>
+      </li>
+    ))}
+  </ol>
+</nav>
+
+<style>
+  .rail {
+    position: fixed;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 700;
+    width: var(--rail-w);
+    height: 44vh;
+    pointer-events: none;
+    color: var(--fg);
+  }
+  .rail__line {
+    position: absolute;
+    left: calc(var(--gutter) - 1px);
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--hair);
+  }
+  .rail__progress {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 0%;
+    background: var(--accent);
+    transition: height 0.15s linear;
+  }
+  .rail__ticks {
+    position: absolute;
+    inset: 0;
+    left: calc(var(--gutter) - 1px);
+  }
+  .rail__tick {
+    position: absolute;
+    left: 0;
+    top: calc(var(--i) * (100% / 7));
+    transform: translateY(-50%);
+  }
+  .rail__stage {
+    position: absolute;
+    left: 14px;
+    top: -1.5em;
+    color: var(--fg-3);
+    white-space: nowrap;
+    letter-spacing: 0.14em;
+    line-height: 1;
+  }
+  .rail__stage.is-active {
+    color: var(--accent);
+  }
+  .rail__btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px;
+    margin: -6px 0 -6px -8.5px; /* центр точки — на линии */
+    pointer-events: auto;
+  }
+  .rail__dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--fg-3);
+    transition: transform var(--dur-fast), background-color var(--dur-fast);
+  }
+  .rail__name {
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity var(--dur-fast), transform var(--dur-fast);
+    white-space: nowrap;
+    color: var(--fg);
+  }
+  .rail__btn:hover .rail__name,
+  .rail__btn:focus-visible .rail__name,
+  .rail__btn[aria-current='step'] .rail__name {
+    opacity: 1;
+    transform: none;
+  }
+  .rail__btn[aria-current='step'] .rail__dot {
+    background: var(--accent);
+    transform: scale(1.8);
+  }
+  /* Мобильный и низкие окна: тонкая полоса прогресса сверху */
+  @media (max-width: 899px), (max-height: 560px) {
+    .rail {
+      top: 0;
+      left: 0;
+      right: 0;
+      width: auto;
+      height: 2px;
+      transform: none;
+      z-index: 810;
+    }
+    .rail__line {
+      left: 0;
+      top: 0;
+      height: 2px;
+      width: 100%;
+    }
+    .rail__progress {
+      height: 100%;
+      width: 0%;
+      transition: width 0.15s linear;
+    }
+    .rail__ticks {
+      display: none;
+    }
+  }
+</style>

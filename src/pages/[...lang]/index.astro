@@ -1,0 +1,80 @@
+---
+/** Главная: 8 экранов со сквозной 3D-сценой (BRIEF §7). */
+import Base from '../../layouts/Base.astro';
+import S1Core from '../../components/home/S1Core.astro';
+import ScreenServices from '../../components/home/ScreenServices.astro';
+import S7Growth from '../../components/home/S7Growth.astro';
+import S8Contact from '../../components/home/S8Contact.astro';
+import Drawer from '../../components/home/Drawer.astro';
+import Rail from '../../components/home/Rail.astro';
+import Overlays from '../../components/home/Overlays.astro';
+import { getContent, langStaticPaths } from '../../lib/i18n';
+import '../../styles/home.css';
+
+export function getStaticPaths() {
+  return langStaticPaths();
+}
+
+const { lang } = Astro.props;
+const c = getContent(lang);
+const s1 = c.home.s1;
+---
+
+<Base lang={lang} path="/" title={c.ui.meta.home.title} description={c.ui.meta.home.description} theme="black" bodyClass="is-home" noFooter>
+  <div class="gl-wrap" aria-hidden="true">
+    <div class="gl-poster" data-poster></div>
+    <canvas id="gl" class="gl-canvas"></canvas>
+  </div>
+
+  <div class="anchor-labels" aria-hidden="true">
+    {c.services.directions[0].dataPoints.map((label, i) => (
+      <span class="anchor t-micro" data-anchor={`dp-${i}`}><span class="anchor__tick"></span>{label}</span>
+    ))}
+    {c.services.directions[3].services.map((s) => (
+      <span class="anchor anchor--metric t-micro" data-anchor={`metric-${s.id}`}>{s.metric}</span>
+    ))}
+  </div>
+
+  <div class="orbit-labels" aria-hidden="true">
+    {s1.orbits.map((label, i) => (
+      <button class="orbit-label t-micro" type="button" data-orbit-label={i} tabindex="-1">
+        <span class="orbit-label__dot"></span>
+        <span class="orbit-label__text">{label}</span>
+      </button>
+    ))}
+  </div>
+
+  <div class="stage-wrap" data-stage-wrap>
+    <div class="stage" data-stage>
+      <S1Core lang={lang} />
+
+      {c.services.directions.map((d, i) => (
+        <ScreenServices lang={lang} direction={d} index={i + 1} />
+      ))}
+      <S7Growth lang={lang} />
+    </div>
+  </div>
+
+  <S8Contact lang={lang} />
+
+  <Rail lang={lang} />
+  <Overlays lang={lang} />
+  <Drawer lang={lang} />
+
+  <script>
+    import { initHome } from '../../lib/home';
+    initHome();
+  </script>
+</Base>
+
+<style>
+  .stub {
+    height: 100%;
+    display: grid;
+    align-content: center;
+    gap: var(--space-4);
+    max-width: 900px;
+    margin-inline: 0;
+    padding-top: var(--header-h);
+  }
+</style>

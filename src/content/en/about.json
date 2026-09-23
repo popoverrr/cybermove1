@@ -1,0 +1,37 @@
+{
+  "title": "About",
+  "h1": "Not an agency. A partner that runs the business as a whole.",
+  "lead": "We start with an audit, including the financials. We define the core of the business. We build the system: websites, CRM, telephony, AI. We package it: brand, content, PR. We bring in clients: advertising and SEO. We support the deals: tenders and legal.",
+  "approachTitle": "Approach",
+  "approach": [
+    { "code": "CHAOS", "step": "01", "name": "Diagnostics", "text": "Business, market, product, data and processes." },
+    { "code": "CORE", "step": "02", "name": "Core", "text": "Product, audience, positioning, value, offer, message." },
+    { "code": "SYSTEM", "step": "03", "name": "System", "text": "Marketing, digital, sales, CRM, analytics. We build and automate." },
+    { "code": "GROWTH", "step": "04", "name": "Growth", "text": "We implement, measure the business result and scale what has proven to work." }
+  ],
+  "whyTitle": "Why CYBERMOVE",
+  "why": [
+    { "name": "Business first", "text": "Every decision is judged by the task and the result." },
+    { "name": "Execution", "text": "We don't stop at strategy — we implement the system." },
+    { "name": "One team", "text": "Marketing, technology, finance, tenders and legal join the task as needed." }
+  ],
+  "measureTitle": "What we measure",
+  "measure": ["qualified leads", "conversion", "CAC", "CPL", "sales conversion", "revenue contribution", "retention", "response time"],
+  "formatsTitle": "How we work",
+  "formats": [
+    { "name": "Audit & roadmap", "text": "Diagnostics, a map of problems and opportunities, a 3–12 month plan." },
+    { "name": "Project launch", "text": "A website, CRM, brand, ad campaign or tender — delivered turnkey with a clear result." },
+    { "name": "Growth partnership", "text": "Long-term support: the system, the team, a measurable business result." }
+  ],
+  "teamTitle": "Team",
+  "teamPlaceholder": "[PLACEHOLDER: team names, roles, photos]",
+  "team": [
+    { "name": "[PLACEHOLDER]", "role": "Founder" },
+    { "name": "[PLACEHOLDER]", "role": "Marketing & brand" },
+    { "name": "[PLACEHOLDER]", "role": "Systems & AI" },
+    { "name": "[PLACEHOLDER]", "role": "Finance" },
+    { "name": "[PLACEHOLDER]", "role": "Tenders & legal" }
+  ],
+  "geoTitle": "Where we work",
+  "geoLead": "Team and projects across Europe, Ukraine, Kazakhstan and Asia."
+}

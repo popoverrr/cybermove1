@@ -1,0 +1,125 @@
+---
+/** Прелоадер (волосяная линия и счётчик, ≤ 1.5 с) и кнопка звука (AudioToggle). */
+import { getContent, type LangCode } from '../../lib/i18n';
+
+export interface Props {
+  lang: LangCode;
+}
+const { lang } = Astro.props;
+const c = getContent(lang);
+---
+
+<div class="preloader" data-preloader aria-hidden="true">
+  <div class="preloader__inner">
+    <p class="preloader__brand t-micro">{c.ui.brand} · {c.ui.formula.join(' → ')}</p>
+    <p class="preloader__count t-mono"><span data-preloader-count>00</span></p>
+    <div class="preloader__line"><span data-preloader-bar></span></div>
+  </div>
+</div>
+
+<button class="audio" type="button" data-audio-toggle aria-pressed="false" aria-label={c.ui.soundOn} data-label-on={c.ui.soundOn} data-label-off={c.ui.soundOff}>
+  <span class="audio__bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+  <span class="audio__text t-micro">SOUND</span>
+</button>
+
+<style>
+  .preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 950;
+    background: var(--black);
+    color: var(--white);
+    display: grid;
+    place-items: center;
+    transition: opacity 0.6s var(--ease-out), visibility 0s linear 0.6s;
+  }
+  .preloader.is-done {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  :global(html.no-js) .preloader {
+    display: none;
+  }
+  .preloader__inner {
+    display: grid;
+    gap: var(--space-4);
+    width: min(360px, 70vw);
+  }
+  .preloader__brand {
+    color: var(--steel-600);
+  }
+  .preloader__count {
+    font-size: 2.5rem;
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    line-height: 1;
+  }
+  .preloader__line {
+    height: 1px;
+    background: rgba(244, 246, 250, 0.14);
+    position: relative;
+  }
+  .preloader__line span {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0%;
+    background: var(--white);
+    transition: width 0.12s linear;
+  }
+
+  .audio {
+    position: fixed;
+    right: var(--gutter);
+    bottom: var(--space-6);
+    z-index: 750;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    color: var(--fg);
+    border: 1px solid var(--hair);
+    background: transparent;
+    transition: border-color var(--dur-fast);
+  }
+  .audio[hidden] {
+    display: none;
+  }
+  .audio:hover {
+    border-color: var(--hair-strong);
+  }
+  .audio__bars {
+    display: inline-flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 12px;
+  }
+  .audio__bars i {
+    display: block;
+    width: 2px;
+    height: 4px;
+    background: currentColor;
+    transition: height 0.2s;
+  }
+  .audio.is-on .audio__bars i {
+    animation: eq 0.9s ease-in-out infinite;
+  }
+  .audio.is-on .audio__bars i:nth-child(2) { animation-delay: 0.15s; }
+  .audio.is-on .audio__bars i:nth-child(3) { animation-delay: 0.3s; }
+  .audio.is-on .audio__bars i:nth-child(4) { animation-delay: 0.45s; }
+  @keyframes eq {
+    0%, 100% { height: 4px; }
+    50% { height: 12px; }
+  }
+  @media (max-width: 899px) {
+    .audio {
+      bottom: var(--space-4);
+    }
+    .audio__text {
+      display: none;
+    }
+  }
+</style>

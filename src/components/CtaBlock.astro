@@ -1,0 +1,53 @@
+---
+/** Блок CTA в конце внутренних страниц: первичный разбор + WhatsApp. */
+import Button from './Button.astro';
+import { getContent, localePath, type LangCode } from '../lib/i18n';
+import { WHATSAPP_URL } from '../../site.config';
+
+export interface Props {
+  lang: LangCode;
+  title?: string;
+  text?: string;
+}
+const { lang, title, text } = Astro.props;
+const c = getContent(lang);
+---
+
+<section class="cta">
+  <div class="container cta__inner">
+    <p class="t-micro cta__label">{c.ui.formula.join(' → ')}</p>
+    <h2 class="t-h2 cta__title">{title ?? c.home.s8.h2}</h2>
+    <p class="t-lead cta__text">{text ?? c.home.s8.lead}</p>
+    <div class="cta__btns">
+      <Button href={localePath(lang, '/contact/')} variant="fill" size="lg">{c.ui.cta}</Button>
+      <Button href={WHATSAPP_URL} variant="ghost" size="lg" target="_blank" rel="noopener">{c.ui.whatsapp}</Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta {
+    border-top: 1px solid var(--hair);
+    padding: var(--section-pad) 0;
+  }
+  .cta__inner {
+    display: grid;
+    gap: var(--space-4);
+    max-width: none;
+  }
+  .cta__label {
+    color: var(--fg-3);
+  }
+  .cta__title {
+    max-width: 16ch;
+  }
+  .cta__text {
+    max-width: 48ch;
+  }
+  .cta__btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-top: var(--space-4);
+  }
+</style>

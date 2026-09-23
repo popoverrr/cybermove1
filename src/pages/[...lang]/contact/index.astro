@@ -1,0 +1,94 @@
+---
+/** /contact/ — форма, WhatsApp, каналы, география. */
+import Base from '../../../layouts/Base.astro';
+import PageHero from '../../../components/PageHero.astro';
+import LeadForm from '../../../components/LeadForm.astro';
+import { getContent, langStaticPaths } from '../../../lib/i18n';
+import { breadcrumbLd } from '../../../lib/seo';
+import { WHATSAPP_NUMBER, WHATSAPP_URL, GEOGRAPHY } from '../../../../site.config';
+
+export function getStaticPaths() {
+  return langStaticPaths();
+}
+const { lang } = Astro.props;
+const c = getContent(lang);
+const k = c.contact;
+const jsonLd = [breadcrumbLd(lang, [{ name: c.ui.brand, path: '/' }, { name: k.title, path: '/contact/' }])];
+---
+
+<Base lang={lang} path="/contact/" title={c.ui.meta.contact.title} description={c.ui.meta.contact.description} theme="black" jsonLd={jsonLd} ogImage="/posters/og-contact.jpg">
+  <PageHero theme="black" label={`${k.title} · 07`} title={k.h1} lead={k.lead} render="/posters/dir-contact.webp" beam={0.4} size="md" />
+
+  <section class="contact">
+    <div class="container contact__inner">
+      <div class="contact__form">
+        <LeadForm lang={lang} id="lead-page" />
+      </div>
+      <aside class="contact__aside">
+        <div class="channel">
+          <p class="t-micro">{k.whatsappLabel}</p>
+          <a class="channel__value" href={WHATSAPP_URL} target="_blank" rel="noopener">{WHATSAPP_NUMBER}</a>
+        </div>
+        <div class="channel">
+          <p class="t-micro">{k.emailLabel}</p>
+          <p class="channel__value channel__value--ph">{k.email}</p>
+        </div>
+        <div class="channel">
+          <p class="t-micro">{k.telegramLabel}</p>
+          <p class="channel__value channel__value--ph">{k.telegram}</p>
+        </div>
+        <div class="channel">
+          <p class="t-micro">{k.addressLabel}</p>
+          <p class="channel__value channel__value--ph">{k.address}</p>
+        </div>
+        <div class="channel">
+          <p class="t-micro">{k.geoTitle}</p>
+          <p class="t-small">{GEOGRAPHY.join(' · ')}</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <script>
+    import { initForms } from '../../../lib/form';
+    initForms();
+  </script>
+</Base>
+
+<style>
+  .contact__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+    gap: var(--space-12);
+    padding-top: var(--section-pad);
+    padding-bottom: var(--section-pad);
+    max-width: none;
+  }
+  .contact__aside {
+    display: grid;
+    gap: var(--space-6);
+    align-content: start;
+  }
+  .channel {
+    display: grid;
+    gap: var(--space-2);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--hair);
+  }
+  .channel__value {
+    font-family: var(--font-mono);
+    font-size: 1.0625rem;
+    letter-spacing: 0.02em;
+  }
+  .channel__value--ph {
+    color: var(--fg-3);
+    font-family: var(--font-sans);
+    font-size: var(--fs-small);
+  }
+  @media (max-width: 899px) {
+    .contact__inner {
+      grid-template-columns: 1fr;
+      gap: var(--space-8);
+    }
+  }
+</style>

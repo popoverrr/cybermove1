@@ -1,0 +1,232 @@
+---
+/**
+ * Экраны S2–S6: метка, заголовок, фраза, строки услуг (ServiceRow), результат.
+ * Hover по строке меняет 3D-сцену, клик открывает Drawer (содержимое Drawer — в DrawerHost).
+ */
+import type { Direction, LangCode } from '../../lib/i18n';
+import { getContent, localePath } from '../../lib/i18n';
+
+export interface Props {
+  lang: LangCode;
+  direction: Direction;
+  index: number; // 1..5
+  dur?: number;
+}
+const { lang, direction: d, index, dur = 160 } = Astro.props;
+const c = getContent(lang);
+const h2 = d.h2Accent && d.h2.includes(d.h2Accent) ? d.h2.replace(d.h2Accent, `<span class="chrome-text">${d.h2Accent}</span>`) : d.h2;
+---
+
+<section class:list={['screen', 'screen--services', `screen--s${index + 1}`]} data-screen={d.id} data-dur={dur} data-dur-mobile="120" id={d.id} data-theme={d.theme} aria-labelledby={`h-${d.id}`}>
+  <div class="screen__pin">
+    <div class="svc container">
+      <p class="svc__corner svc__corner--tl t-micro">{d.screenLabel}</p>
+      <p class="svc__corner svc__corner--tr t-micro">{d.micro.join(' · ')}</p>
+      <span class="crosshair svc__cross" aria-hidden="true"></span>
+
+      <div class="svc__text">
+        <p class="t-micro svc__label">{d.index} — {d.name}</p>
+        <h2 class="t-h1 svc__h2" id={`h-${d.id}`} data-reveal set:html={h2} />
+        <p class="t-lead svc__phrase" data-reveal-2>{d.phrase}</p>
+      </div>
+
+      <ul class="rows" data-rows>
+        {d.services.map((s, i) => (
+          <li class="row" data-row>
+            <button class="row__btn" type="button" data-service={s.id} data-direction={d.id} aria-haspopup="dialog" aria-controls="drawer" aria-expanded="false">
+              <span class="row__idx t-micro">0{i + 1}</span>
+              <span class="row__name">{s.name}</span>
+              <span class="row__line t-small">{s.line}</span>
+              <span class="row__arrow" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.5 8h10M8.5 3.5 13 8l-4.5 4.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="square" /></svg>
+              </span>
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      <p class="svc__result t-micro" data-reveal-3>
+        <span class="t-micro">{c.ui.result}:</span> <span class="t-micro--fg">{d.result}</span>
+      </p>
+      <a class="svc__more t-micro" href={localePath(lang, `/services/${d.slug}/`)}>{c.ui.toDirection} →</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .svc {
+    position: relative;
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    align-content: start;
+    padding-top: calc(var(--header-h) + var(--space-6));
+    padding-bottom: var(--space-6);
+    max-width: none;
+  }
+  .svc__corner {
+    position: absolute;
+    top: calc(var(--header-h) + var(--space-6));
+    margin: 0;
+  }
+  .svc__corner--tl {
+    left: var(--gutter);
+    display: none;
+  }
+  .svc__corner--tr {
+    right: var(--gutter);
+    text-align: right;
+  }
+  .svc__cross {
+    right: calc(var(--gutter) - 5px);
+    top: 50%;
+  }
+  .svc__text {
+    display: grid;
+    gap: var(--space-3);
+    max-width: min(46%, 640px);
+    margin-bottom: var(--space-4);
+  }
+  .svc__label {
+    color: var(--accent);
+  }
+  .svc__h2 {
+    font-size: min(var(--fs-h1), 6.8vh);
+  }
+  .svc__phrase {
+    max-width: 46ch;
+    font-size: min(var(--fs-lead), 2.4vh);
+  }
+  .rows {
+    align-self: end;
+    max-width: min(46%, 640px);
+    border-top: 1px solid var(--hair);
+  }
+  .row__btn {
+    display: grid;
+    grid-template-columns: 2.25rem 1fr auto;
+    grid-template-areas:
+      'idx name arrow'
+      'idx line arrow';
+    column-gap: var(--space-4);
+    align-items: center;
+    width: 100%;
+    text-align: left;
+    padding: clamp(0.4rem, 1vh, 0.75rem) 0;
+    border-bottom: 1px solid var(--hair);
+    color: var(--fg);
+    transition: padding-left var(--dur) var(--ease-out), color var(--dur-fast);
+  }
+  .row__idx {
+    grid-area: idx;
+    align-self: start;
+    padding-top: 0.35em;
+  }
+  .row__name {
+    grid-area: name;
+    font-size: clamp(1rem, 0.85rem + 0.4vw, 1.2rem);
+    font-weight: 540;
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+  }
+  .row__line {
+    grid-area: line;
+    color: var(--fg-2);
+    margin-top: 0.15em;
+    max-width: 52ch;
+    font-size: 0.8125rem;
+    line-height: 1.35;
+  }
+  @media (max-height: 820px) and (min-width: 900px) {
+    .row__line {
+      display: none;
+    }
+  }
+  .row__arrow {
+    grid-area: arrow;
+    display: inline-flex;
+    color: var(--fg-3);
+    transform: translateX(-6px);
+    opacity: 0.6;
+    transition: transform var(--dur) var(--ease-out), opacity var(--dur), color var(--dur);
+  }
+  .row__btn:hover,
+  .row__btn:focus-visible,
+  .row.is-active .row__btn {
+    padding-left: 0.5rem;
+  }
+  .row__btn:hover .row__arrow,
+  .row__btn:focus-visible .row__arrow,
+  .row.is-active .row__arrow {
+    transform: translateX(0);
+    opacity: 1;
+    color: var(--accent);
+  }
+  .row__btn:hover .row__idx,
+  .row.is-active .row__idx {
+    color: var(--accent);
+  }
+  .row__btn:focus-visible {
+    outline-offset: -2px;
+  }
+  .svc__result {
+    margin-top: var(--space-3);
+    max-width: min(46%, 640px);
+  }
+  .svc__more {
+    position: absolute;
+    right: var(--gutter);
+    bottom: var(--space-8);
+    color: var(--fg-2);
+    transition: color var(--dur-fast);
+  }
+  .svc__more:hover {
+    color: var(--fg);
+  }
+
+  @media (max-width: 899px) {
+    .svc {
+      grid-template-rows: auto auto auto;
+      padding-top: calc(var(--header-h) + 34vh);
+      padding-bottom: var(--space-6);
+      overflow-y: auto;
+    }
+    .svc__corner--tr {
+      display: none;
+    }
+    .svc__text {
+      max-width: 100%;
+      gap: var(--space-2);
+      margin-bottom: var(--space-4);
+    }
+    .svc__h2 {
+      font-size: clamp(1.6rem, 6.4vw, 2.2rem);
+    }
+    .svc__phrase {
+      font-size: 0.9375rem;
+      line-height: 1.35;
+    }
+    .rows,
+    .svc__result {
+      max-width: 100%;
+    }
+    .row__btn {
+      grid-template-columns: 1.75rem 1fr auto;
+      padding: 0.55rem 0;
+    }
+    .row__line {
+      display: none;
+    }
+    .row__name {
+      font-size: 0.9375rem;
+    }
+    .svc__result {
+      margin-top: var(--space-3);
+    }
+    .svc__more {
+      position: static;
+      margin-top: var(--space-3);
+      display: inline-block;
+    }
+  }
+</style>

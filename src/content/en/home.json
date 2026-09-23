@@ -1,0 +1,35 @@
+{
+  "s1": {
+    "id": "core",
+    "micro": ["AUDIT", "SYSTEMS", "BRAND", "TRAFFIC", "LEGAL"],
+    "label": "00 · CHAOS → CORE",
+    "h1": "We set business in motion — from diagnostics to delivery.",
+    "h1Accent": "motion",
+    "lead": "Audit and finance, websites and CRM, brand and content, advertising and SEO, tenders and legal. One team, one system.",
+    "ctaPrimary": "Get an initial review",
+    "ctaSecondary": "See services",
+    "orbits": ["Audit", "Systems", "Brand & content", "Traffic", "Tenders & legal"],
+    "scrollHint": "Scroll",
+    "tickerTitle": "Worked with"
+  },
+  "s7": {
+    "id": "growth",
+    "label": "06 · GROWTH",
+    "h2": "Results mean motion.",
+    "counters": [
+      { "value": 34, "suffix": "+", "label": "projects" },
+      { "value": 13, "suffix": "", "label": "cities" },
+      { "value": 7, "suffix": "", "label": "industries" },
+      { "value": 6, "suffix": "", "label": "years with the USYK brand" }
+    ],
+    "featured": ["usyk", "ukrainian-fashion-week", "intertop", "brsm-nafta", "hydrosta-kazakhstan"],
+    "resultsPlaceholder": "[PLACEHOLDER: result figures]",
+    "cta": "All cases"
+  },
+  "s8": {
+    "id": "contact",
+    "label": "07 · CONTACT",
+    "h2": "Let's start with an initial review.",
+    "lead": "Tell us about the task. We come back with first conclusions and propose a way to work together."
+  }
+}

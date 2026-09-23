@@ -1,0 +1,274 @@
+---
+/** /services/<направление>/ — страница направления: услуги блоками с якорями, связанные кейсы, CTA. */
+import Base from '../../../layouts/Base.astro';
+import PageHero from '../../../components/PageHero.astro';
+import CtaBlock from '../../../components/CtaBlock.astro';
+import Button from '../../../components/Button.astro';
+import { getContent, localePath, findCase, type LangCode } from '../../../lib/i18n';
+import { LANGS } from '../../../../site.config';
+import { breadcrumbLd, serviceLd } from '../../../lib/seo';
+
+export function getStaticPaths() {
+  const out: Array<{ params: { lang: string | undefined; slug: string }; props: { lang: LangCode; slug: string } }> = [];
+  for (const l of LANGS) {
+    const c = getContent(l.code);
+    for (const d of c.services.directions) {
+      out.push({ params: { lang: l.prefix || undefined, slug: d.slug }, props: { lang: l.code, slug: d.slug } });
+    }
+  }
+  return out;
+}
+
+const { lang, slug } = Astro.props;
+const c = getContent(lang);
+const d = c.services.directions.find((x) => x.slug === slug)!;
+const path = `/services/${d.slug}/`;
+const others = c.services.directions.filter((x) => x.id !== d.id);
+const title = lang === 'ru' ? `${d.nameFull} — ${d.h2} | ${c.ui.brand}` : `${d.nameFull} — ${d.h2} | ${c.ui.brand}`;
+const description = `${d.phrase} ${d.services.map((s) => s.name).join(', ')}.`;
+const jsonLd = [
+  breadcrumbLd(lang, [
+    { name: c.ui.brand, path: '/' },
+    { name: c.ui.services, path: '/services/' },
+    { name: d.name, path },
+  ]),
+  serviceLd(lang, { name: d.nameFull, description: d.phrase, path, services: d.services.map((s) => ({ name: s.name, description: s.line, anchor: s.id })) }),
+];
+---
+
+<Base lang={lang} path={path} title={title} description={description} theme={d.theme as never} jsonLd={jsonLd} ogImage={`/posters/og-${d.id}.jpg`}>
+  <PageHero theme={d.theme as never} label={`${d.index} · ${d.stage} · ${d.name}`} title={d.h2} accent={d.h2Accent} lead={d.phrase} micro={d.micro} render={`/posters/dir-${d.id}.webp`} beam={d.id === 'brand-content' ? 0.6 : 0} />
+
+  <nav class="subnav container" aria-label={c.ui.services}>
+    <ol class="subnav__list">
+      {d.services.map((s, i) => (
+        <li><a class="t-micro" href={`#${s.id}`}>0{i + 1} · {s.name}</a></li>
+      ))}
+    </ol>
+  </nav>
+
+  {d.note && (
+    <p class="note container t-small">{d.note}</p>
+  )}
+
+  <section class="svcs">
+    {d.services.map((s, i) => (
+      <article class="svcp" id={s.id}>
+        <div class="container svcp__inner">
+          <header class="svcp__head">
+            <p class="t-micro svcp__idx">0{i + 1} / 0{d.services.length}</p>
+            <h2 class="t-h2 svcp__title">{s.name}</h2>
+            <p class="t-lead svcp__line">{s.line}</p>
+          </header>
+          <div class="svcp__body">
+            <div class="svcp__block">
+              <p class="t-micro">{c.ui.included}</p>
+              <ul class="svcp__list">
+                {s.includes.map((x) => <li>{x}</li>)}
+              </ul>
+            </div>
+            <div class="svcp__block">
+              <p class="t-micro">{c.ui.result}</p>
+              <p class="svcp__result">{s.result}</p>
+            </div>
+            <div class="svcp__block">
+              <p class="t-micro">{c.ui.format}</p>
+              <p class="t-small">{s.format}</p>
+            </div>
+            {s.cases.length > 0 && (
+              <div class="svcp__block">
+                <p class="t-micro">{c.ui.relatedCases}</p>
+                <ul class="svcp__cases">
+                  {s.cases.map((id) => {
+                    const k = findCase(c, id);
+                    return k ? (
+                      <li>
+                        <a href={`${localePath(lang, '/cases/')}#${k.id}`}>{k.name}</a>
+                        <span class="t-small">{k.summary}</span>
+                      </li>
+                    ) : null;
+                  })}
+                </ul>
+              </div>
+            )}
+            <div class="svcp__cta">
+              <Button href={localePath(lang, '/contact/')} variant="ghost" arrow>{c.ui.cta}</Button>
+            </div>
+          </div>
+        </div>
+      </article>
+    ))}
+  </section>
+
+  <section class="others">
+    <div class="container others__inner">
+      <p class="t-micro">{c.ui.directions}</p>
+      <ul class="others__list">
+        {others.map((o) => (
+          <li>
+            <a class="others__link" href={localePath(lang, `/services/${o.slug}/`)}>
+              <span class="t-micro">{o.index}</span>
+              <span class="t-h4">{o.name}</span>
+              <span class="t-small">{o.phrase}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <CtaBlock lang={lang} />
+</Base>
+
+<style>
+  .subnav {
+    padding-top: var(--space-6);
+    padding-bottom: var(--space-6);
+    border-bottom: 1px solid var(--hair);
+    max-width: none;
+  }
+  .subnav__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4) var(--space-8);
+  }
+  .subnav a {
+    color: var(--fg-2);
+  }
+  .subnav a:hover {
+    color: var(--fg);
+  }
+  .note {
+    padding-top: var(--space-6);
+    color: var(--fg-3);
+    max-width: none;
+  }
+  .note::before {
+    content: '';
+    display: inline-block;
+    width: 14px;
+    height: 1px;
+    background: var(--accent);
+    vertical-align: middle;
+    margin-right: 10px;
+  }
+  .svcp {
+    border-top: 1px solid var(--hair);
+    scroll-margin-top: calc(var(--header-h) + 1rem);
+  }
+  .svcp:first-child {
+    border-top: 0;
+  }
+  .svcp__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--space-8) var(--space-12);
+    padding-top: var(--section-pad);
+    padding-bottom: var(--section-pad);
+    max-width: none;
+  }
+  .svcp__head {
+    display: grid;
+    gap: var(--space-4);
+    align-content: start;
+    position: sticky;
+    top: calc(var(--header-h) + 1rem);
+  }
+  .svcp__idx {
+    color: var(--accent);
+  }
+  .svcp__line {
+    max-width: 40ch;
+  }
+  .svcp__body {
+    display: grid;
+    gap: var(--space-8);
+  }
+  .svcp__block {
+    display: grid;
+    gap: var(--space-3);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--hair);
+  }
+  .svcp__list {
+    display: grid;
+    gap: 0.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+  .svcp__list li {
+    position: relative;
+    padding-left: 1.1rem;
+    line-height: 1.4;
+  }
+  .svcp__list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.65em;
+    width: 6px;
+    height: 1px;
+    background: var(--accent);
+  }
+  .svcp__result {
+    font-size: var(--fs-h4);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    max-width: 48ch;
+  }
+  .svcp__cases {
+    display: grid;
+    gap: var(--space-3);
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+  .svcp__cases li {
+    display: grid;
+    gap: 0.2rem;
+  }
+  .svcp__cases a {
+    font-weight: 540;
+    text-decoration: underline;
+    text-decoration-color: var(--hair-strong);
+    text-underline-offset: 3px;
+  }
+  .svcp__cases a:hover {
+    text-decoration-color: var(--fg);
+  }
+  .others {
+    border-top: 1px solid var(--hair);
+  }
+  .others__inner {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+    display: grid;
+    gap: var(--space-6);
+    max-width: none;
+  }
+  .others__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--space-4);
+  }
+  .others__link {
+    display: grid;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    border: 1px solid var(--hair);
+    height: 100%;
+    transition: border-color var(--dur-fast);
+  }
+  .others__link:hover {
+    border-color: var(--hair-strong);
+  }
+  .others__link .t-small {
+    color: var(--fg-2);
+  }
+  @media (max-width: 899px) {
+    .svcp__inner {
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+    }
+    .svcp__head {
+      position: static;
+    }
+  }
+</style>

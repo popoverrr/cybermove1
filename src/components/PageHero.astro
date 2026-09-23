@@ -1,0 +1,120 @@
+---
+/**
+ * Шапка внутренней страницы (BRIEF §10): лёгкий шейдерный фон в теме направления (lite-bg, без three)
+ * и статичный рендер объекта направления (постер из docs/screens → public/posters, Фаза 5).
+ */
+export interface Props {
+  theme: 'black' | 'graphite' | 'steel' | 'blue' | 'silver';
+  label: string;
+  title: string;
+  lead?: string;
+  micro?: string[];
+  render?: string;
+  beam?: number;
+  accent?: string;
+  size?: 'lg' | 'md';
+}
+import { withBase } from '../lib/base';
+const { theme, label, title, lead, micro = [], render, beam = 0, accent, size = 'lg' } = Astro.props;
+const renderUrl = render ? withBase(render) : '';
+const html = accent && title.includes(accent) ? title.replace(accent, `<span class="chrome-text">${accent}</span>`) : title;
+---
+
+<section class:list={['phero', `phero--${size}`]} data-theme={theme} data-lite-bg={theme} data-beam={beam}>
+  <canvas class="phero__bg" aria-hidden="true"></canvas>
+  {renderUrl && <div class="phero__render" style={`background-image:url(${renderUrl})`} aria-hidden="true"></div>}
+  <div class="phero__inner container">
+    <p class="t-micro phero__label">{label}</p>
+    <h1 class="t-h1 phero__title" set:html={html} />
+    {lead && <p class="t-lead phero__lead">{lead}</p>}
+    {micro.length > 0 && <p class="t-micro phero__micro">{micro.join(' · ')}</p>}
+    <span class="crosshair phero__cross" aria-hidden="true"></span>
+  </div>
+</section>
+
+<script>
+  import { mountLiteBackground } from '../webgl/backgrounds/lite-bg';
+  const el = document.querySelector<HTMLElement>('[data-lite-bg]');
+  const canvas = el?.querySelector<HTMLCanvasElement>('canvas');
+  if (el && canvas) {
+    try {
+      mountLiteBackground(canvas, el.dataset.liteBg as never, { beam: Number(el.dataset.beam || 0) });
+    } catch {
+      /* остаётся CSS-фон */
+    }
+  }
+</script>
+
+<style>
+  .phero {
+    position: relative;
+    background: var(--bg);
+    color: var(--fg);
+    overflow: hidden;
+    padding-top: var(--header-h);
+  }
+  .phero__bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.8s var(--ease-out);
+  }
+  .phero__bg.is-ready {
+    opacity: 1;
+  }
+  .phero__render {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 52%;
+    background-size: contain;
+    background-position: center right;
+    background-repeat: no-repeat;
+    pointer-events: none;
+    mask-image: linear-gradient(90deg, transparent, #000 25%);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 25%);
+  }
+  .phero__inner {
+    position: relative;
+    display: grid;
+    gap: var(--space-4);
+    padding-top: clamp(3rem, 8vh, 6rem);
+    padding-bottom: clamp(3rem, 8vh, 6rem);
+    min-height: 52vh;
+    align-content: center;
+    max-width: none;
+  }
+  .phero--md .phero__inner {
+    min-height: 36vh;
+  }
+  .phero__label {
+    color: var(--accent);
+  }
+  .phero__title {
+    max-width: 14ch;
+  }
+  .phero__lead {
+    max-width: 52ch;
+  }
+  .phero__micro {
+    margin-top: var(--space-4);
+  }
+  .phero__cross {
+    right: calc(var(--gutter) - 5px);
+    bottom: var(--space-8);
+  }
+  @media (max-width: 899px) {
+    .phero__render {
+      width: 100%;
+      opacity: 0.55;
+      mask-image: linear-gradient(180deg, transparent, #000 40%);
+      -webkit-mask-image: linear-gradient(180deg, transparent, #000 40%);
+    }
+    .phero__inner {
+      min-height: 44vh;
+    }
+  }
+</style>

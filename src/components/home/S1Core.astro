@@ -1,0 +1,173 @@
+---
+/** S1 · ЯДРО — CHAOS → CORE. H1 слева снизу, сцена по центру-справа, микрометки по углам, тикер. */
+import Button from '../Button.astro';
+import { getContent, localePath, type LangCode } from '../../lib/i18n';
+import { TICKER } from '../../../site.config';
+
+export interface Props {
+  lang: LangCode;
+}
+const { lang } = Astro.props;
+const c = getContent(lang);
+const s1 = c.home.s1;
+const tickerItems = [...TICKER, ...TICKER];
+---
+
+<section class="screen screen--s1" data-screen="core" data-dur="200" data-dur-mobile="130" id="core" aria-labelledby="h1">
+  <div class="screen__pin">
+    <div class="s1 container">
+      <p class="s1__corner s1__corner--tl t-micro" data-hero-micro>{s1.label}</p>
+      <p class="s1__corner s1__corner--tr t-micro" data-hero-micro>{s1.micro.join(' / ')}</p>
+      <p class="s1__corner s1__corner--br t-micro" data-hero-micro>{s1.scrollHint} <span aria-hidden="true">↓</span></p>
+      <span class="crosshair s1__cross s1__cross--a" aria-hidden="true"></span>
+      <span class="crosshair s1__cross s1__cross--b" aria-hidden="true"></span>
+
+      <div class="s1__text">
+        <h1 class="t-display s1__h1 split-mask" id="h1" data-hero-title set:html={s1.h1.replace(s1.h1Accent, `<span class="chrome-text">${s1.h1Accent}</span>`)} />
+        <p class="t-lead s1__lead" data-hero-lead>{s1.lead}</p>
+        <div class="s1__ctas" data-hero-cta>
+          <Button href={localePath(lang, '/contact/')} variant="fill" size="lg">{s1.ctaPrimary}</Button>
+          <Button href={localePath(lang, '/services/')} variant="ghost" size="lg" arrow>{s1.ctaSecondary}</Button>
+        </div>
+      </div>
+    </div>
+
+    <div class="s1__ticker" data-hero-ticker aria-label={s1.tickerTitle}>
+      <div class="s1__ticker-inner">
+        <p class="t-micro s1__ticker-title">{s1.tickerTitle}</p>
+        <div class="ticker" aria-hidden="true">
+          <div class="ticker__track">
+            {tickerItems.map((t) => <span class="ticker__item t-micro t-micro--fg">{t}</span>)}
+          </div>
+        </div>
+        <ul class="visually-hidden">{TICKER.map((t) => <li>{t}</li>)}</ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .s1 {
+    position: relative;
+    height: 100%;
+    display: grid;
+    align-content: end;
+    padding-top: var(--header-h);
+    padding-bottom: calc(var(--space-12) + 56px);
+  }
+  .s1__corner {
+    position: absolute;
+    margin: 0;
+    color: var(--fg-3);
+  }
+  .s1__corner--tl {
+    left: var(--gutter);
+    top: calc(var(--header-h) + var(--space-6));
+  }
+  .s1__corner--tr {
+    right: var(--gutter);
+    top: calc(var(--header-h) + var(--space-6));
+    text-align: right;
+  }
+  .s1__corner--br {
+    right: var(--gutter);
+    bottom: calc(var(--space-12) + 56px);
+  }
+  .s1__cross--a {
+    left: calc(var(--gutter) - 5px);
+    top: calc(var(--header-h) + var(--space-6) + 40px);
+  }
+  .s1__cross--b {
+    right: calc(var(--gutter) - 5px);
+    top: 50%;
+  }
+  .s1__text {
+    display: grid;
+    gap: var(--space-6);
+    max-width: 58%;
+  }
+  .s1__h1 {
+    font-size: min(var(--fs-display), 10.5vh); /* на низких окнах заголовок не залезает под шапку */
+    visibility: hidden; /* снимает GSAP (SplitText из-под маски); без JS — виден */
+  }
+  :global(html.no-js) .s1__h1 {
+    visibility: visible;
+  }
+  .s1__lead {
+    max-width: 44ch;
+    font-size: min(var(--fs-lead), 2.8vh);
+  }
+  .s1__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-top: var(--space-2);
+  }
+  .s1__ticker {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 56px;
+    border-top: 1px solid var(--hair);
+  }
+  .s1__ticker-inner {
+    height: 100%;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: var(--space-8);
+    padding-inline: var(--gutter);
+    padding-left: calc(var(--gutter) + var(--rail-offset, 0px));
+  }
+  .s1__ticker-title {
+    white-space: nowrap;
+  }
+  .ticker {
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+  .ticker__track {
+    display: flex;
+    gap: var(--space-12);
+    width: max-content;
+    animation: ticker 48s linear infinite;
+  }
+  .ticker__item {
+    white-space: nowrap;
+  }
+  @keyframes ticker {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ticker__track {
+      animation: none;
+    }
+  }
+  @media (max-width: 899px) {
+    .s1 {
+      align-content: end;
+      padding-bottom: calc(var(--space-8) + 48px);
+    }
+    .s1__text {
+      max-width: 100%;
+    }
+    .s1__corner--br,
+    .s1__corner--tr,
+    .s1__cross--b {
+      display: none;
+    }
+    .s1__ticker {
+      height: 48px;
+    }
+    .s1__ticker-title {
+      display: none;
+    }
+    .s1__ticker-inner {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

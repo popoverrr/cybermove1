@@ -1,0 +1,125 @@
+---
+import Logo from './Logo.astro';
+import { getContent, localePath, type LangCode } from '../lib/i18n';
+import { WHATSAPP_NUMBER, WHATSAPP_URL, GEOGRAPHY } from '../../site.config';
+
+export interface Props {
+  lang: LangCode;
+  /** компактный подвал внутри последнего экрана главной */
+  compact?: boolean;
+}
+const { lang, compact = false } = Astro.props;
+const c = getContent(lang);
+const year = new Date().getFullYear();
+---
+
+<footer class:list={['footer', { 'footer--compact': compact }]}>
+  <div class="container">
+    <div class="footer__top hair">
+      <div class="footer__brand">
+        <Logo height={24} />
+        <p class="footer__tagline t-small">{c.ui.tagline}</p>
+      </div>
+
+      <nav class="footer__nav" aria-label={c.ui.menu}>
+        <ul>
+          {c.ui.nav.map((item) => (
+            <li><a href={localePath(lang, item.href)}>{item.label}</a></li>
+          ))}
+          <li><a href={localePath(lang, '/privacy/')}>{c.ui.footer.privacy}</a></li>
+        </ul>
+      </nav>
+
+      <div class="footer__contacts">
+        <p class="t-micro">{c.ui.footer.contactsTitle}</p>
+        <a class="footer__wa" href={WHATSAPP_URL} target="_blank" rel="noopener">{WHATSAPP_NUMBER}</a>
+        <p class="t-small">{c.ui.footer.email}</p>
+        <p class="t-small">{c.ui.footer.telegram}</p>
+      </div>
+
+      <div class="footer__geo">
+        <p class="t-micro">{c.ui.footer.geographyTitle}</p>
+        <p class="t-small footer__cities">{GEOGRAPHY.join(' · ')}</p>
+      </div>
+    </div>
+
+    <div class="footer__bottom hair">
+      <p class="t-micro">{c.ui.formula.join(' → ')}</p>
+      <p class="t-micro">© {year} {c.ui.legalName}. {c.ui.footer.rights}</p>
+      <p class="t-micro footer__requisites">{c.ui.footer.address}</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    position: relative;
+    color: var(--fg);
+    padding: var(--space-16) 0 var(--space-8);
+  }
+  .footer--compact {
+    padding-top: var(--space-8);
+  }
+  .footer__top {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+    gap: var(--space-8);
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-12);
+  }
+  .footer__brand {
+    display: grid;
+    gap: var(--space-4);
+    align-content: start;
+  }
+  .footer__tagline {
+    max-width: 24ch;
+  }
+  .footer__nav ul {
+    display: grid;
+    gap: var(--space-2);
+  }
+  .footer__nav a {
+    font-size: var(--fs-small);
+    color: var(--fg-2);
+    transition: color var(--dur-fast);
+  }
+  .footer__nav a:hover {
+    color: var(--fg);
+  }
+  .footer__contacts,
+  .footer__geo {
+    display: grid;
+    gap: var(--space-2);
+    align-content: start;
+  }
+  .footer__wa {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+  }
+  .footer__cities {
+    max-width: 36ch;
+  }
+  .footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding-top: var(--space-4);
+  }
+  @media (max-width: 899px) {
+    .footer__top {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 559px) {
+    .footer__top {
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+    }
+    .footer__bottom {
+      flex-direction: column;
+    }
+  }
+</style>

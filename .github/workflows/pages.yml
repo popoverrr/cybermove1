@@ -1,0 +1,52 @@
+# Превью для заказчика на GitHub Pages.
+# Собирает сайт в режиме превью (noindex, форма без отправки — PHP на Pages нет) и публикует dist/
+# по адресу https://<логин>.github.io/<репозиторий>/ (для репозитория <логин>.github.io — в корень).
+# В настройках репозитория: Settings → Pages → Source: «GitHub Actions».
+name: Preview (GitHub Pages)
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Build (preview mode)
+        env:
+          PUBLIC_PREVIEW: '1'
+        run: |
+          REPO="${GITHUB_REPOSITORY#*/}"
+          OWNER="$(echo "$GITHUB_REPOSITORY_OWNER" | tr '[:upper:]' '[:lower:]')"
+          if [[ "$REPO" == *.github.io ]]; then BASE="/"; else BASE="/$REPO/"; fi
+          echo "site=https://$OWNER.github.io base=$BASE"
+          CYBERMOVE_SITE="https://$OWNER.github.io" CYBERMOVE_BASE="$BASE" npm run build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
