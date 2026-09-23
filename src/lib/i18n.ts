@@ -11,6 +11,8 @@ import ruServices from '../content/ru/services.json';
 import ruCases from '../content/ru/cases.json';
 import ruAbout from '../content/ru/about.json';
 import ruContact from '../content/ru/contact.json';
+import ruCaseDetails from '../content/ru/cases-detailed.json';
+import team from '../content/team.json';
 
 export type Ui = typeof ruUi;
 export type Home = typeof ruHome;
@@ -21,6 +23,8 @@ export type CasesContent = typeof ruCases;
 export type CaseItem = CasesContent['items'][number];
 export type About = typeof ruAbout;
 export type Contact = typeof ruContact;
+export type CaseDetails = (typeof ruCaseDetails)[number];
+export type TeamMember = (typeof team)['members'][number];
 
 export interface Content {
   lang: LangCode;
@@ -31,6 +35,8 @@ export interface Content {
   cases: CasesContent;
   about: About;
   contact: Contact;
+  /** подробные тексты кейсов со старого сайта (BRIEF-V1 §3) */
+  caseDetails: CaseDetails[];
 }
 
 // Все JSON всех языков собираются на этапе сборки (eager), чтобы отсутствие файла ловилось сразу.
@@ -62,6 +68,7 @@ export function getContent(lang: LangCode = DEFAULT_LANG): Content {
     cases: load(lang, 'cases', ruCases),
     about: load(lang, 'about', ruAbout),
     contact: load(lang, 'contact', ruContact),
+    caseDetails: load(lang, 'cases-detailed', ruCaseDetails as CaseDetails[]),
   };
   cache.set(lang, c);
   return c;
@@ -98,6 +105,15 @@ export function alternates(path: string): Array<{ lang: LangCode; hreflang: stri
     href: localePath(l.code, path),
     label: l.label,
   }));
+}
+
+/** Команда общая для языков (имена и портреты), роли и био переводятся в about.json */
+export function teamMembers(): TeamMember[] {
+  return team.members;
+}
+
+export function findCaseDetails(content: Content, id: string): CaseDetails | undefined {
+  return content.caseDetails.find((c) => c.id === id);
 }
 
 export function findCase(content: Content, id: string): CaseItem | undefined {

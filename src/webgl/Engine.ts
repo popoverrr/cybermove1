@@ -57,7 +57,7 @@ export class Engine {
   private slowSince = 0;
   private frameTimes: number[] = [];
   private onFirstFrame?: () => void;
-  readonly stats = { fps: 0, frameMs: 0, tier: 'high' as Tier, particles: 0, verts: 0 };
+  readonly stats = { fps: 0, frameMs: 0, tier: 'high' as Tier, particles: 0, verts: 0, renders: 0, calls: 0 };
 
   constructor(opts: EngineOptions) {
     this.canvas = opts.canvas;
@@ -159,12 +159,13 @@ export class Engine {
     this.hidden = document.hidden;
     if (!this.hidden && this.running) {
       this.last = performance.now();
-      if (!this.raf) this.raf = requestAnimationFrame(this.frame);
+      if (!this.raf && this.running) this.raf = requestAnimationFrame(this.loop);
     }
   };
 
   private stillStart = 0;
 
+  /** Собственный цикл (лаборатории, фолбэк): кадры рисует rAF движка */
   start() {
     if (this.running) return;
     this.running = true;
@@ -173,7 +174,7 @@ export class Engine {
     if (PARAMS.still) {
       this.time = PARAMS.time ?? 4.0;
     }
-    this.raf = requestAnimationFrame(this.frame);
+    this.raf = requestAnimationFrame(this.loop);
   }
 
   stop() {
@@ -182,10 +183,24 @@ export class Engine {
     this.raf = 0;
   }
 
-  private frame = (now: number) => {
+  private loop = (now: number) => {
     this.raf = 0;
     if (!this.running) return;
-    if (this.hidden) return; // пауза, когда вкладка скрыта
+    if (this.frame(now)) this.raf = requestAnimationFrame(this.loop);
+  };
+
+  /**
+   * Один кадр: обновление сюжета и рендер. Возвращает false, когда still-кадр отрисован.
+   * Вызывается единым тикером главной (BRIEF-V1 §2) или собственным циклом `start()`.
+   */
+  frame = (now: number): boolean => {
+    if (this.hidden) return true; // пауза, когда вкладка скрыта
+    if (!this.last) this.last = now;
+    if (!this.stillStart) {
+      this.stillStart = now;
+      // стоп-кадр: время сюжета фиксируется на ?t (раньше это делал start(), теперь кадры зовёт тикер страницы)
+      if (PARAMS.still && this.time === 0) this.time = PARAMS.time ?? 4.0;
+    }
     const t0 = performance.now();
     let dt = (now - this.last) / 1000;
     this.last = now;
@@ -209,6 +224,14 @@ export class Engine {
     this.stats.fps = dt > 0 ? Math.round(1 / dt) : 0;
     this.watchPerformance(now, ms);
 
+    this.renderCount++;
+    if (now - this.renderCountAt >= 1000) {
+      this.stats.renders = this.renderCount;
+      this.renderCount = 0;
+      this.renderCountAt = now;
+    }
+    this.stats.calls = this.renderer.info.render.calls;
+
     if (!this.firstFrameDone) {
       this.firstFrameDone = true;
       this.onFirstFrame?.();
@@ -217,10 +240,13 @@ export class Engine {
     // при ?still рисуем кадры ~2.5 с (DOM успевает выставить прогресс и hover), затем останавливаемся
     if (PARAMS.still && performance.now() - this.stillStart > 2500 && this.frameTimes.length >= 6) {
       this.canvas.dataset.still = '1';
-      return;
+      return false;
     }
-    this.raf = requestAnimationFrame(this.frame);
+    return true;
   };
+
+  private renderCount = 0;
+  private renderCountAt = 0;
 
   /** Если кадр дольше 22 мс на протяжении 2 с — понижаем тир на лету (не под программным рендером). */
   private watchPerformance(now: number, ms: number) {

@@ -4,34 +4,154 @@
   "lead": "We start with an audit, including the financials. We define the core of the business. We build the system: websites, CRM, telephony, AI. We package it: brand, content, PR. We bring in clients: advertising and SEO. We support the deals: tenders and legal.",
   "approachTitle": "Approach",
   "approach": [
-    { "code": "CHAOS", "step": "01", "name": "Diagnostics", "text": "Business, market, product, data and processes." },
-    { "code": "CORE", "step": "02", "name": "Core", "text": "Product, audience, positioning, value, offer, message." },
-    { "code": "SYSTEM", "step": "03", "name": "System", "text": "Marketing, digital, sales, CRM, analytics. We build and automate." },
-    { "code": "GROWTH", "step": "04", "name": "Growth", "text": "We implement, measure the business result and scale what has proven to work." }
+    {
+      "code": "CHAOS",
+      "step": "01",
+      "name": "Diagnostics",
+      "text": "Business, market, product, data and processes."
+    },
+    {
+      "code": "CORE",
+      "step": "02",
+      "name": "Core",
+      "text": "Product, audience, positioning, value, offer, message."
+    },
+    {
+      "code": "SYSTEM",
+      "step": "03",
+      "name": "System",
+      "text": "Marketing, digital, sales, CRM, analytics. We build and automate."
+    },
+    {
+      "code": "GROWTH",
+      "step": "04",
+      "name": "Growth",
+      "text": "We implement, measure the business result and scale what has proven to work."
+    }
   ],
   "whyTitle": "Why CYBERMOVE",
   "why": [
-    { "name": "Business first", "text": "Every decision is judged by the task and the result." },
-    { "name": "Execution", "text": "We don't stop at strategy — we implement the system." },
-    { "name": "One team", "text": "Marketing, technology, finance, tenders and legal join the task as needed." }
+    {
+      "name": "Business first",
+      "text": "Every decision is judged by the task and the result."
+    },
+    {
+      "name": "Execution",
+      "text": "We don't stop at strategy — we implement the system."
+    },
+    {
+      "name": "One team",
+      "text": "Marketing, technology, finance, tenders and legal join the task as needed."
+    }
   ],
   "measureTitle": "What we measure",
-  "measure": ["qualified leads", "conversion", "CAC", "CPL", "sales conversion", "revenue contribution", "retention", "response time"],
+  "measure": [
+    "qualified leads",
+    "conversion",
+    "CAC",
+    "CPL",
+    "sales conversion",
+    "revenue contribution",
+    "retention",
+    "response time"
+  ],
   "formatsTitle": "How we work",
   "formats": [
-    { "name": "Audit & roadmap", "text": "Diagnostics, a map of problems and opportunities, a 3–12 month plan." },
-    { "name": "Project launch", "text": "A website, CRM, brand, ad campaign or tender — delivered turnkey with a clear result." },
-    { "name": "Growth partnership", "text": "Long-term support: the system, the team, a measurable business result." }
+    {
+      "name": "Audit & roadmap",
+      "text": "Diagnostics, a map of problems and opportunities, a 3–12 month plan."
+    },
+    {
+      "name": "Project launch",
+      "text": "A website, CRM, brand, ad campaign or tender — delivered turnkey with a clear result."
+    },
+    {
+      "name": "Growth partnership",
+      "text": "Long-term support: the system, the team, a measurable business result."
+    }
   ],
   "teamTitle": "Team",
-  "teamPlaceholder": "[PLACEHOLDER: team names, roles, photos]",
   "team": [
-    { "name": "[PLACEHOLDER]", "role": "Founder" },
-    { "name": "[PLACEHOLDER]", "role": "Marketing & brand" },
-    { "name": "[PLACEHOLDER]", "role": "Systems & AI" },
-    { "name": "[PLACEHOLDER]", "role": "Finance" },
-    { "name": "[PLACEHOLDER]", "role": "Tenders & legal" }
+    {
+      "id": "team-1",
+      "name": "Yana Petechuk",
+      "role": "Founder · Strategy & Growth",
+      "focus": "Growth strategy · Brand launches",
+      "bio": "Over 12 years in marketing, branding and operations: from advertising agencies and fashion projects to international launches and e-commerce.",
+      "skills": [
+        "Growth strategy",
+        "Brand launch",
+        "Marketing",
+        "Operations"
+      ]
+    },
+    {
+      "id": "team-2",
+      "name": "Andrii Kravets",
+      "role": "Partner · Operations & Consulting",
+      "focus": "Operational consulting · Processes",
+      "bio": "Builds the operating system of a business: processes, metrics, management of teams and contractors, delivery control.",
+      "skills": [
+        "Business audit",
+        "Process design",
+        "Project management",
+        "Consulting"
+      ]
+    },
+    {
+      "id": "team-3",
+      "name": "Daniel Rakhimov",
+      "role": "Head of AI & Automation",
+      "focus": "AI agents · Automation · CRM",
+      "bio": "Designs AI agents and automated loops for sales, support and reporting. Integrations with CRM, analytics and internal systems.",
+      "skills": [
+        "AI agents",
+        "Automation",
+        "CRM",
+        "Integrations"
+      ]
+    },
+    {
+      "id": "team-4",
+      "name": "Alina Moroz",
+      "role": "Digital & Performance Director",
+      "focus": "Digital strategy · E-commerce",
+      "bio": "Owns digital presence and performance: traffic, funnels, e-commerce, analytics and growth of online sales.",
+      "skills": [
+        "Digital strategy",
+        "Performance",
+        "E-commerce",
+        "Analytics"
+      ]
+    },
+    {
+      "id": "team-5",
+      "name": "Marat Suleimenov",
+      "role": "Business Development · Tenders",
+      "focus": "Business development · Tenders",
+      "bio": "Partnerships and B2B growth, tender support: documentation, bidding strategy, communication with customers.",
+      "skills": [
+        "Business development",
+        "Tender support",
+        "B2B",
+        "Partnerships"
+      ]
+    },
+    {
+      "id": "team-6",
+      "name": "Olena Bondar",
+      "role": "Legal Counsel",
+      "focus": "Legal support · Contracts",
+      "bio": "Legal support for deals, contract framework, corporate matters and protection of the company’s interests in projects.",
+      "skills": [
+        "Legal support",
+        "Contracts",
+        "Corporate",
+        "Compliance"
+      ]
+    }
   ],
   "geoTitle": "Where we work",
-  "geoLead": "Team and projects across Europe, Ukraine, Kazakhstan and Asia."
+  "geoLead": "Team and projects across Europe, Ukraine, Kazakhstan and Asia.",
+  "teamLead": "Behind every CYBERMOVE project are people with real operating experience — from strategy and brand launches to AI automation, tenders and legal support."
 }

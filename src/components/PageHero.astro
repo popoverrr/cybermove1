@@ -10,19 +10,26 @@ export interface Props {
   lead?: string;
   micro?: string[];
   render?: string;
+  /** id фотослота (media.json) вместо постера — фото в правой половине шапки (BRIEF-V1 §3) */
+  photo?: string;
   beam?: number;
   accent?: string;
   size?: 'lg' | 'md';
 }
 import { withBase } from '../lib/base';
-const { theme, label, title, lead, micro = [], render, beam = 0, accent, size = 'lg' } = Astro.props;
+import ImageSlot from './ImageSlot.astro';
+const { theme, label, title, lead, micro = [], render, photo, beam = 0, accent, size = 'lg' } = Astro.props;
 const renderUrl = render ? withBase(render) : '';
 const html = accent && title.includes(accent) ? title.replace(accent, `<span class="chrome-text">${accent}</span>`) : title;
 ---
 
 <section class:list={['phero', `phero--${size}`]} data-theme={theme} data-lite-bg={theme} data-beam={beam}>
   <canvas class="phero__bg" aria-hidden="true"></canvas>
-  {renderUrl && <div class="phero__render" style={`background-image:url(${renderUrl})`} aria-hidden="true"></div>}
+  {photo ? (
+    <div class="phero__slot" aria-hidden="true"><ImageSlot id={photo} ratio="3:4" sizes="(max-width: 899px) 100vw, 40vw" eager /></div>
+  ) : (
+    renderUrl && <div class="phero__render" style={`background-image:url(${renderUrl})`} aria-hidden="true"></div>
+  )}
   <div class="phero__inner container">
     <p class="t-micro phero__label">{label}</p>
     <h1 class="t-h1 phero__title" set:html={html} />
@@ -77,6 +84,24 @@ const html = accent && title.includes(accent) ? title.replace(accent, `<span cla
     mask-image: linear-gradient(90deg, transparent, #000 25%);
     -webkit-mask-image: linear-gradient(90deg, transparent, #000 25%);
   }
+  /* фото в шапке: правая половина, слева мягкая маска под текст */
+  .phero__slot {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 44%;
+    display: grid;
+    align-items: stretch;
+    pointer-events: none;
+    mask-image: linear-gradient(90deg, transparent, #000 28%);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 28%);
+  }
+  .phero__slot :global(.slot) {
+    aspect-ratio: auto;
+    height: 100%;
+    border: 0;
+  }
   .phero__inner {
     position: relative;
     display: grid;
@@ -107,6 +132,15 @@ const html = accent && title.includes(accent) ? title.replace(accent, `<span cla
     bottom: var(--space-8);
   }
   @media (max-width: 899px) {
+    /* на телефоне фото стоит над заголовком, а не за ним */
+    .phero__slot {
+      position: relative;
+      width: 100%;
+      height: 34vh;
+      margin-top: var(--space-4);
+      mask-image: none;
+      -webkit-mask-image: none;
+    }
     .phero__render {
       width: 100%;
       opacity: 0.55;

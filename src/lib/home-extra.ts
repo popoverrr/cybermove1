@@ -10,20 +10,37 @@ const smooth = (t: number) => {
 };
 
 /* ---------- S7: счётчики и лента по локальному прогрессу ---------- */
+/**
+ * S7: счётчики и лента кейсов по прогрессу экрана. Ширину ленты и список счётчиков меряем только
+ * в `measureGrowth()` (вызывается из layoutScreens) — в кадре остаётся арифметика.
+ */
+let counterEls: HTMLElement[] = [];
+let ribbonEl: HTMLElement | null = null;
+let ribbonMax = 0;
+let ribbonX = 1e9;
+export function measureGrowth() {
+  counterEls = Array.from(document.querySelectorAll<HTMLElement>('[data-count]'));
+  ribbonEl = document.querySelector<HTMLElement>('[data-ribbon]');
+  if (!ribbonEl) return;
+  const wrap = ribbonEl.parentElement as HTMLElement;
+  ribbonMax = Math.max(0, ribbonEl.scrollWidth - wrap.clientWidth + 48);
+  ribbonX = 1e9;
+}
+
 export function updateGrowth(local: number, reduced: boolean) {
-  const counters = document.querySelectorAll<HTMLElement>('[data-count]');
   const k = reduced ? 1 : smooth((local - 0.04) / 0.36);
-  counters.forEach((el) => {
+  for (const el of counterEls) {
     const target = Number(el.dataset.count || 0);
-    const v = Math.round(target * k);
-    if (el.textContent !== String(v)) el.textContent = String(v);
-  });
-  const ribbon = document.querySelector<HTMLElement>('[data-ribbon]');
-  if (ribbon) {
-    const wrap = ribbon.parentElement as HTMLElement;
-    const max = Math.max(0, ribbon.scrollWidth - wrap.clientWidth + 48);
+    const v = String(Math.round(target * k));
+    if (el.textContent !== v) el.textContent = v;
+  }
+  if (ribbonEl) {
     const t = reduced ? 0 : smooth((local - 0.3) / 0.55);
-    ribbon.style.transform = `translate3d(${(-max * t).toFixed(1)}px, 0, 0)`;
+    const x = -ribbonMax * t;
+    if (Math.abs(x - ribbonX) >= 0.5) {
+      ribbonX = x;
+      ribbonEl.style.transform = `translate3d(${x.toFixed(1)}px, 0, 0)`;
+    }
   }
 }
 

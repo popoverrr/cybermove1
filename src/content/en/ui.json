@@ -2,13 +2,35 @@
   "brand": "CYBERMOVE",
   "legalName": "Cyber Move Consulting",
   "tagline": "We move business forward.",
-  "formula": ["CHAOS", "CORE", "SYSTEM", "GROWTH"],
-  "formulaRu": ["Chaos", "Core", "System", "Growth"],
+  "formula": [
+    "CHAOS",
+    "CORE",
+    "SYSTEM",
+    "GROWTH"
+  ],
+  "formulaRu": [
+    "Chaos",
+    "Core",
+    "System",
+    "Growth"
+  ],
   "nav": [
-    { "label": "Services", "href": "/services/" },
-    { "label": "Cases", "href": "/cases/" },
-    { "label": "About", "href": "/about/" },
-    { "label": "Contact", "href": "/contact/" }
+    {
+      "label": "Services",
+      "href": "/services/"
+    },
+    {
+      "label": "Cases",
+      "href": "/cases/"
+    },
+    {
+      "label": "About",
+      "href": "/about/"
+    },
+    {
+      "label": "Contact",
+      "href": "/contact/"
+    }
   ],
   "cta": "Get an initial review",
   "ctaShort": "Initial review",
@@ -73,6 +95,10 @@
     "notFound": {
       "title": "Page not found — CYBERMOVE",
       "description": "There is no such page."
+    },
+    "caseItem": {
+      "title": "{name} — CYBERMOVE case",
+      "description": "{summary}. What we did, the CYBERMOVE role and project disciplines."
     }
   },
   "notFound": {
@@ -98,5 +124,17 @@
         "p": "[PLACEHOLDER] Retention period, data controller, company details and the contact for deletion requests — to be provided by the client."
       }
     ]
-  }
+  },
+  "scrollHint": "Scroll down",
+  "langTitle": "Язык / Language",
+  "teamBioOpen": "More",
+  "teamBioClose": "Collapse",
+  "caseProject": "Project",
+  "caseTask": "Task",
+  "caseRole": "CYBERMOVE role",
+  "caseDone": "What we did",
+  "caseResult": "Result",
+  "caseDisciplines": "Disciplines",
+  "caseDiscuss": "Discuss a similar task",
+  "caseNext": "Next case"
 }

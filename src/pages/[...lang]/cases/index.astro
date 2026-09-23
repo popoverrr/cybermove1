@@ -3,7 +3,8 @@
 import Base from '../../../layouts/Base.astro';
 import PageHero from '../../../components/PageHero.astro';
 import CtaBlock from '../../../components/CtaBlock.astro';
-import { getContent, langStaticPaths } from '../../../lib/i18n';
+import ImageSlot from '../../../components/ImageSlot.astro';
+import { getContent, localePath, langStaticPaths } from '../../../lib/i18n';
 import { breadcrumbLd } from '../../../lib/seo';
 
 export function getStaticPaths() {
@@ -39,20 +40,22 @@ const jsonLd = [breadcrumbLd(lang, [{ name: c.ui.brand, path: '/' }, { name: k.t
           return (
             <li class="case" id={it.id} data-category={it.category}>
               <article class="case__inner">
-                <p class="t-micro case__meta">
-                  <span>{String(it.n).padStart(2, '0')}</span>
-                  <span>{cat?.label}</span>
-                </p>
-                <h2 class="t-h4 case__name">
-                  {it.url ? (
-                    <a href={it.url} target="_blank" rel="noopener nofollow">{it.name} <span class="case__ext" aria-hidden="true">↗</span></a>
-                  ) : (
-                    it.name
-                  )}
-                </h2>
-                <p class="t-small case__sum">{it.summary}</p>
+                {/* плитка и название ведут на страницу кейса, сайт клиента — отдельной строкой */}
+                <a class="case__link" href={localePath(lang, `/cases/${it.id}/`)}>
+                  <ImageSlot id={`cases-${it.id}`} ratio="4:3" sizes="(max-width: 899px) 50vw, (max-width: 1279px) 33vw, 25vw" class="case__photo" />
+                  <p class="t-micro case__meta">
+                    <span>{String(it.n).padStart(2, '0')}</span>
+                    <span>{cat?.label}</span>
+                  </p>
+                  <h2 class="t-h4 case__name">{it.name}</h2>
+                  <p class="t-small case__sum">{it.summary}</p>
+                </a>
                 <p class="t-micro case__tags">{it.tags.join(' · ')}</p>
-                {it.urlLabel && <p class="t-micro case__url">{it.urlLabel}</p>}
+                {it.url && (
+                  <p class="t-micro case__url">
+                    <a href={it.url} target="_blank" rel="noopener nofollow">{it.urlLabel || it.url} <span class="case__ext" aria-hidden="true">↗</span></a>
+                  </p>
+                )}
               </article>
             </li>
           );
@@ -135,7 +138,7 @@ const jsonLd = [breadcrumbLd(lang, [{ name: c.ui.brand, path: '/' }, { name: k.t
   }
   .grid-cases {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     border-top: 1px solid var(--hair);
     border-left: 1px solid var(--hair);
   }
@@ -147,10 +150,19 @@ const jsonLd = [breadcrumbLd(lang, [{ name: c.ui.brand, path: '/' }, { name: k.t
   .case[hidden] {
     display: none;
   }
+  .case__link {
+    display: grid;
+    gap: var(--space-3);
+    color: inherit;
+  }
+  .case__link:hover .case__name,
+  .case__link:focus-visible .case__name {
+    color: var(--accent);
+  }
   .case__inner {
     display: grid;
     gap: var(--space-3);
-    padding: var(--space-6);
+    padding: var(--space-4);
     min-height: 220px;
     height: 100%;
     align-content: start;
@@ -166,7 +178,7 @@ const jsonLd = [breadcrumbLd(lang, [{ name: c.ui.brand, path: '/' }, { name: k.t
     gap: var(--space-4);
     color: var(--fg-3);
   }
-  .case__name a:hover {
+  .case__url a:hover {
     color: var(--accent);
   }
   .case__ext {

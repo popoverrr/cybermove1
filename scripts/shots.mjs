@@ -10,7 +10,7 @@
  * --dark/--light — эмуляция prefers-color-scheme; --reduced — prefers-reduced-motion: reduce; --nowebgl — отключить WebGL.
  */
 import { chromium, devices } from 'playwright';
-import { mkdir } from 'node:fs/promises';
+import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const args = process.argv.slice(2);
@@ -74,7 +74,13 @@ async function main() {
         await page.evaluate(() => document.fonts.ready);
         await page.waitForTimeout(opt.wait);
         const file = path.join(opt.out, `${name}--${size}.png`);
-        await page.screenshot({ path: file, fullPage: opt.full, animations: 'disabled', caret: 'hide' });
+        // под SwiftShader композитор иногда отдаёт пустой кадр (один цвет фона, PNG < 40 КБ) — повторяем до трёх раз
+        let buf = await page.screenshot({ fullPage: opt.full, animations: 'disabled', caret: 'hide' });
+        for (let k = 0; k < 3 && buf.length < 40000; k++) {
+          await page.waitForTimeout(1500);
+          buf = await page.screenshot({ fullPage: opt.full, animations: 'disabled', caret: 'hide' });
+        }
+        await writeFile(file, buf);
         console.log(`${file}  (${Date.now() - t0} ms)${errors.length ? `  ERRORS: ${errors.join(' | ').slice(0, 400)}` : ''}`);
         await page.close();
       }

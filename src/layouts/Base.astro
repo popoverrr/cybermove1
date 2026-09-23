@@ -124,15 +124,83 @@ const analyticsOn = Boolean(ANALYTICS.ga4 || ANALYTICS.metaPixel || ANALYTICS.ti
     </main>
     {!bare && !noFooter && <Footer lang={lang} />}
 
+    <!-- BRIEF-V1 §4: музыка и кнопка SOUND на всех страницах -->
+    <button class="audio" type="button" data-audio-toggle aria-pressed="false" aria-label={`SOUND — ${content.ui.soundOn}`} data-label-on={`SOUND — ${content.ui.soundOn}`} data-label-off={`SOUND — ${content.ui.soundOff}`}>
+      <span class="audio__bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      <span class="audio__text t-micro">SOUND</span>
+    </button>
+
     <div class="cursor" aria-hidden="true"><span class="cursor__ring"></span></div>
     <script>
       import { initSite } from '../lib/site';
+      import { initAudio } from '../lib/audio';
       initSite();
+      // на главной звук стартует из сценария (initAudio там же), на остальных страницах — сразу
+      if (!document.body.classList.contains('is-home')) initAudio();
     </script>
   </body>
 </html>
 
 <style is:global>
+  /* BRIEF-V1 §4: кнопка звука на всех страницах, тач-цель 44×44 (внешний вид версии 1) */
+  .audio {
+    position: fixed;
+    right: var(--gutter);
+    bottom: var(--space-6);
+    z-index: 750;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 8px 12px;
+    color: var(--fg);
+    border: 1px solid var(--hair);
+    background: transparent;
+    transition: border-color var(--dur-fast);
+  }
+  .audio__text {
+    color: inherit;
+  }
+  .audio[hidden] {
+    display: none;
+  }
+  .audio:hover {
+    border-color: var(--hair-strong);
+  }
+  .audio__bars {
+    display: inline-flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 12px;
+  }
+  .audio__bars i {
+    display: block;
+    width: 2px;
+    height: 4px;
+    background: currentColor;
+    transition: height 0.2s;
+  }
+  .audio.is-on .audio__bars i {
+    animation: eq 0.9s ease-in-out infinite;
+  }
+  .audio.is-on .audio__bars i:nth-child(2) { animation-delay: 0.15s; }
+  .audio.is-on .audio__bars i:nth-child(3) { animation-delay: 0.3s; }
+  .audio.is-on .audio__bars i:nth-child(4) { animation-delay: 0.45s; }
+  @keyframes eq {
+    0%, 100% { height: 4px; }
+    50% { height: 12px; }
+  }
+  @media (max-width: 899px) {
+    .audio {
+      bottom: var(--space-4);
+    }
+    .audio__text {
+      display: none;
+    }
+  }
+
   .cursor {
     position: fixed;
     inset: 0;

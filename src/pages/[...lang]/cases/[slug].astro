@@ -1,0 +1,283 @@
+---
+/**
+ * /cases/<id>/ — страница кейса (BRIEF-V1 §3): плитка бренда в шапке, «Проект», «Задача»,
+ * «Роль CYBERMOVE», «Что было сделано», дополнительные блоки, «Результат», «Дисциплины», ссылка на сайт
+ * клиента и CTA. Тексты — src/content/<lang>/cases-detailed.json, плитки — media.json (`cases-<id>`).
+ */
+import Base from '../../../layouts/Base.astro';
+import CtaBlock from '../../../components/CtaBlock.astro';
+import Button from '../../../components/Button.astro';
+import ImageSlot from '../../../components/ImageSlot.astro';
+import { getContent, localePath, findCase, findCaseDetails, type LangCode } from '../../../lib/i18n';
+import { LANGS } from '../../../../site.config';
+import { breadcrumbLd, canonical } from '../../../lib/seo';
+
+export function getStaticPaths() {
+  const out: Array<{ params: { lang: string | undefined; slug: string }; props: { lang: LangCode; slug: string } }> = [];
+  for (const l of LANGS) {
+    const c = getContent(l.code);
+    for (const item of c.cases.items) {
+      out.push({ params: { lang: l.prefix || undefined, slug: item.id }, props: { lang: l.code, slug: item.id } });
+    }
+  }
+  return out;
+}
+
+const { lang, slug } = Astro.props;
+const c = getContent(lang);
+const item = findCase(c, slug)!;
+const d = findCaseDetails(c, slug);
+const path = `/cases/${slug}/`;
+const cat = c.cases.categories.find((x) => x.id === item.category);
+const idx = c.cases.items.findIndex((x) => x.id === slug);
+const next = c.cases.items[(idx + 1) % c.cases.items.length];
+const title = c.ui.meta.caseItem.title.replace('{name}', item.name);
+const description = c.ui.meta.caseItem.description.replace('{summary}', item.summary);
+const jsonLd = [
+  breadcrumbLd(lang, [
+    { name: c.ui.brand, path: '/' },
+    { name: c.cases.title, path: '/cases/' },
+    { name: item.name, path },
+  ]),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWork',
+    name: item.name,
+    headline: item.name,
+    description: d?.project || item.summary,
+    url: canonical(lang, path),
+    inLanguage: lang,
+    about: (d?.industries || item.tags.join(' · ')).split('·').map((x) => x.trim()).filter(Boolean),
+    keywords: (d?.disciplines || item.tags).join(', '),
+    creator: { '@id': `${'https://cybermove.kz'}/#organization` },
+    ...(item.url ? { sameAs: [item.url] } : {}),
+  },
+];
+---
+
+<Base lang={lang} path={path} title={title} description={description} theme="black" jsonLd={jsonLd} ogImage="/posters/og-cases.jpg">
+  <article class="case-page">
+    <header class="chead">
+      <div class="container chead__inner">
+        <div class="chead__text">
+          <p class="t-micro chead__meta">
+            <a href={localePath(lang, '/cases/')}>{c.cases.title}</a>
+            <span>·</span>
+            <span>{String(item.n).padStart(2, '0')}</span>
+            {cat && <><span>·</span><span>{cat.label}</span></>}
+          </p>
+          <h1 class="t-h1 chead__title">{item.name}</h1>
+          <p class="t-lead chead__lead">{item.summary}</p>
+          {d && <p class="t-micro chead__ind">{d.industries}</p>}
+          {item.url && (
+            <p class="t-micro chead__link">
+              <a href={item.url} target="_blank" rel="noopener nofollow">{item.urlLabel || item.url} ↗</a>
+            </p>
+          )}
+        </div>
+        <div class="chead__tile">
+          <ImageSlot id={`cases-${slug}`} ratio="4:3" sizes="(max-width: 899px) 100vw, 44vw" eager />
+        </div>
+      </div>
+    </header>
+
+    <div class="container cbody">
+      {d?.project && (
+        <section class="cblock">
+          <h2 class="t-micro cblock__label">{c.ui.caseProject}</h2>
+          <p class="t-body cblock__text">{d.project}</p>
+        </section>
+      )}
+
+      {d?.task && (
+        <section class="cblock">
+          <h2 class="t-micro cblock__label">{c.ui.caseTask}</h2>
+          <p class="t-body cblock__text">{d.task}</p>
+        </section>
+      )}
+
+      {d?.role && (
+        <section class="cblock">
+          <h2 class="t-micro cblock__label">{c.ui.caseRole}</h2>
+          <p class="t-body cblock__text">{d.role}</p>
+        </section>
+      )}
+
+      {d && d.done.length > 0 && (
+        <section class="cblock">
+          <h2 class="t-micro cblock__label">{c.ui.caseDone}</h2>
+          <ul class="clist">
+            {d.done.map((x, i) => (
+              <li class="clist__item">
+                <span class="t-micro clist__n">{String(i + 1).padStart(2, '0')}</span>
+                <span class="t-body">{x}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {d?.extraBlocks.map((b) => (
+        <section class="cblock">
+          <h2 class="t-micro cblock__label">{b.title}</h2>
+          <div class="cblock__body">
+            <p class="t-body cblock__text">{b.lead}</p>
+            <ul class="clist clist--plain">
+              {b.items.map((x) => (
+                <li class="clist__item"><span class="t-body">{x}</span></li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      ))}
+
+      {d?.result ? (
+        <section class="cblock">
+          <h2 class="t-micro cblock__label">{c.ui.caseResult}</h2>
+          <p class="t-body cblock__text">{d.result}</p>
+        </section>
+      ) : (
+        <section class="cblock">
+          <h2 class="t-micro cblock__label">{c.ui.caseResult}</h2>
+          <p class="t-small cblock__ph">{c.cases.resultPlaceholder}</p>
+        </section>
+      )}
+
+      {d && d.disciplines.length > 0 && (
+        <section class="cblock">
+          <h2 class="t-micro cblock__label">{c.ui.caseDisciplines}</h2>
+          <p class="t-micro cblock__dis">{d.disciplines.join(' · ')}</p>
+        </section>
+      )}
+
+      <div class="cfoot">
+        <Button href={localePath(lang, '/contact/')} arrow>{c.ui.caseDiscuss}</Button>
+        <a class="t-micro cfoot__next" href={localePath(lang, `/cases/${next.id}/`)}>{c.ui.caseNext}: {next.name} →</a>
+      </div>
+    </div>
+  </article>
+
+  <CtaBlock lang={lang} />
+</Base>
+
+<style>
+  .chead {
+    background: var(--bg);
+    padding-top: var(--header-h);
+    border-bottom: 1px solid var(--hair);
+  }
+  .chead__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+    gap: var(--space-8);
+    align-items: center;
+    padding-top: var(--section-pad);
+    padding-bottom: var(--section-pad);
+    max-width: none;
+  }
+  .chead__text {
+    display: grid;
+    gap: var(--space-4);
+  }
+  .chead__meta {
+    display: flex;
+    gap: 0.5rem;
+    /* функциональная навигационная строка — вторичный цвет (контраст ≥ 4.5:1) */
+    color: var(--fg-2);
+  }
+  .chead__meta a:hover {
+    color: var(--accent);
+  }
+  .chead__title {
+    max-width: 16ch;
+  }
+  .chead__lead {
+    max-width: 46ch;
+  }
+  .chead__ind {
+    color: var(--fg-2);
+  }
+  .chead__link a {
+    border-bottom: 1px solid var(--hair-strong);
+    color: var(--fg-2);
+  }
+  .chead__link a:hover {
+    color: var(--accent);
+  }
+  .chead__tile :global(.slot) {
+    border: 1px solid var(--hair);
+  }
+  .cbody {
+    display: grid;
+    gap: var(--space-8);
+    padding-top: var(--section-pad);
+    padding-bottom: var(--section-pad);
+    max-width: none;
+  }
+  .cblock {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 8fr);
+    gap: var(--space-6);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--hair);
+  }
+  .cblock__label {
+    color: var(--accent);
+  }
+  .cblock__body {
+    display: grid;
+    gap: var(--space-3);
+  }
+  .cblock__text {
+    max-width: 68ch;
+  }
+  .clist {
+    display: grid;
+    gap: var(--space-3);
+  }
+  .clist__item {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    align-items: baseline;
+    gap: var(--space-3);
+    max-width: 68ch;
+  }
+  .clist--plain .clist__item {
+    grid-template-columns: 1fr;
+  }
+  .clist__n {
+    color: var(--fg-2);
+  }
+  .cfoot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--hair);
+  }
+  .cfoot__next {
+    color: var(--fg-2);
+  }
+  .cblock__ph,
+  .cblock__dis {
+    color: var(--fg-2);
+  }
+  .cfoot__next:hover {
+    color: var(--accent);
+  }
+  @media (max-width: 899px) {
+    .chead__inner {
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+    }
+    .chead__tile {
+      order: -1;
+    }
+    .cblock {
+      grid-template-columns: 1fr;
+      gap: var(--space-3);
+    }
+  }
+</style>

@@ -1,6 +1,7 @@
 ---
 /** S7 · РОСТ — GROWTH. Счётчики, горизонтальная лента избранных кейсов внутри pin, кнопка «Все кейсы», тикер. */
 import Button from '../Button.astro';
+import ImageSlot from '../ImageSlot.astro';
 import { getContent, localePath, findCase, type LangCode } from '../../lib/i18n';
 import { TICKER } from '../../../site.config';
 
@@ -12,6 +13,8 @@ const c = getContent(lang);
 const s7 = c.home.s7;
 const h2 = s7.h2.replace('движение', '<span class="chrome-text">движение</span>').replace('motion', '<span class="chrome-text">motion</span>');
 const featured = s7.featured.map((id) => findCase(c, id)).filter(Boolean) as NonNullable<ReturnType<typeof findCase>>[];
+/** id фотослотов избранных кейсов (media.json) */
+const SLOT: Record<string, string> = { usyk: 'case-usyk', 'ukrainian-fashion-week': 'case-ufw', intertop: 'case-intertop', 'brsm-nafta': 'case-brsm', 'hydrosta-kazakhstan': 'case-hydrosta' };
 const tickerItems = [...TICKER, ...TICKER];
 ---
 
@@ -36,7 +39,8 @@ const tickerItems = [...TICKER, ...TICKER];
       <div class="ribbon-wrap">
         <div class="ribbon" data-ribbon>
           {featured.map((k, i) => (
-            <a class="card" href={`${localePath(lang, '/cases/')}#${k.id}`}>
+            <a class="card" href={localePath(lang, `/cases/${k.id}/`)}>
+              <ImageSlot id={SLOT[k.id] ?? `case-${k.id}`} ratio="4:5" sizes="(max-width: 899px) 60vw, 22vw" class="card__photo" />
               <span class="card__idx t-micro">0{i + 1} / 0{featured.length}</span>
               <span class="card__name t-h4">{k.name}</span>
               <span class="card__sum t-small">{k.summary}</span>
@@ -117,6 +121,7 @@ const tickerItems = [...TICKER, ...TICKER];
   .ribbon-wrap {
     align-self: end;
     overflow: hidden;
+    min-height: 0;
     margin-inline: calc(var(--gutter) * -1);
     padding-inline: var(--gutter);
     mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
@@ -143,6 +148,14 @@ const tickerItems = [...TICKER, ...TICKER];
   .card:hover {
     border-color: var(--hair-strong);
     transform: translateY(-4px);
+  }
+  /* BRIEF-V1 §3: фото 4:5 сверху карточки, размеры карточек версии 1 не меняются */
+  .card :global(.card__photo) {
+    margin: calc(var(--space-4) * -1) calc(var(--space-4) * -1) var(--space-2);
+    aspect-ratio: auto;
+    height: min(20vh, 190px);
+    border: 0;
+    border-bottom: 1px solid var(--hair);
   }
   .card__idx {
     color: var(--fg-3);
@@ -207,9 +220,23 @@ const tickerItems = [...TICKER, ...TICKER];
       animation: none;
     }
   }
+  /*
+   * Короткий экран (телефон с панелями, десктоп 1280×720): треки по содержимому, лента сверху своего трека.
+   * Трек `1fr` при `overflow: hidden` у ленты схлопывался в ноль, и `align-self: end` клал карточки
+   * на счётчики (рецепт v4: v4:src/components/home/S7Growth.astro). Размеры карточек версии 1 не меняются.
+   */
+  @media (max-height: 820px) {
+    .g {
+      grid-template-rows: auto auto auto auto;
+    }
+    .ribbon-wrap {
+      align-self: start;
+    }
+  }
   @media (max-width: 899px) {
     .g {
-      padding-top: calc(var(--header-h) + 26vh);
+      grid-template-rows: auto auto auto auto;
+      padding-top: calc(var(--header-h) + 12vh);
       row-gap: var(--space-3);
       padding-bottom: calc(var(--space-4) + 40px);
       overflow: hidden;
@@ -223,10 +250,13 @@ const tickerItems = [...TICKER, ...TICKER];
     .g__h2 {
       font-size: clamp(1.6rem, 6.6vw, 2.2rem);
     }
+    .ribbon-wrap {
+      align-self: start;
+    }
     .counters {
       max-width: 100%;
       grid-template-columns: repeat(2, 1fr);
-      gap: var(--space-3);
+      gap: var(--space-2);
       padding-top: var(--space-3);
     }
     .counter__value {

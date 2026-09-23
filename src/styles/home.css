@@ -93,18 +93,14 @@ body.gl-fallback .gl-poster {
   pointer-events: auto;
   visibility: visible;
 }
-/* Общая анимация текста экрана: вход снизу, выход вверх; управляется --enter/--exit */
+/*
+ * Текст экрана: вход снизу (36px), выход вверх (48px, у S1 — 64px) — то же движение, что в версии 1,
+ * но по порогам прогресса (home.ts: 0.08 / 0.78), а не скрабом. Значения задаёт GSAP.
+ */
 .screen__pin {
   position: relative;
   height: 100%;
-  opacity: calc(var(--enter) * (1 - var(--exit)));
-  transform: translate3d(0, calc((1 - var(--enter)) * 36px - var(--exit) * 48px), 0);
   will-change: transform, opacity;
-}
-.screen--s1 .screen__pin {
-  /* первый экран появляется по времени (SplitText), а не по скроллу */
-  opacity: calc(1 - var(--exit));
-  transform: translate3d(0, calc(var(--exit) * -64px), 0);
 }
 
 /* S8 — в потоке после стейджа */

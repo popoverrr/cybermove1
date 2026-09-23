@@ -1,0 +1,207 @@
+---
+/**
+ * Подсказки (BRIEF-V1 §5): «Листайте вниз» на S1 (вертикальная линия 28 px с опускающейся синей точкой)
+ * и карточка выбора языка при первом визите. Обе в разметке, но показываются только клиентским кодом
+ * (`home-hints.ts`): в служебных режимах (`?screen=`, `?progress=`, `?poster`, `?still`) их нет.
+ * Стили — в токенах версии 1: графит, сталь, синее свечение, заголовок Unbounded.
+ */
+import { getContent, alternates, type LangCode } from '../../lib/i18n';
+
+export interface Props {
+  lang: LangCode;
+  path?: string;
+}
+const { lang, path = '/' } = Astro.props;
+const c = getContent(lang);
+const NAMES: Record<string, string> = { ru: 'Русский', en: 'English' };
+const langs = alternates(path).map((l) => ({ ...l, name: NAMES[l.lang] ?? l.label }));
+---
+
+<p class="hint" data-scroll-hint hidden>
+  <span class="hint__line" aria-hidden="true"><span class="hint__dot"></span></span>
+  <span class="t-micro hint__text">{c.ui.scrollHint}</span>
+</p>
+
+<div class="langbox" data-langbox hidden>
+  <div class="langbox__scrim" data-langbox-scrim></div>
+  <div class="langbox__card" role="dialog" aria-modal="true" aria-labelledby="langbox-title" data-langbox-card>
+    <h2 class="langbox__title" id="langbox-title">{c.ui.langTitle}</h2>
+    <ul class="langbox__list">
+      {langs.map((l, i) => (
+        <li>
+          <a class="langbox__row" href={l.href} data-lang-choice={l.lang} hreflang={l.hreflang}>
+            <span class="t-micro langbox__n">0{i + 1}</span>
+            <span class="langbox__name">{l.name}</span>
+            <span class="langbox__arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</div>
+
+<style>
+  /* ---------- подсказка прокрутки ---------- */
+  .hint {
+    position: fixed;
+    left: 50%;
+    bottom: calc(var(--space-6) + 56px);
+    z-index: 700;
+    transform: translateX(-50%);
+    display: grid;
+    justify-items: center;
+    gap: 10px;
+    margin: 0;
+    opacity: 0;
+    transition: opacity 0.9s var(--ease-out);
+    pointer-events: none;
+  }
+  .hint.is-on {
+    opacity: 1;
+  }
+  .hint.is-off {
+    opacity: 0;
+    transition-duration: 0.5s;
+  }
+  .hint__line {
+    position: relative;
+    display: block;
+    width: 1px;
+    height: 28px;
+    background: var(--hair-strong);
+    overflow: hidden;
+  }
+  .hint__dot {
+    position: absolute;
+    left: -1.5px;
+    top: 0;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--blue-glow);
+    box-shadow: 0 0 8px rgba(77, 124, 255, 0.6);
+    animation: hint-fall 1.8s var(--ease-out) infinite;
+  }
+  .hint__text {
+    color: var(--steel-300);
+  }
+  @keyframes hint-fall {
+    0% {
+      transform: translateY(0);
+      opacity: 0;
+    }
+    14% {
+      opacity: 1;
+    }
+    62% {
+      transform: translateY(24px);
+      opacity: 1;
+    }
+    78%,
+    100% {
+      transform: translateY(24px);
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hint__dot {
+      animation: none;
+      opacity: 1;
+    }
+  }
+  @media (max-width: 899px) {
+    .hint {
+      bottom: calc(var(--space-4) + 96px);
+    }
+  }
+
+  /* ---------- карточка выбора языка ---------- */
+  .langbox {
+    position: fixed;
+    inset: 0;
+    z-index: 960;
+    display: grid;
+    place-items: center;
+    padding: var(--gutter);
+  }
+  .langbox[hidden] {
+    display: none;
+  }
+  .langbox__scrim {
+    position: absolute;
+    inset: 0;
+    background: var(--black);
+    opacity: 0;
+    transition: opacity 0.5s var(--ease-out);
+  }
+  .langbox.is-on .langbox__scrim {
+    opacity: 0.55;
+  }
+  .langbox__card {
+    position: relative;
+    width: min(420px, 100%);
+    padding: var(--space-6);
+    display: grid;
+    gap: var(--space-4);
+    background: var(--graphite);
+    border: 1px solid var(--hair);
+    color: var(--fg);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+  }
+  .langbox.is-on .langbox__card {
+    opacity: 1;
+    transform: none;
+  }
+  .langbox.is-off .langbox__card,
+  .langbox.is-off .langbox__scrim {
+    opacity: 0;
+    transition-duration: 0.4s;
+  }
+  .langbox__title {
+    font-family: var(--font-wide);
+    font-size: 1.125rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .langbox__list {
+    display: grid;
+  }
+  .langbox__row {
+    display: grid;
+    grid-template-columns: 2.25rem 1fr auto;
+    align-items: center;
+    gap: var(--space-3);
+    padding: 0.75rem 0;
+    border-top: 1px solid var(--hair);
+    color: var(--fg);
+    transition: padding-left var(--dur) var(--ease-out), color var(--dur-fast);
+  }
+  .langbox__list li:last-child .langbox__row {
+    border-bottom: 1px solid var(--hair);
+  }
+  .langbox__row:hover,
+  .langbox__row:focus-visible {
+    padding-left: 0.5rem;
+    color: var(--blue-glow);
+  }
+  .langbox__n,
+  .langbox__arrow {
+    color: var(--steel-300);
+  }
+  .langbox__row:hover .langbox__arrow,
+  .langbox__row:focus-visible .langbox__arrow {
+    color: var(--blue-glow);
+  }
+  .langbox__name {
+    font-size: 1.125rem;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .langbox__card,
+    .langbox__scrim,
+    .langbox__row {
+      transition: none;
+    }
+  }
+</style>

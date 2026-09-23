@@ -1,0 +1,123 @@
+---
+/**
+ * Фотослот (BRIEF-2 §7, BRIEF-4 §3 / MEDIA-INTEGRATION §2). Значение слота в `src/content/media.json` —
+ * строка (путь относительно `src/assets/`) или объект `{ src, mono, kind, hover, brand, alt }`:
+ *   kind  — logo | avatar | photo | monogram | render (на вёрстку не влияет, кроме render: без кейлайна, cover 50% 45%)
+ *   hover — "lift": подъём 1.025 + осветление soft-light + тень (десктоп по наведению, тач — по центру экрана);
+ *           "none": плитка статична (команда, «О компании», направления).
+ * Если файла нет — процедурный плейсхолдер «свет на бетоне» из public/placeholders/, вариант по id.
+ */
+import { Image } from 'astro:assets';
+import media from '../content/media.json';
+
+export interface Props {
+  id: string;
+  ratio?: '3:4' | '4:5' | '1:1' | '4:3' | '16:9';
+  alt?: string;
+  sizes?: string;
+  class?: string;
+  /** приоритетная загрузка (первый экран) */
+  eager?: boolean;
+}
+const { id, ratio = '4:5', alt = '', sizes = '(max-width: 899px) 100vw, 50vw', class: cls = '', eager = false } = Astro.props;
+
+interface SlotEntry {
+  src: string;
+  mono?: string | null;
+  kind?: 'logo' | 'avatar' | 'photo' | 'monogram' | 'render';
+  hover?: 'lift' | 'none';
+  brand?: string | null;
+  alt?: string;
+}
+const files = import.meta.glob<{ default: ImageMetadata }>('/src/assets/media/**/*.{jpg,jpeg,png,webp,avif}');
+const raw = (media as Record<string, string | SlotEntry | null>)[id] ?? null;
+const entry: SlotEntry | null = typeof raw === 'string' ? { src: raw } : raw;
+let image: ImageMetadata | null = null;
+if (entry?.src) {
+  const key = `/src/assets/${entry.src.replace(/^\/?(src\/assets\/)?/, '')}`;
+  const loader = files[key];
+  if (!loader) throw new Error(`media.json: файл ${key} для слота «${id}» не найден в src/assets/media/`);
+  image = (await loader()).default;
+}
+const kind = entry?.kind ?? 'photo';
+const lift = entry?.hover === 'lift';
+const altText = alt || entry?.alt || '';
+const [rw, rh] = ratio.split(':').map(Number);
+const widths = [480, 800, 1200, 1600].filter((w) => !image || w <= image.width);
+---
+
+<figure
+  class:list={['slot', cls, { 'slot--ph': !image, 'slot--lift': lift, 'slot--render': kind === 'render' }]}
+  style={`--ratio:${rw}/${rh}`}
+  data-slot={id}
+  data-kind={kind}
+  data-lift={lift ? '' : undefined}
+>
+  {image && <Image src={image} alt={altText} widths={widths} sizes={sizes} loading={eager ? 'eager' : 'lazy'} decoding="async" class="slot__img" />}
+  {lift && <span class="slot__wash" aria-hidden="true"></span>}
+</figure>
+
+<style>
+  .slot {
+    position: relative;
+    margin: 0;
+    aspect-ratio: var(--ratio);
+    overflow: hidden;
+    background: var(--graphite);
+    border: 1px solid var(--hair);
+  }
+  /* слот без файла в media.json ничего не рисует (в версии 1 плейсхолдеров-картинок нет) */
+  .slot--ph {
+    display: none;
+  }
+  .slot__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .slot__img {
+    object-fit: cover;
+  }
+  /* BRIEF-V1 §3: спокойный подъём плитки — масштаб, светлая рамка и лёгкое синее свечение */
+  .slot--lift {
+    transition: transform 1.4s var(--ease-out), border-color 0.7s var(--ease-out), box-shadow 0.7s var(--ease-out);
+    will-change: transform;
+  }
+  .slot__wash {
+    position: absolute;
+    inset: 0;
+    background: var(--steel-100);
+    mix-blend-mode: soft-light;
+    opacity: 0;
+    transition: opacity 0.7s var(--ease-out);
+    pointer-events: none;
+  }
+  :global(a:hover) > .slot--lift,
+  :global(a:focus-visible) > .slot--lift,
+  :global(.is-lifted) .slot--lift,
+  .slot--lift.is-lifted {
+    transform: scale(1.025);
+    border-color: var(--hair-strong);
+    box-shadow: 0 0 0 1px rgba(77, 124, 255, 0.25);
+  }
+  :global(a:hover) > .slot--lift .slot__wash,
+  :global(a:focus-visible) > .slot--lift .slot__wash,
+  :global(.is-lifted) .slot--lift .slot__wash,
+  .slot--lift.is-lifted .slot__wash {
+    opacity: 0.55;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .slot--lift,
+    .slot__wash {
+      transition: none;
+    }
+    :global(a:hover) > .slot--lift,
+    :global(.is-lifted) .slot--lift,
+    .slot--lift.is-lifted {
+      transform: none;
+      box-shadow: none;
+    }
+  }
+</style>

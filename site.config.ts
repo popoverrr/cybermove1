@@ -30,8 +30,11 @@ export const DEFAULT_LANG: LangCode = 'ru';
 export const WHATSAPP_NUMBER = '+7 701 825 10 28';
 export const WHATSAPP_URL = 'https://wa.me/77018251028';
 
-/** Если файла нет — кнопка звука скрыта. Положите трек в public/audio/ambient.mp3 и поставьте true. */
-export const AUDIO_TRACK: string | null = null; // 'audio/ambient.mp3'
+/**
+ * Фоновая музыка (BRIEF-V1 §4): источники по убыванию предпочтения, выбирается первый, который умеет браузер
+ * (opus — Chrome/Firefox, m4a — Safari, mp3 — запас). `null` или пустой массив — кнопка звука скрыта.
+ */
+export const AUDIO_TRACK: string | string[] | null = ['audio/ambient.opus', 'audio/ambient.m4a', 'audio/ambient.mp3'];
 
 /** Аналитика: пустая строка = выключено. */
 export const ANALYTICS = {

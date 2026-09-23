@@ -3,6 +3,7 @@
 import Base from '../../../layouts/Base.astro';
 import PageHero from '../../../components/PageHero.astro';
 import CtaBlock from '../../../components/CtaBlock.astro';
+import ImageSlot from '../../../components/ImageSlot.astro';
 import { getContent, langStaticPaths } from '../../../lib/i18n';
 import { breadcrumbLd } from '../../../lib/seo';
 import { GEOGRAPHY } from '../../../../site.config';
@@ -17,7 +18,7 @@ const jsonLd = [breadcrumbLd(lang, [{ name: c.ui.brand, path: '/' }, { name: a.t
 ---
 
 <Base lang={lang} path="/about/" title={c.ui.meta.about.title} description={c.ui.meta.about.description} theme="black" jsonLd={jsonLd} ogImage="/posters/og-about.jpg">
-  <PageHero theme="graphite" label={a.title} title={a.h1} lead={a.lead} micro={c.ui.formula} render="/posters/dir-core.webp" />
+  <PageHero theme="graphite" label={a.title} title={a.h1} lead={a.lead} micro={c.ui.formula} photo="about-home" />
 
   <section class="approach">
     <div class="container approach__inner">
@@ -65,21 +66,55 @@ const jsonLd = [breadcrumbLd(lang, [{ name: c.ui.brand, path: '/' }, { name: a.t
     </div>
   </section>
 
+  <!-- BRIEF-V1 §3: шесть участников, био раскрывается по клику (одно за раз) -->
   <section class="team">
     <div class="container team__inner">
       <p class="t-micro">{a.teamTitle}</p>
-      <p class="t-small team__ph">{a.teamPlaceholder}</p>
-      <ul class="team__grid">
+      <p class="t-lead team__lead">{a.teamLead}</p>
+      <ul class="team__grid" data-team>
         {a.team.map((m) => (
           <li class="member">
-            <div class="member__photo" aria-hidden="true"><span class="t-micro">PHOTO</span></div>
-            <p class="member__name">{m.name}</p>
-            <p class="t-micro">{m.role}</p>
+            <ImageSlot id={m.id} ratio="1:1" sizes="(max-width: 899px) 50vw, 33vw" class="member__photo" />
+            <h3 class="t-h4 member__name">{m.name}</h3>
+            <p class="t-micro member__role">{m.role}</p>
+            <button class="member__toggle t-micro" type="button" aria-expanded="false" aria-controls={`bio-${m.id}`} data-team-toggle>
+              <span class="member__focus">{m.focus}</span>
+              <span class="member__sign" aria-hidden="true">+</span>
+            </button>
+            <div class="member__bio" id={`bio-${m.id}`} hidden>
+              <p class="t-small">{m.bio}</p>
+              <p class="t-micro member__skills">{m.skills.join(' · ')}</p>
+            </div>
           </li>
         ))}
       </ul>
     </div>
   </section>
+
+  <script>
+    // аккордеон команды: открыт один участник
+    const list = document.querySelector<HTMLElement>('[data-team]');
+    if (list) {
+      const toggles = Array.from(list.querySelectorAll<HTMLButtonElement>('[data-team-toggle]'));
+      toggles.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const bio = document.getElementById(btn.getAttribute('aria-controls')!);
+          const open = btn.getAttribute('aria-expanded') === 'true';
+          toggles.forEach((other) => {
+            const b = document.getElementById(other.getAttribute('aria-controls')!);
+            other.setAttribute('aria-expanded', 'false');
+            other.classList.remove('is-open');
+            if (b) b.hidden = true;
+          });
+          if (!open) {
+            btn.setAttribute('aria-expanded', 'true');
+            btn.classList.add('is-open');
+            if (bio) bio.hidden = false;
+          }
+        });
+      });
+    }
+  </script>
 
   <section class="geo">
     <div class="container geo__inner">
@@ -163,24 +198,67 @@ const jsonLd = [breadcrumbLd(lang, [{ name: c.ui.brand, path: '/' }, { name: a.t
   .team {
     border-top: 1px solid var(--hair);
   }
-  .team__ph {
-    color: var(--fg-3);
+  .team__lead {
+    max-width: 64ch;
+    color: var(--fg-2);
   }
+  /* BRIEF-V1 §3: сетка 3×2 на десктопе, 2×3 на телефоне */
   .team__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: var(--space-6);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-8) var(--space-6);
+  }
+  @media (max-width: 899px) {
+    .team__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-6) var(--space-4);
+    }
   }
   .member {
     display: grid;
     gap: var(--space-2);
+    align-content: start;
   }
-  .member__photo {
-    aspect-ratio: 3 / 4;
-    border: 1px solid var(--hair);
+  .member :global(.member__photo) {
+    margin-bottom: var(--space-2);
+  }
+  .member__role {
+    color: var(--fg-2);
+  }
+  .member__toggle {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3);
+    width: 100%;
+    padding: 0.5rem 0;
+    border-top: 1px solid var(--hair);
+    color: var(--fg-3);
+    text-align: left;
+    transition: color var(--dur-fast);
+  }
+  .member__toggle:hover,
+  .member__toggle.is-open {
+    color: var(--accent);
+  }
+  .member__sign {
+    font-size: 1rem;
+    line-height: 1;
+    transition: transform var(--dur-fast);
+  }
+  .member__toggle.is-open .member__sign {
+    transform: rotate(45deg);
+  }
+  .member__bio {
     display: grid;
-    place-items: center;
-    background: repeating-linear-gradient(135deg, transparent 0 8px, rgba(244, 246, 250, 0.03) 8px 9px);
+    gap: var(--space-2);
+  }
+  /* display: grid перебивает [hidden] браузера — скрываем явно */
+  .member__bio[hidden] {
+    display: none;
+  }
+  .member__skills {
+    color: var(--fg-3);
   }
   .member__name {
     font-weight: 540;

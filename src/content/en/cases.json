@@ -4,49 +4,520 @@
   "lead": "From a world champion's personal brand to engineering systems in Kazakhstan. Categories are assigned by the nature of each project; detailed case pages and result figures will follow.",
   "placeholderNote": "[PLACEHOLDER: detailed case pages and result figures]",
   "categories": [
-    { "id": "politics", "label": "Politics" },
-    { "id": "experts", "label": "Creators & experts" },
-    { "id": "retail", "label": "Fashion, retail & e-commerce" },
-    { "id": "horeca", "label": "HoReCa, wellness & operations consulting" },
-    { "id": "media", "label": "Media, PR & events" },
-    { "id": "b2b", "label": "B2B, engineering & energy" },
-    { "id": "tech", "label": "Technology & VR" },
-    { "id": "tbd", "label": "Category to be confirmed" }
+    {
+      "id": "politics",
+      "label": "Politics"
+    },
+    {
+      "id": "experts",
+      "label": "Creators & experts"
+    },
+    {
+      "id": "retail",
+      "label": "Fashion, retail & e-commerce"
+    },
+    {
+      "id": "horeca",
+      "label": "HoReCa, wellness & operations consulting"
+    },
+    {
+      "id": "media",
+      "label": "Media, PR & events"
+    },
+    {
+      "id": "b2b",
+      "label": "B2B, engineering & energy"
+    },
+    {
+      "id": "tech",
+      "label": "Technology & VR"
+    },
+    {
+      "id": "tbd",
+      "label": "Category to be confirmed"
+    }
   ],
   "items": [
-    { "n": 1, "id": "usyk", "name": "USYK / Oleksandr Usyk", "url": "https://instagram.com/usykaa", "urlLabel": "instagram.com/usykaa", "summary": "Six years: Oleksandr Usyk's personal brand, marketing for his products and related projects", "tags": ["Personal Branding", "Marketing", "PR"], "category": "experts", "featured": true },
-    { "n": 2, "id": "udar", "name": "UDAR political party", "url": "https://udar.party", "urlLabel": "udar.party", "summary": "Promoting local and national candidates as part of a large communications team", "tags": ["PR", "Personal Branding", "Digital"], "category": "politics" },
-    { "n": 3, "id": "apicapsules", "name": "APICAPSULES", "url": "", "urlLabel": "", "summary": "A startup taken from idea to a fully shaped product concept", "tags": ["Startup", "Product Development", "Business Development"], "category": "tbd" },
-    { "n": 4, "id": "medical-protective-equipment", "name": "MEDICAL PROTECTIVE EQUIPMENT", "url": "", "urlLabel": "", "summary": "Manufacturing of medical protective equipment, working with major government and corporate buyers", "tags": ["Production", "B2B", "Tender Support"], "category": "b2b" },
-    { "n": 5, "id": "maharadj", "name": "MAHARADJ", "url": "https://maharadj-yoga.club", "urlLabel": "maharadj-yoga.club", "summary": "A full-scale wellness and lifestyle project with an ecosystem of services", "tags": ["Wellness", "Operations", "Digital"], "category": "horeca" },
-    { "n": 6, "id": "van-dog-agency", "name": "VAN DOG AGENCY", "url": "https://vandog.agency", "urlLabel": "vandog.agency", "summary": "Projects for major Ukrainian brands within an advertising agency", "tags": ["Advertising", "Creative", "Production"], "category": "media" },
-    { "n": 7, "id": "sii-concept", "name": "SII.CONCEPT / MILAN", "url": "https://instagram.com/sii.concept", "urlLabel": "instagram.com/sii.concept", "summary": "Operational management, launch and international expansion of a fashion and eyewear project", "tags": ["Operations", "Fashion", "Brand Launch"], "category": "retail" },
-    { "n": 8, "id": "ukrainian-fashion-week", "name": "UKRAINIAN FASHION WEEK", "url": "https://fashionweek.ua", "urlLabel": "fashionweek.ua", "summary": "Organising and coordinating fashion, sports, advertising and event projects", "tags": ["Events", "Production", "Fashion"], "category": "media", "featured": true },
-    { "n": 9, "id": "education", "name": "Educational projects", "url": "", "urlLabel": "", "summary": "Producing educational products together with creators", "tags": ["Production", "Digital", "Operations"], "category": "experts" },
-    { "n": 10, "id": "ecommerce", "name": "E-commerce projects", "url": "", "urlLabel": "", "summary": "Numerous e-commerce projects across product categories", "tags": ["E-commerce", "Digital", "Marketing"], "category": "retail" },
-    { "n": 11, "id": "tpk", "name": "TPK", "url": "https://tpk.ua", "urlLabel": "tpk.ua", "summary": "Manufacturer of sandwich panels, corrugated sheets, façade cassettes and panels", "tags": ["B2B", "Marketing", "Digital"], "category": "b2b" },
-    { "n": 12, "id": "art-mango-production", "name": "ART MANGO PRODUCTION", "url": "https://ilpgroup.uk", "urlLabel": "ilpgroup.uk", "summary": "An international exhibition in Cannes on luxury real estate and immigration", "tags": ["Events", "Production", "Consulting"], "category": "media" },
-    { "n": 13, "id": "spa-maharadj", "name": "SPA MAHARADJ", "url": "https://maharadj-yoga.club/spa", "urlLabel": "maharadj-yoga.club/spa", "summary": "The SPA line within a large wellness business", "tags": ["Wellness", "Marketing"], "category": "horeca" },
-    { "n": 14, "id": "toscana-wine", "name": "Toscana Wine Shop & Wine Bar", "url": "", "urlLabel": "", "summary": "Marketing for two wine bars and an online wine store in Kyiv", "tags": ["E-commerce", "Marketing", "HoReCa"], "category": "horeca" },
-    { "n": 15, "id": "brsm-nafta", "name": "BRSM-NAFTA", "url": "https://brsm-nafta.com", "urlLabel": "brsm-nafta.com", "summary": "Marketing and advertising projects for a major fuel station network", "tags": ["Marketing", "Advertising", "Brand Communications"], "category": "retail", "featured": true },
-    { "n": 16, "id": "good-market", "name": "Good Market", "url": "", "urlLabel": "", "summary": "Marketing and advertising for a supermarket chain at fuel stations", "tags": ["Retail Marketing", "Advertising", "Brand Communications"], "category": "retail" },
-    { "n": 17, "id": "intertop", "name": "INTERTOP / SPEX / Eurooptika", "url": "https://intertop.ua", "urlLabel": "intertop.ua", "summary": "Advertising and marketing for major fashion, eyewear and retail brands", "tags": ["Fashion", "Retail", "Creative"], "category": "retail", "featured": true },
-    { "n": 18, "id": "ukrainian-radio", "name": "Ukrainian Radio", "url": "https://ukr.radio", "urlLabel": "ukr.radio", "summary": "Personal brands of radio hosts, YouTube projects and digital presence", "tags": ["Personal Branding", "Digital", "YouTube"], "category": "media" },
-    { "n": 19, "id": "fitness-room-menden", "name": "FITNESS ROOM MENDEN", "url": "https://instagram.com/fitnessroommenden", "urlLabel": "instagram.com/fitnessroommenden", "summary": "Digital presence for a German fitness club", "tags": ["Social Media", "Content Strategy", "Local Marketing"], "category": "horeca" },
-    { "n": 20, "id": "cybermove-games", "name": "CYBERMOVE GAMES", "url": "https://cybermovegames.com", "urlLabel": "cybermovegames.com", "summary": "A VR project with a physical locomotion platform: moving with your body instead of controllers", "tags": ["VR", "Immersive Tech", "Brand Launch"], "category": "tech" },
-    { "n": 21, "id": "hydrosta-kazakhstan", "name": "HYDROSTA KAZAKHSTAN", "url": "https://hydrosta.asia", "urlLabel": "hydrosta.asia", "summary": "Official HYDROSTA distributor in Kazakhstan: engineering systems for industrial and commercial sites", "tags": ["B2B", "Industrial", "Marketing"], "category": "b2b", "featured": true },
-    { "n": 22, "id": "hsta-group", "name": "HSTA GROUP", "url": "https://hstagroup.asia", "urlLabel": "hstagroup.asia", "summary": "Engineering systems: design, supply, installation and service", "tags": ["B2B", "Industrial", "Engineering"], "category": "b2b" },
-    { "n": 23, "id": "hydrosta-service", "name": "HYDROSTA SERVICE KAZAKHSTAN", "url": "https://hydrostaservice.asia", "urlLabel": "hydrostaservice.asia", "summary": "Diagnostics and maintenance of boilers and engineering systems", "tags": ["B2B", "Industrial", "Service"], "category": "b2b" },
-    { "n": 24, "id": "building-time", "name": "BUILDING TIME", "url": "https://buildingtime.asia", "urlLabel": "buildingtime.asia", "summary": "Construction equipment rental in Almaty", "tags": ["B2B", "Industrial", "Equipment Rental"], "category": "b2b" },
-    { "n": 25, "id": "oleg-baryshevsky", "name": "OLEG BARYSHEVSKY", "url": "https://instagram.com/oleg.baryshevsky", "urlLabel": "instagram.com/oleg.baryshevsky", "summary": "Three educational courses and chatbots: consulting, launches, technical production", "tags": ["Consulting", "Course Launch", "Chatbots"], "category": "experts" },
-    { "n": 26, "id": "tsepukh", "name": "TSEPUKH_P", "url": "https://instagram.com/tsepukh_p", "urlLabel": "instagram.com/tsepukh_p", "summary": "Three courses and bots: consulting, launches, technical production", "tags": ["Consulting", "Course Launch", "Production"], "category": "experts" },
-    { "n": 27, "id": "kehhsha", "name": "KEHHSHA", "url": "https://instagram.com/kehhsha", "urlLabel": "instagram.com/kehhsha", "summary": "Full course production, consulting and content production", "tags": ["Production", "Course Launch", "Consulting"], "category": "experts" },
-    { "n": 28, "id": "olga-yankovskaya", "name": "OLGA YANKOVSKAYA", "url": "https://instagram.com/yankovskaya__olga", "urlLabel": "instagram.com/yankovskaya__olga", "summary": "Technical production and launch consulting for an expert", "tags": ["Expert Launch", "Production", "Consulting"], "category": "experts" },
-    { "n": 29, "id": "miss-sverona", "name": "MISS SVERONA", "url": "https://instagram.com/misssverona", "urlLabel": "instagram.com/misssverona", "summary": "Full production of an expert project: strategy, positioning, launch", "tags": ["Production", "Consulting", "Strategy"], "category": "experts" },
-    { "n": 30, "id": "meshtiish", "name": "MESHTIISH", "url": "https://instagram.com/meshtiish", "urlLabel": "instagram.com/meshtiish", "summary": "Two courses from idea to launch, technical production", "tags": ["Consulting", "Course Launch", "Production"], "category": "experts" },
-    { "n": 31, "id": "gaia", "name": "GAIA", "url": "https://instagram.com/gaia.od", "urlLabel": "instagram.com/gaia.od", "summary": "A restaurant in Odesa: brand, marketing, digital and communications", "tags": ["HoReCa", "Marketing", "Brand Development"], "category": "horeca" },
-    { "n": 32, "id": "barbershops-kyiv", "name": "Barbershop chain / Kyiv", "url": "", "urlLabel": "", "summary": "Long-term operational management of a chain of four barbershops", "tags": ["Operations", "Business Development", "Expansion"], "category": "horeca" },
-    { "n": 33, "id": "morris-group", "name": "Morris Group", "url": "", "urlLabel": "", "summary": "Marketing and PR for a law firm", "tags": ["PR", "Marketing", "B2B Communications"], "category": "b2b" },
-    { "n": 34, "id": "furniture-factory", "name": "Furniture factory", "url": "", "urlLabel": "", "summary": "End-to-end marketing and brand development for a furniture manufacturer", "tags": ["Marketing", "Brand Development", "Advertising"], "category": "b2b" }
-  ]
+    {
+      "n": 1,
+      "id": "usyk",
+      "name": "USYK / Oleksandr Usyk",
+      "url": "https://instagram.com/usykaa",
+      "urlLabel": "instagram.com/usykaa",
+      "summary": "Six years: Oleksandr Usyk's personal brand, marketing for his products and related projects",
+      "tags": [
+        "Personal Branding",
+        "Marketing",
+        "PR"
+      ],
+      "category": "experts",
+      "featured": true
+    },
+    {
+      "n": 2,
+      "id": "udar",
+      "name": "UDAR political party",
+      "url": "https://udar.party",
+      "urlLabel": "udar.party",
+      "summary": "Promoting local and national candidates as part of a large communications team",
+      "tags": [
+        "PR",
+        "Personal Branding",
+        "Digital"
+      ],
+      "category": "politics"
+    },
+    {
+      "n": 3,
+      "id": "apicapsules",
+      "name": "APICAPSULES",
+      "url": "",
+      "urlLabel": "",
+      "summary": "A startup taken from idea to a fully shaped product concept",
+      "tags": [
+        "Startup",
+        "Product Development",
+        "Business Development"
+      ],
+      "category": "tbd"
+    },
+    {
+      "n": 4,
+      "id": "medical-protective-equipment",
+      "name": "MEDICAL PROTECTIVE EQUIPMENT",
+      "url": "",
+      "urlLabel": "",
+      "summary": "Manufacturing of medical protective equipment, working with major government and corporate buyers",
+      "tags": [
+        "Production",
+        "B2B",
+        "Tender Support"
+      ],
+      "category": "b2b"
+    },
+    {
+      "n": 5,
+      "id": "maharadj",
+      "name": "MAHARADJ",
+      "url": "https://maharadj-yoga.club",
+      "urlLabel": "maharadj-yoga.club",
+      "summary": "A full-scale wellness and lifestyle project with an ecosystem of services",
+      "tags": [
+        "Wellness",
+        "Operations",
+        "Digital"
+      ],
+      "category": "horeca"
+    },
+    {
+      "n": 6,
+      "id": "van-dog-agency",
+      "name": "VAN DOG AGENCY",
+      "url": "https://vandog.agency",
+      "urlLabel": "vandog.agency",
+      "summary": "Projects for major Ukrainian brands within an advertising agency",
+      "tags": [
+        "Advertising",
+        "Creative",
+        "Production"
+      ],
+      "category": "media"
+    },
+    {
+      "n": 7,
+      "id": "sii-concept",
+      "name": "SII.CONCEPT / MILAN",
+      "url": "https://instagram.com/sii.concept",
+      "urlLabel": "instagram.com/sii.concept",
+      "summary": "Operational management, launch and international expansion of a fashion and eyewear project",
+      "tags": [
+        "Operations",
+        "Fashion",
+        "Brand Launch"
+      ],
+      "category": "retail"
+    },
+    {
+      "n": 8,
+      "id": "ukrainian-fashion-week",
+      "name": "UKRAINIAN FASHION WEEK",
+      "url": "https://fashionweek.ua",
+      "urlLabel": "fashionweek.ua",
+      "summary": "Organising and coordinating fashion, sports, advertising and event projects",
+      "tags": [
+        "Events",
+        "Production",
+        "Fashion"
+      ],
+      "category": "media",
+      "featured": true
+    },
+    {
+      "n": 9,
+      "id": "education",
+      "name": "Educational projects",
+      "url": "",
+      "urlLabel": "",
+      "summary": "Producing educational products together with creators",
+      "tags": [
+        "Production",
+        "Digital",
+        "Operations"
+      ],
+      "category": "experts"
+    },
+    {
+      "n": 10,
+      "id": "ecommerce",
+      "name": "E-commerce projects",
+      "url": "",
+      "urlLabel": "",
+      "summary": "Numerous e-commerce projects across product categories",
+      "tags": [
+        "E-commerce",
+        "Digital",
+        "Marketing"
+      ],
+      "category": "retail"
+    },
+    {
+      "n": 11,
+      "id": "tpk",
+      "name": "TPK",
+      "url": "https://tpk.ua",
+      "urlLabel": "tpk.ua",
+      "summary": "Manufacturer of sandwich panels, corrugated sheets, façade cassettes and panels",
+      "tags": [
+        "B2B",
+        "Marketing",
+        "Digital"
+      ],
+      "category": "b2b"
+    },
+    {
+      "n": 12,
+      "id": "art-mango-production",
+      "name": "ART MANGO PRODUCTION",
+      "url": "https://ilpgroup.uk",
+      "urlLabel": "ilpgroup.uk",
+      "summary": "An international exhibition in Cannes on luxury real estate and immigration",
+      "tags": [
+        "Events",
+        "Production",
+        "Consulting"
+      ],
+      "category": "media"
+    },
+    {
+      "n": 13,
+      "id": "spa-maharadj",
+      "name": "SPA MAHARADJ",
+      "url": "https://maharadj-yoga.club/spa",
+      "urlLabel": "maharadj-yoga.club/spa",
+      "summary": "The SPA line within a large wellness business",
+      "tags": [
+        "Wellness",
+        "Marketing"
+      ],
+      "category": "horeca"
+    },
+    {
+      "n": 14,
+      "id": "toscana-wine",
+      "name": "Toscana Wine Shop & Wine Bar",
+      "url": "",
+      "urlLabel": "",
+      "summary": "Marketing for two wine bars and an online wine store in Kyiv",
+      "tags": [
+        "E-commerce",
+        "Marketing",
+        "HoReCa"
+      ],
+      "category": "horeca"
+    },
+    {
+      "n": 15,
+      "id": "brsm-nafta",
+      "name": "BRSM-NAFTA",
+      "url": "https://brsm-nafta.com",
+      "urlLabel": "brsm-nafta.com",
+      "summary": "Marketing and advertising projects for a major fuel station network",
+      "tags": [
+        "Marketing",
+        "Advertising",
+        "Brand Communications"
+      ],
+      "category": "retail",
+      "featured": true
+    },
+    {
+      "n": 16,
+      "id": "good-market",
+      "name": "Good Market",
+      "url": "",
+      "urlLabel": "",
+      "summary": "Marketing and advertising for a supermarket chain at fuel stations",
+      "tags": [
+        "Retail Marketing",
+        "Advertising",
+        "Brand Communications"
+      ],
+      "category": "retail"
+    },
+    {
+      "n": 17,
+      "id": "intertop",
+      "name": "INTERTOP / SPEX / Eurooptika",
+      "url": "https://intertop.ua",
+      "urlLabel": "intertop.ua",
+      "summary": "Advertising and marketing for major fashion, eyewear and retail brands",
+      "tags": [
+        "Fashion",
+        "Retail",
+        "Creative"
+      ],
+      "category": "retail",
+      "featured": true
+    },
+    {
+      "n": 18,
+      "id": "ukrainian-radio",
+      "name": "Ukrainian Radio",
+      "url": "https://ukr.radio",
+      "urlLabel": "ukr.radio",
+      "summary": "Personal brands of radio hosts, YouTube projects and digital presence",
+      "tags": [
+        "Personal Branding",
+        "Digital",
+        "YouTube"
+      ],
+      "category": "media"
+    },
+    {
+      "n": 19,
+      "id": "fitness-room-menden",
+      "name": "FITNESS ROOM MENDEN",
+      "url": "https://instagram.com/fitnessroommenden",
+      "urlLabel": "instagram.com/fitnessroommenden",
+      "summary": "Digital presence for a German fitness club",
+      "tags": [
+        "Social Media",
+        "Content Strategy",
+        "Local Marketing"
+      ],
+      "category": "horeca"
+    },
+    {
+      "n": 20,
+      "id": "cybermove-games",
+      "name": "CYBERMOVE GAMES",
+      "url": "https://cybermovegames.com",
+      "urlLabel": "cybermovegames.com",
+      "summary": "A VR project with a physical locomotion platform: moving with your body instead of controllers",
+      "tags": [
+        "VR",
+        "Immersive Tech",
+        "Brand Launch"
+      ],
+      "category": "tech"
+    },
+    {
+      "n": 21,
+      "id": "hydrosta-kazakhstan",
+      "name": "HYDROSTA KAZAKHSTAN",
+      "url": "https://hydrosta.asia",
+      "urlLabel": "hydrosta.asia",
+      "summary": "Official HYDROSTA distributor in Kazakhstan: engineering systems for industrial and commercial sites",
+      "tags": [
+        "B2B",
+        "Industrial",
+        "Marketing"
+      ],
+      "category": "b2b",
+      "featured": true
+    },
+    {
+      "n": 22,
+      "id": "hsta-group",
+      "name": "HSTA GROUP",
+      "url": "https://hstagroup.asia",
+      "urlLabel": "hstagroup.asia",
+      "summary": "Engineering systems: design, supply, installation and service",
+      "tags": [
+        "B2B",
+        "Industrial",
+        "Engineering"
+      ],
+      "category": "b2b"
+    },
+    {
+      "n": 23,
+      "id": "hydrosta-service",
+      "name": "HYDROSTA SERVICE KAZAKHSTAN",
+      "url": "https://hydrostaservice.asia",
+      "urlLabel": "hydrostaservice.asia",
+      "summary": "Diagnostics and maintenance of boilers and engineering systems",
+      "tags": [
+        "B2B",
+        "Industrial",
+        "Service"
+      ],
+      "category": "b2b"
+    },
+    {
+      "n": 24,
+      "id": "building-time",
+      "name": "BUILDING TIME",
+      "url": "https://buildingtime.asia",
+      "urlLabel": "buildingtime.asia",
+      "summary": "Construction equipment rental in Almaty",
+      "tags": [
+        "B2B",
+        "Industrial",
+        "Equipment Rental"
+      ],
+      "category": "b2b"
+    },
+    {
+      "n": 25,
+      "id": "oleg-baryshevsky",
+      "name": "OLEG BARYSHEVSKY",
+      "url": "https://instagram.com/oleg.baryshevsky",
+      "urlLabel": "instagram.com/oleg.baryshevsky",
+      "summary": "Three educational courses and chatbots: consulting, launches, technical production",
+      "tags": [
+        "Consulting",
+        "Course Launch",
+        "Chatbots"
+      ],
+      "category": "experts"
+    },
+    {
+      "n": 26,
+      "id": "tsepukh",
+      "name": "TSEPUKH_P",
+      "url": "https://instagram.com/tsepukh_p",
+      "urlLabel": "instagram.com/tsepukh_p",
+      "summary": "Three courses and bots: consulting, launches, technical production",
+      "tags": [
+        "Consulting",
+        "Course Launch",
+        "Production"
+      ],
+      "category": "experts"
+    },
+    {
+      "n": 27,
+      "id": "kehhsha",
+      "name": "KEHHSHA",
+      "url": "https://instagram.com/kehhsha",
+      "urlLabel": "instagram.com/kehhsha",
+      "summary": "Full course production, consulting and content production",
+      "tags": [
+        "Production",
+        "Course Launch",
+        "Consulting"
+      ],
+      "category": "experts"
+    },
+    {
+      "n": 28,
+      "id": "olga-yankovskaya",
+      "name": "OLGA YANKOVSKAYA",
+      "url": "https://instagram.com/yankovskaya__olga",
+      "urlLabel": "instagram.com/yankovskaya__olga",
+      "summary": "Technical production and launch consulting for an expert",
+      "tags": [
+        "Expert Launch",
+        "Production",
+        "Consulting"
+      ],
+      "category": "experts"
+    },
+    {
+      "n": 29,
+      "id": "miss-sverona",
+      "name": "MISS SVERONA",
+      "url": "https://instagram.com/misssverona",
+      "urlLabel": "instagram.com/misssverona",
+      "summary": "Full production of an expert project: strategy, positioning, launch",
+      "tags": [
+        "Production",
+        "Consulting",
+        "Strategy"
+      ],
+      "category": "experts"
+    },
+    {
+      "n": 30,
+      "id": "meshtiish",
+      "name": "MESHTIISH",
+      "url": "https://instagram.com/meshtiish",
+      "urlLabel": "instagram.com/meshtiish",
+      "summary": "Two courses from idea to launch, technical production",
+      "tags": [
+        "Consulting",
+        "Course Launch",
+        "Production"
+      ],
+      "category": "experts"
+    },
+    {
+      "n": 31,
+      "id": "gaia",
+      "name": "GAIA",
+      "url": "https://instagram.com/gaia.od",
+      "urlLabel": "instagram.com/gaia.od",
+      "summary": "A restaurant in Odesa: brand, marketing, digital and communications",
+      "tags": [
+        "HoReCa",
+        "Marketing",
+        "Brand Development"
+      ],
+      "category": "horeca"
+    },
+    {
+      "n": 32,
+      "id": "barbershops-kyiv",
+      "name": "Barbershop chain / Kyiv",
+      "url": "",
+      "urlLabel": "",
+      "summary": "Long-term operational management of a chain of four barbershops",
+      "tags": [
+        "Operations",
+        "Business Development",
+        "Expansion"
+      ],
+      "category": "horeca"
+    },
+    {
+      "n": 33,
+      "id": "morris-group",
+      "name": "MORIS (Moris Group)",
+      "url": "",
+      "urlLabel": "",
+      "summary": "Marketing and PR for a law firm",
+      "tags": [
+        "PR",
+        "Marketing",
+        "B2B Communications"
+      ],
+      "category": "b2b"
+    },
+    {
+      "n": 34,
+      "id": "furniture-factory",
+      "name": "Furniture factory",
+      "url": "",
+      "urlLabel": "",
+      "summary": "End-to-end marketing and brand development for a furniture manufacturer",
+      "tags": [
+        "Marketing",
+        "Brand Development",
+        "Advertising"
+      ],
+      "category": "b2b"
+    }
+  ],
+  "resultPlaceholder": "[PLACEHOLDER: result figures]"
 }

@@ -31,10 +31,16 @@ export interface SceneEvents extends Record<string, unknown> {
 }
 
 export interface SceneState {
-  /** прогресс каждого экрана 0..1 (0 — ещё не вошли, 1 — ушли) */
+  /** сглаженный прогресс каждого экрана 0..1 (0 — ещё не вошли, 1 — ушли); читают сцены, фон, CSS */
   screens: Float32Array;
-  /** глобальный прогресс 0..1 по всей странице */
+  /** целевой прогресс экранов прямо из скролла (пишет обработчик скролла, сглаживает единый кадр) */
+  targets: Float32Array;
+  /** сглаженный глобальный прогресс 0..1 по всей странице */
   progress: number;
+  /** целевой глобальный прогресс из скролла */
+  targetProgress: number;
+  /** последний кадр сглаживания: dt (с) и время; для тестов плавности */
+  frame: { dt: number; t: number };
   /** индекс текущего экрана */
   screen: number;
   /** позиция курсора: px и нормализованная (-1..1, y вверх) */
@@ -64,7 +70,10 @@ export interface SceneState {
 
 export const state: SceneState = {
   screens: new Float32Array(SCREEN_IDS.length),
+  targets: new Float32Array(SCREEN_IDS.length),
   progress: 0,
+  targetProgress: 0,
+  frame: { dt: 0, t: 0 },
   screen: 0,
   pointer: { x: 0, y: 0, nx: 0, ny: 0, active: false },
   hover: null,
