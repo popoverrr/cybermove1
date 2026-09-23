@@ -2,14 +2,14 @@
 /**
  * Аудит бюджетов (BRIEF §14): размеры бандлов dist/ (raw / gzip), стартовый JS без three-чанка,
  * передача главной (все ресурсы страницы, gzip-оценка), результат — docs/perf.md.
- *   node scripts/audit-dist.mjs [base=http://127.0.0.1:4331]
+ *   node scripts/audit-dist.mjs [base=http://127.0.0.1:4341]
  * Перед запуском: npm run build и preview-сервер (cybermove-preview).
  */
 import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
 import { chromium } from 'playwright';
 
-const base = process.argv[2] || 'http://127.0.0.1:4331';
+const base = process.argv[2] || 'http://127.0.0.1:4341';
 const kb = (n) => (n / 1024).toFixed(1) + ' KB';
 const gz = (buf) => gzipSync(buf, { level: 6 }).length;
 
