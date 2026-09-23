@@ -71,86 +71,11 @@
     }
   ],
   "teamTitle": "Команда",
-  "team": [
-    {
-      "id": "team-1",
-      "name": "Yana Petechuk",
-      "role": "Founder · Strategy & Growth",
-      "focus": "Стратегия роста · Запуск брендов",
-      "bio": "Более 12 лет в маркетинге, брендинге и операционном управлении: от рекламных агентств и fashion-проектов до международных запусков и e-commerce.",
-      "skills": [
-        "Growth strategy",
-        "Brand launch",
-        "Marketing",
-        "Operations"
-      ]
-    },
-    {
-      "id": "team-2",
-      "name": "Andrii Kravets",
-      "role": "Partner · Operations & Consulting",
-      "focus": "Операционный консалтинг · Процессы",
-      "bio": "Выстраивает операционные системы бизнеса: процессы, метрики, управление командами и подрядчиками, контроль исполнения проектов.",
-      "skills": [
-        "Business audit",
-        "Process design",
-        "Project management",
-        "Consulting"
-      ]
-    },
-    {
-      "id": "team-3",
-      "name": "Daniel Rakhimov",
-      "role": "Head of AI & Automation",
-      "focus": "AI-агенты · Автоматизация · CRM",
-      "bio": "Проектирует AI-агентов и автоматизированные контуры продаж, поддержки и отчётности. Интеграции CRM, аналитики и внутренних систем.",
-      "skills": [
-        "AI agents",
-        "Automation",
-        "CRM",
-        "Integrations"
-      ]
-    },
-    {
-      "id": "team-4",
-      "name": "Alina Moroz",
-      "role": "Digital & Performance Director",
-      "focus": "Digital-стратегия · E-commerce",
-      "bio": "Отвечает за digital-присутствие и перформанс: трафик, воронки, e-commerce, аналитика и рост онлайн-продаж брендов.",
-      "skills": [
-        "Digital strategy",
-        "Performance",
-        "E-commerce",
-        "Analytics"
-      ]
-    },
-    {
-      "id": "team-5",
-      "name": "Marat Suleimenov",
-      "role": "Business Development · Tenders",
-      "focus": "Развитие бизнеса · Тендеры",
-      "bio": "Развитие партнёрств и B2B-направлений, тендерное сопровождение: подготовка документации, стратегия участия, коммуникация с заказчиками.",
-      "skills": [
-        "Business development",
-        "Tender support",
-        "B2B",
-        "Partnerships"
-      ]
-    },
-    {
-      "id": "team-6",
-      "name": "Olena Bondar",
-      "role": "Legal Counsel",
-      "focus": "Юридическая поддержка · Договоры",
-      "bio": "Юридическое сопровождение сделок, договорная база, корпоративные вопросы и защита интересов компании в проектах.",
-      "skills": [
-        "Legal support",
-        "Contracts",
-        "Corporate",
-        "Compliance"
-      ]
-    }
-  ],
+  "teamPlaceholder": "[PLACEHOLDER: имена, роли, фото команды]",
+  "teamPhotoPlaceholder": "[PLACEHOLDER: портрет]",
+  "teamNamePlaceholder": "[PLACEHOLDER: имя]",
+  "teamRolePlaceholder": "[PLACEHOLDER: роль]",
+  "team": [],
   "geoTitle": "География",
   "geoLead": "Команда и проекты в Европе, Украине, Казахстане и Азии.",
   "teamLead": "За каждым проектом CYBER MOVE стоят люди с реальным операционным опытом — от стратегии и запуска брендов до AI-автоматизации, тендеров и юридической поддержки."

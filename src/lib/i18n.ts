@@ -12,7 +12,6 @@ import ruCases from '../content/ru/cases.json';
 import ruAbout from '../content/ru/about.json';
 import ruContact from '../content/ru/contact.json';
 import ruCaseDetails from '../content/ru/cases-detailed.json';
-import team from '../content/team.json';
 
 export type Ui = typeof ruUi;
 export type Home = typeof ruHome;
@@ -24,7 +23,6 @@ export type CaseItem = CasesContent['items'][number];
 export type About = typeof ruAbout;
 export type Contact = typeof ruContact;
 export type CaseDetails = (typeof ruCaseDetails)[number];
-export type TeamMember = (typeof team)['members'][number];
 
 export interface Content {
   lang: LangCode;
@@ -107,10 +105,6 @@ export function alternates(path: string): Array<{ lang: LangCode; hreflang: stri
   }));
 }
 
-/** Команда общая для языков (имена и портреты), роли и био переводятся в about.json */
-export function teamMembers(): TeamMember[] {
-  return team.members;
-}
 
 export function findCaseDetails(content: Content, id: string): CaseDetails | undefined {
   return content.caseDetails.find((c) => c.id === id);

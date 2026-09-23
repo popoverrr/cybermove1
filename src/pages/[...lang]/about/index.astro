@@ -71,50 +71,20 @@ const jsonLd = [breadcrumbLd(lang, [{ name: c.ui.brand, path: '/' }, { name: a.t
     <div class="container team__inner">
       <p class="t-micro">{a.teamTitle}</p>
       <p class="t-lead team__lead">{a.teamLead}</p>
-      <ul class="team__grid" data-team>
-        {a.team.map((m) => (
+      <p class="t-small team__ph">{a.teamPlaceholder}</p>
+      {/* Людей на сайте не показываем (решение руководства): шесть пустых слотов той же раскладки. */}
+      <ul class="team__grid">
+        {Array.from({ length: 6 }, (_, i) => (
           <li class="member">
-            <ImageSlot id={m.id} ratio="1:1" sizes="(max-width: 899px) 50vw, 33vw" class="member__photo" />
-            <h3 class="t-h4 member__name">{m.name}</h3>
-            <p class="t-micro member__role">{m.role}</p>
-            <button class="member__toggle t-micro" type="button" aria-expanded="false" aria-controls={`bio-${m.id}`} data-team-toggle>
-              <span class="member__focus">{m.focus}</span>
-              <span class="member__sign" aria-hidden="true">+</span>
-            </button>
-            <div class="member__bio" id={`bio-${m.id}`} hidden>
-              <p class="t-small">{m.bio}</p>
-              <p class="t-micro member__skills">{m.skills.join(' · ')}</p>
-            </div>
+            <div class="member__slot"><span class="t-micro">{a.teamPhotoPlaceholder}</span></div>
+            <p class="t-h4 member__name">{a.teamNamePlaceholder}</p>
+            <p class="t-micro member__role">{a.teamRolePlaceholder}</p>
           </li>
         ))}
       </ul>
     </div>
   </section>
 
-  <script>
-    // аккордеон команды: открыт один участник
-    const list = document.querySelector<HTMLElement>('[data-team]');
-    if (list) {
-      const toggles = Array.from(list.querySelectorAll<HTMLButtonElement>('[data-team-toggle]'));
-      toggles.forEach((btn) => {
-        btn.addEventListener('click', () => {
-          const bio = document.getElementById(btn.getAttribute('aria-controls')!);
-          const open = btn.getAttribute('aria-expanded') === 'true';
-          toggles.forEach((other) => {
-            const b = document.getElementById(other.getAttribute('aria-controls')!);
-            other.setAttribute('aria-expanded', 'false');
-            other.classList.remove('is-open');
-            if (b) b.hidden = true;
-          });
-          if (!open) {
-            btn.setAttribute('aria-expanded', 'true');
-            btn.classList.add('is-open');
-            if (bio) bio.hidden = false;
-          }
-        });
-      });
-    }
-  </script>
 
   <section class="geo">
     <div class="container geo__inner">
@@ -219,45 +189,25 @@ const jsonLd = [breadcrumbLd(lang, [{ name: c.ui.brand, path: '/' }, { name: a.t
     gap: var(--space-2);
     align-content: start;
   }
-  .member :global(.member__photo) {
-    margin-bottom: var(--space-2);
+  .team__ph {
+    color: var(--fg-3);
   }
-  .member__role {
+  /* Пустой слот портрета: графитовый квадрат с рамкой и микрометкой по центру */
+  .member__slot {
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    margin-bottom: var(--space-2);
+    background: var(--graphite);
+    border: 1px solid var(--steel-700);
+    color: var(--fg-3);
+    text-align: center;
+    padding: var(--space-3);
+  }
+  .member__name {
     color: var(--fg-2);
   }
-  .member__toggle {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--space-3);
-    width: 100%;
-    padding: 0.5rem 0;
-    border-top: 1px solid var(--hair);
-    color: var(--fg-3);
-    text-align: left;
-    transition: color var(--dur-fast);
-  }
-  .member__toggle:hover,
-  .member__toggle.is-open {
-    color: var(--accent);
-  }
-  .member__sign {
-    font-size: 1rem;
-    line-height: 1;
-    transition: transform var(--dur-fast);
-  }
-  .member__toggle.is-open .member__sign {
-    transform: rotate(45deg);
-  }
-  .member__bio {
-    display: grid;
-    gap: var(--space-2);
-  }
-  /* display: grid перебивает [hidden] браузера — скрываем явно */
-  .member__bio[hidden] {
-    display: none;
-  }
-  .member__skills {
+  .member__role {
     color: var(--fg-3);
   }
   .member__name {
