@@ -1,6 +1,6 @@
 // Тач-режим (эмуляция iPhone): первый тап по строке — активная строка и реакция сцены, второй — Drawer
 import { chromium, devices } from 'playwright';
-const base = process.argv[2] || 'http://127.0.0.1:4331';
+const base = process.argv[2] || 'http://127.0.0.1:4341';
 const browser = await chromium.launch({ headless: true, args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--enable-webgl'] });
 const ctx = await browser.newContext({ ...devices['iPhone 13'], locale: 'ru-RU' });
 const page = await ctx.newPage();

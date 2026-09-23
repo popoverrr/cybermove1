@@ -8,7 +8,7 @@
  * Каждый кадр читает window.__cm (state.screens, активный экран, dt) и пишет docs/screens/v3/C/scroll-<size>[-suffix].json
  * плюс видео прокрутки (webm) рядом.
  *
- *   node scripts/test-scroll.mjs [--base http://127.0.0.1:4331] [--sizes desktop,mobile] [--tier low] [--no-video] [--nogl] [--suffix name] [--out dir]
+ *   node scripts/test-scroll.mjs [--base http://127.0.0.1:4341] [--sizes desktop,mobile] [--tier low] [--no-video] [--nogl] [--suffix name] [--out dir]
  *
  * Под SwiftShader кадры длинные (~100 мс), поэтому Δ нормируется к кадру 60 fps по формуле экспоненциального
  * сглаживания: Δ60 = Δ · (1 − e^(−λ/60)) / (1 − e^(−λ·dt)); лимит скорости (VMAX·dt) от длины кадра не зависит.
@@ -19,7 +19,7 @@ import { mkdir, writeFile, readdir, rename, rm } from 'node:fs/promises';
 import path from 'node:path';
 
 const args = process.argv.slice(2);
-const opt = { base: 'http://127.0.0.1:4331', sizes: ['desktop', 'mobile'], tier: 'low', video: true, out: 'docs/screens/v3/C', nogl: false, suffix: '' };
+const opt = { base: 'http://127.0.0.1:4341', sizes: ['desktop', 'mobile'], tier: 'low', video: true, out: 'docs/screens/v3/C', nogl: false, suffix: '' };
 for (let i = 0; i < args.length; i++) {
   const a = args[i];
   if (a === '--base') opt.base = args[++i];

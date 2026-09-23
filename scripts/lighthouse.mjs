@@ -7,7 +7,7 @@ import { chromium } from 'playwright';
 import lighthouse from 'lighthouse';
 import { writeFileSync } from 'node:fs';
 
-const base = process.argv[2] || 'http://127.0.0.1:4331';
+const base = process.argv[2] || 'http://127.0.0.1:4341';
 // путь без ведущего слэша (в Git Bash аргумент «/» превращается в путь к Git); "home" = /
 const rawPath = process.argv[3] || 'home';
 const path = rawPath === 'home' ? '/' : '/' + rawPath.replace(/^\/+/, '');

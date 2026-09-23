@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /**
- * Проверка раскладки S7 (BRIEF-V1 §2): на семи размерах экрана смотрим, пересекаются ли карточки ленты
- * со счётчиками и не обрезаны ли карточки низом пина.
+ * Проверка раскладок на разных размерах экрана:
+ *   1) S7 (BRIEF-V1 §2) — карточки ленты не пересекаются со счётчиками и не обрезаны низом пина;
+ *   2) /cases/ (BRIEF-V1 §3) — карточка кейса не выходит за свою колонку сетки, страница не едет вбок.
  *   node scripts/test-overlap.mjs [--base http://127.0.0.1:4341] [--shots docs/screens/v1/s7] [--ink]
  * Флаг `--ink` включает проверку «нет тёмных пикселей в полосе шапки» — она имеет смысл только
  * для светлой палитры версии 4; в версии 1 фон чёрный, и эта метрика неинформативна.
@@ -26,6 +27,8 @@ const SIZES = [
   { name: '390x844', width: 390, height: 844, mobile: true },
   { name: '1280x720', width: 1280, height: 720, mobile: false },
   { name: '1440x900', width: 1440, height: 900, mobile: false },
+  { name: '1536x864', width: 1536, height: 864, mobile: false },
+  { name: '1920x1080', width: 1920, height: 1080, mobile: false },
 ];
 
 if (shots) await mkdir(shots, { recursive: true });
@@ -87,5 +90,54 @@ for (const s of SIZES) {
   if (shots) await page.screenshot({ path: path.join(shots, `s7-${s.name}.png`) });
   await ctx.close();
 }
+// 2) Сетка /cases/: карточка не должна выходить за свою колонку, а страница — ехать вбок по горизонтали.
+const CASE_SIZES = [
+  { name: '320x640', width: 320, height: 640, mobile: true },
+  { name: '360x640', width: 360, height: 640, mobile: true },
+  { name: '390x844', width: 390, height: 844, mobile: true },
+  { name: '430x932', width: 430, height: 932, mobile: true },
+  { name: '600x900', width: 600, height: 900, mobile: true },
+  { name: '768x1024', width: 768, height: 1024, mobile: true },
+  { name: '1024x768', width: 1024, height: 768, mobile: false },
+  { name: '1280x720', width: 1280, height: 720, mobile: false },
+  { name: '1440x900', width: 1440, height: 900, mobile: false },
+];
+for (const s of CASE_SIZES) {
+  const ctx = await browser.newContext(
+    s.mobile
+      ? { ...devices['Pixel 7'], viewport: { width: s.width, height: s.height }, deviceScaleFactor: 1 }
+      : { viewport: { width: s.width, height: s.height }, deviceScaleFactor: 1 },
+  );
+  const page = await ctx.newPage();
+  await page.goto(`${base}/cases/`, { waitUntil: 'load', timeout: 120000 });
+  await page.waitForTimeout(600);
+  const r = await page.evaluate(() => {
+    const grid = document.querySelector('.grid-cases');
+    const cols = getComputedStyle(grid).gridTemplateColumns.split(' ').filter(Boolean).length;
+    let worst = 0;
+    let who = '';
+    for (const li of grid.children) {
+      const box = li.getBoundingClientRect();
+      for (const el of li.querySelectorAll('*')) {
+        const b = el.getBoundingClientRect();
+        if (!b.width || !b.height) continue;
+        const over = Math.max(b.right - box.right, box.left - b.left);
+        if (over > worst) {
+          worst = over;
+          who = `${li.id}·${String(el.className || el.tagName)}`;
+        }
+      }
+    }
+    return { cols, worst, who, tiles: grid.children.length, docW: document.documentElement.scrollWidth, vw: window.innerWidth };
+  });
+  const ok = r.worst < 1 && r.docW <= r.vw + 1;
+  console.log(
+    `${ok ? 'PASS' : 'FAIL'} ${s.name}: /cases/ колонок ${r.cols}, плиток ${r.tiles}, выход за колонку ${r.worst.toFixed(0)} px${r.worst >= 1 ? ` (${r.who})` : ''}, ширина страницы ${r.docW} при окне ${r.vw}`,
+  );
+  if (!ok) fails++;
+  if (shots) await page.screenshot({ path: path.join(shots, `cases-${s.name}.png`), fullPage: false });
+  await ctx.close();
+}
+
 await browser.close();
 process.exit(fails ? 1 : 0);

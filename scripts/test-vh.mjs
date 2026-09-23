@@ -32,7 +32,10 @@ await page.evaluate(() => {
     acc += dur;
   }
 });
-// ждём, пока сглаженный прогресс догонит цель: иначе за «прыжок раскладки» принимается обычное сглаживание
+// ждём, пока сглаженный прогресс догонит цель: иначе за «прыжок раскладки» принимается обычное сглаживание.
+// Первая пауза обязательна: сразу после scrollTo цели ещё не пересчитаны, и зазор ложно равен нулю.
+await page.waitForTimeout(700);
+let settled = 0;
 for (let i = 0; i < 120; i++) {
   const gap = await page.evaluate(() => {
     const s = window.__cm;
@@ -40,7 +43,8 @@ for (let i = 0; i < 120; i++) {
     for (let k = 0; k < s.screens.length; k++) g = Math.max(g, Math.abs(s.screens[k] - s.targets[k]));
     return g;
   });
-  if (gap < 0.002) break;
+  settled = gap < 0.002 ? settled + 1 : 0;
+  if (settled >= 3) break;
   await page.waitForTimeout(250);
 }
 await page.waitForTimeout(400);

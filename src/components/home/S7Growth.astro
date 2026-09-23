@@ -149,11 +149,13 @@ const tickerItems = [...TICKER, ...TICKER];
     border-color: var(--hair-strong);
     transform: translateY(-4px);
   }
-  /* BRIEF-V1 §3: фото 4:5 сверху карточки, размеры карточек версии 1 не меняются */
+  /* BRIEF-V1 §3: фото 4:5 сверху карточки, размеры карточек версии 1 не меняются.
+     Высота фото привязана к высоте окна: при 20vh карточка переставала помещаться
+     в трек ленты и налезала на счётчики (1440×900). */
   .card :global(.card__photo) {
     margin: calc(var(--space-4) * -1) calc(var(--space-4) * -1) var(--space-2);
     aspect-ratio: auto;
-    height: min(20vh, 190px);
+    height: min(16vh, 170px);
     border: 0;
     border-bottom: 1px solid var(--hair);
   }
@@ -228,9 +230,15 @@ const tickerItems = [...TICKER, ...TICKER];
   @media (max-height: 820px) {
     .g {
       grid-template-rows: auto auto auto auto;
+      row-gap: var(--space-3);
     }
     .ribbon-wrap {
       align-self: start;
+    }
+    /* Свободной высоты под лентой хватает ровно на текст карточки (исходная версия 1),
+       фото из §3 здесь не помещается и обрезало бы карточку низом экрана. */
+    .card :global(.card__photo) {
+      display: none;
     }
   }
   @media (max-width: 899px) {
